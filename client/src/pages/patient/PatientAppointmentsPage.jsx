@@ -5,37 +5,190 @@ import AppointmentCard from '../../components/appointment/AppointmentCard';
 import AppointmentDetails from '../../components/appointment/AppointmentDetails';
 import RescheduleModal from '../../components/appointment/RescheduleModal';
 import ConfirmationModal from '../../components/common/ConfirmationModal';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
+import ReviewForm from '../../components/review/ReviewForm';
+import StarRating from '../../components/review/StarRating';
+import { SkeletonListItem } from '../../components/common/Skeleton';
+import EmptyState from '../../components/common/EmptyState';
 import appointmentService from '../../services/appointmentService';
+import reviewService from '../../services/reviewService';
 import { useToast } from '../../context/ToastContext';
 import {
   Calendar,
-  Clock,
   Search,
-  CheckCircle2,
-  XCircle,
   Plus,
+  Star,
+  CheckCircle2,
+  X,
 } from 'lucide-react';
 
+/* ─── Compact appointment card with review prompt ─────────────────────────── */
+const AppointmentRowCard = ({ appointment, onView, onCancel, onReschedule, onReviewClick, reviewedIds }) => {
+  const doctorName =
+    appointment.doctor?.user?.name ||
+    appointment.doctor?.name ||
+    'Medical Specialist';
+  const specialization = appointment.doctor?.specialization || '';
+  const isCompleted = appointment.status === 'COMPLETED';
+  const alreadyReviewed = reviewedIds.has(appointment._id);
+
+  const statusColors = {
+    PENDING:     { bg: '#fef9c3', color: '#854d0e', label: 'Pending' },
+    CONFIRMED:   { bg: '#f0fdf4', color: '#166534', label: 'Confirmed' },
+    COMPLETED:   { bg: '#eff6ff', color: '#1d4ed8', label: 'Completed' },
+    CANCELLED:   { bg: '#fff1f2', color: '#9f1239', label: 'Cancelled' },
+    RESCHEDULED: { bg: '#faf5ff', color: '#6b21a8', label: 'Rescheduled' },
+  };
+  const sc = statusColors[appointment.status] || statusColors.PENDING;
+
+  return (
+    <div
+      className="card"
+      style={{
+        padding: '1.125rem 1.375rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+        flexWrap: 'wrap',
+        transition: 'box-shadow 0.15s',
+      }}
+    >
+      {/* Date badge */}
+      <div
+        style={{
+          flexShrink: 0,
+          textAlign: 'center',
+          backgroundColor: 'var(--primary-50)',
+          border: '1px solid var(--primary-100)',
+          borderRadius: 'var(--radius-md)',
+          padding: '0.4rem 0.75rem',
+          minWidth: 60,
+        }}
+      >
+        <div style={{ fontSize: 'var(--text-xs)', color: 'var(--primary-600)', fontWeight: 700 }}>
+          {new Date(appointment.date).toLocaleDateString('en-IN', { month: 'short' }).toUpperCase()}
+        </div>
+        <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--primary-800)', lineHeight: 1 }}>
+          {new Date(appointment.date).getDate()}
+        </div>
+      </div>
+
+      {/* Doctor info */}
+      <div style={{ flex: 1, minWidth: 160 }}>
+        <div style={{ fontWeight: 700, fontSize: 'var(--text-sm)', color: 'var(--slate-900)' }}>
+          {doctorName}
+        </div>
+        {specialization && (
+          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-500)' }}>{specialization}</div>
+        )}
+        <div style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-400)', marginTop: '0.1rem' }}>
+          {appointment.startTime} – {appointment.endTime}
+        </div>
+      </div>
+
+      {/* Status badge */}
+      <span
+        style={{
+          fontSize: '0.7rem',
+          fontWeight: 700,
+          padding: '0.25rem 0.65rem',
+          borderRadius: 'var(--radius-full)',
+          backgroundColor: sc.bg,
+          color: sc.color,
+          flexShrink: 0,
+        }}
+      >
+        {sc.label}
+      </span>
+
+      {/* Actions */}
+      <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, flexWrap: 'wrap' }}>
+        <button
+          onClick={() => onView(appointment)}
+          className="btn btn-secondary btn-sm"
+          style={{ fontSize: 'var(--text-xs)' }}
+        >
+          Details
+        </button>
+
+        {isCompleted && !alreadyReviewed && (
+          <button
+            onClick={() => onReviewClick(appointment)}
+            className="btn btn-sm"
+            style={{
+              background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
+              color: '#fff',
+              border: 'none',
+              fontSize: 'var(--text-xs)',
+            }}
+          >
+            <Star size={12} />
+            Write Review
+          </button>
+        )}
+
+        {isCompleted && alreadyReviewed && (
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.3rem',
+              fontSize: 'var(--text-xs)',
+              color: 'var(--primary-600)',
+              fontWeight: 600,
+            }}
+          >
+            <CheckCircle2 size={13} /> Reviewed
+          </span>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ─── Main Page ───────────────────────────────────────────────────────────── */
 const PatientAppointmentsPage = () => {
   const { success, error: toastError } = useToast();
 
   const [activeTab, setActiveTab] = useState('upcoming');
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reviewedIds, setReviewedIds] = useState(new Set());
 
-  // Modals state
+  // Modals
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [rescheduleModalOpen, setRescheduleModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [cancelling, setCancelling] = useState(false);
 
+  // Review form (inline, not a modal)
+  const [reviewAppointment, setReviewAppointment] = useState(null);
+
   const fetchAppointments = useCallback(async () => {
     setLoading(true);
     try {
       const res = await appointmentService.getMyAppointments(activeTab);
-      setAppointments(res.data || []);
+      const list = res.data || [];
+      setAppointments(list);
+
+      // For completed tab — check which ones have been reviewed already
+      if (activeTab === 'past') {
+        const completedIds = list
+          .filter((a) => a.status === 'COMPLETED')
+          .map((a) => a._id);
+        if (completedIds.length > 0) {
+          const checks = await Promise.all(
+            completedIds.map((id) =>
+              reviewService.checkExists(id).then((r) => (r.data?.reviewed ? id : null))
+            )
+          );
+          setReviewedIds(new Set(checks.filter(Boolean)));
+        } else {
+          setReviewedIds(new Set());
+        }
+      } else {
+        setReviewedIds(new Set());
+      }
     } catch (err) {
       console.error('Failed to load appointments:', err);
       toastError(err.message || 'Could not load your appointments', 'Load Error');
@@ -48,31 +201,17 @@ const PatientAppointmentsPage = () => {
     fetchAppointments();
   }, [fetchAppointments]);
 
-  // Handlers
-  const handleView = (appointment) => {
-    setSelectedAppointment(appointment);
-    setDetailsModalOpen(true);
-  };
-
-  const handleOpenReschedule = (appointment) => {
-    setSelectedAppointment(appointment);
-    setRescheduleModalOpen(true);
-  };
-
-  const handleOpenCancel = (appointment) => {
-    setSelectedAppointment(appointment);
-    setCancelModalOpen(true);
-  };
+  const handleView = (appt) => { setSelectedAppointment(appt); setDetailsModalOpen(true); };
+  const handleOpenReschedule = (appt) => { setSelectedAppointment(appt); setRescheduleModalOpen(true); };
+  const handleOpenCancel = (appt) => { setSelectedAppointment(appt); setCancelModalOpen(true); };
+  const handleReviewClick = (appt) => setReviewAppointment(appt);
 
   const handleConfirmCancel = async () => {
     if (!selectedAppointment) return;
     setCancelling(true);
     try {
-      await appointmentService.cancel(
-        selectedAppointment._id,
-        'Cancelled by patient via portal'
-      );
-      success('Your appointment has been cancelled and the slot freed.', 'Appointment Cancelled');
+      await appointmentService.cancel(selectedAppointment._id, 'Cancelled by patient via portal');
+      success('Your appointment has been cancelled.', 'Appointment Cancelled');
       setCancelModalOpen(false);
       setSelectedAppointment(null);
       fetchAppointments();
@@ -83,32 +222,33 @@ const PatientAppointmentsPage = () => {
     }
   };
 
-  const handleRescheduleSuccess = () => {
-    fetchAppointments();
+  const handleRescheduleSuccess = () => fetchAppointments();
+
+  const handleReviewSuccess = (review) => {
+    setReviewedIds((prev) => new Set([...prev, reviewAppointment._id]));
+    setReviewAppointment(null);
   };
 
+  const tabs = [
+    { key: 'upcoming', label: 'Upcoming' },
+    { key: 'past', label: 'Past Visits' },
+    { key: 'cancelled', label: 'Cancelled' },
+  ];
+
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 3rem' }}>
       <div className="container">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(260px, 300px) 1fr',
-            gap: '2rem',
-            alignItems: 'start',
-          }}
-          className="dashboard-layout"
-        >
+        <div className="dashboard-layout">
           {/* Left Sidebar */}
           <PatientSidebar />
 
-          {/* Main Appointment Management Area */}
-          <div>
+          {/* Main */}
+          <main>
             {/* Header */}
             <div
               style={{
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: '1rem',
@@ -116,182 +256,123 @@ const PatientAppointmentsPage = () => {
               }}
             >
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                  <span className="badge badge-patient">Consultation Tracker</span>
-                </div>
-                <h1 style={{ fontSize: '2rem', color: 'var(--slate-900)' }}>
+                <span className="badge badge-patient" style={{ marginBottom: '0.35rem' }}>
+                  Consultation Tracker
+                </span>
+                <h1 style={{ fontSize: 'var(--text-3xl)', color: 'var(--slate-900)' }}>
                   My Appointments
                 </h1>
-                <p style={{ color: 'var(--slate-600)', fontSize: '0.95rem' }}>
-                  Track your upcoming medical appointments, view visit histories, or reschedule time slots.
+                <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-sm)', marginTop: '0.2rem' }}>
+                  Track visits, reschedule, or rate completed consultations.
                 </p>
               </div>
-
-              <Link to="/doctors" className="btn btn-primary" style={{ gap: '0.4rem' }}>
-                <Plus size={16} />
-                <span>Book New Visit</span>
+              <Link to="/doctors" className="btn btn-primary btn-sm">
+                <Plus size={15} /> Book New Visit
               </Link>
             </div>
 
-            {/* Filter Tabs */}
-            <div
-              style={{
-                display: 'flex',
-                gap: '0.5rem',
-                backgroundColor: 'var(--slate-100)',
-                padding: '0.35rem',
-                borderRadius: 'var(--radius-lg)',
-                marginBottom: '1.75rem',
-                width: 'fit-content',
-                border: '1px solid var(--border-subtle)',
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => setActiveTab('upcoming')}
-                className={`btn btn-sm ${activeTab === 'upcoming' ? 'btn-primary' : 'btn-ghost'}`}
-                style={{ borderRadius: 'var(--radius-md)' }}
-              >
-                Upcoming
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('past')}
-                className={`btn btn-sm ${activeTab === 'past' ? 'btn-primary' : 'btn-ghost'}`}
-                style={{ borderRadius: 'var(--radius-md)' }}
-              >
-                Past Visits
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('cancelled')}
-                className={`btn btn-sm ${activeTab === 'cancelled' ? 'btn-primary' : 'btn-ghost'}`}
-                style={{ borderRadius: 'var(--radius-md)' }}
-              >
-                Cancelled
-              </button>
+            {/* Tabs */}
+            <div className="tab-list" style={{ marginBottom: '1.5rem', width: 'fit-content' }}>
+              {tabs.map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => { setActiveTab(tab.key); setReviewAppointment(null); }}
+                  className={`tab-btn${activeTab === tab.key ? ' active' : ''}`}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
 
-            {/* Appointment Cards Grid or Empty State */}
+            {/* Inline Review Form */}
+            {reviewAppointment && (
+              <div style={{ marginBottom: '1.25rem', animation: 'fadeIn 0.2s ease' }}>
+                <ReviewForm
+                  appointment={reviewAppointment}
+                  doctorName={
+                    reviewAppointment.doctor?.user?.name ||
+                    reviewAppointment.doctor?.name ||
+                    'the doctor'
+                  }
+                  onSuccess={handleReviewSuccess}
+                  onClose={() => setReviewAppointment(null)}
+                />
+              </div>
+            )}
+
+            {/* Appointments list */}
             {loading ? (
-              <LoadingSpinner text="Loading appointment records..." />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {[1, 2, 3].map((i) => <SkeletonListItem key={i} />)}
+              </div>
             ) : appointments.length > 0 ? (
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))',
-                  gap: '1.5rem',
-                }}
-              >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {appointments.map((appt) => (
-                  <AppointmentCard
+                  <AppointmentRowCard
                     key={appt._id}
                     appointment={appt}
                     onView={handleView}
                     onCancel={handleOpenCancel}
                     onReschedule={handleOpenReschedule}
+                    onReviewClick={handleReviewClick}
+                    reviewedIds={reviewedIds}
                   />
                 ))}
               </div>
             ) : (
-              /* Empty State */
-              <div
-                className="card"
-                style={{
-                  padding: '3.5rem 2rem',
-                  textAlign: 'center',
-                  borderRadius: 'var(--radius-lg)',
-                }}
-              >
-                <div
-                  style={{
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '50%',
-                    backgroundColor: 'var(--primary-50)',
-                    color: 'var(--primary-600)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 1.25rem auto',
-                  }}
-                >
-                  <Calendar size={32} />
-                </div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--slate-900)' }}>
-                  No {activeTab} Appointments Found
-                </h3>
-                <p
-                  style={{
-                    color: 'var(--slate-500)',
-                    fontSize: '0.95rem',
-                    maxWidth: '420px',
-                    margin: '0 auto 1.5rem auto',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {activeTab === 'upcoming'
-                    ? 'You have no scheduled visits at this time. Browse our certified doctor directory to book a consultation.'
-                    : `There are no ${activeTab} consultation records stored in your account.`}
-                </p>
-                <Link to="/doctors" className="btn btn-primary" style={{ gap: '0.5rem' }}>
-                  <Search size={16} />
-                  <span>Find a Doctor & Book</span>
-                </Link>
+              <div className="card">
+                <EmptyState
+                  icon="calendar"
+                  title={`No ${tabs.find((t) => t.key === activeTab)?.label || ''} Appointments`}
+                  message={
+                    activeTab === 'upcoming'
+                      ? 'You have no scheduled visits. Browse our certified specialist directory to book a consultation.'
+                      : `There are no ${activeTab} consultations recorded for your account.`
+                  }
+                  primaryAction={
+                    activeTab === 'upcoming'
+                      ? { to: '/doctors', label: 'Find a Doctor', icon: Search }
+                      : null
+                  }
+                />
               </div>
             )}
-          </div>
+          </main>
         </div>
       </div>
 
-      {/* Appointment Details Modal */}
+      {/* Modals */}
       <AppointmentDetails
         isOpen={detailsModalOpen}
         appointment={selectedAppointment}
-        onClose={() => {
-          setDetailsModalOpen(false);
-          setSelectedAppointment(null);
-        }}
+        onClose={() => { setDetailsModalOpen(false); setSelectedAppointment(null); }}
         onCancelClick={handleOpenCancel}
         onRescheduleClick={handleOpenReschedule}
       />
 
-      {/* Reschedule Modal */}
       <RescheduleModal
         isOpen={rescheduleModalOpen}
         appointment={selectedAppointment}
-        onClose={() => {
-          setRescheduleModalOpen(false);
-          setSelectedAppointment(null);
-        }}
+        onClose={() => { setRescheduleModalOpen(false); setSelectedAppointment(null); }}
         onSuccess={handleRescheduleSuccess}
       />
 
-      {/* Cancel Confirmation Modal */}
       <ConfirmationModal
         isOpen={cancelModalOpen}
         title="Cancel Appointment"
         message={`Are you sure you want to cancel your consultation with ${
-          selectedAppointment?.doctor?.user?.name || selectedAppointment?.doctor?.name || 'the doctor'
-        } on ${selectedAppointment?.date} at ${selectedAppointment?.startTime}? The reserved time slot will become available to other patients immediately.`}
+          selectedAppointment?.doctor?.user?.name ||
+          selectedAppointment?.doctor?.name ||
+          'the doctor'
+        } on ${selectedAppointment?.date} at ${selectedAppointment?.startTime}?`}
         confirmText="Yes, Cancel Appointment"
         cancelText="Keep Appointment"
-        isDangerous={true}
+        isDangerous
         loading={cancelling}
         onConfirm={handleConfirmCancel}
-        onCancel={() => {
-          setCancelModalOpen(false);
-          setSelectedAppointment(null);
-        }}
+        onCancel={() => { setCancelModalOpen(false); setSelectedAppointment(null); }}
       />
-
-      <style>{`
-        @media (max-width: 840px) {
-          .dashboard-layout {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </div>
   );
 };

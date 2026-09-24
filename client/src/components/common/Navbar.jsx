@@ -13,7 +13,9 @@ import {
   Stethoscope,
   ChevronDown,
   Calendar,
+  Bell,
 } from 'lucide-react';
+import NotificationBell from '../notification/NotificationBell';
 
 const Navbar = () => {
   const { user, role, isAuthenticated, logout } = useAuth();
@@ -239,6 +241,9 @@ const Navbar = () => {
                   </>
                 )}
 
+                {/* In-app Notification Bell */}
+                <NotificationBell />
+
                 <div
                   style={{
                     display: 'flex',
@@ -371,24 +376,26 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="mobile-toggle"
-            aria-label="Toggle navigation menu"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              color: 'var(--slate-700)',
-              padding: '0.5rem',
-            }}
-          >
-            {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
+          {/* Mobile Right Controls */}
+          <div className="mobile-toggle" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {isAuthenticated && <NotificationBell />}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                color: 'var(--slate-700)',
+                padding: '0.4rem',
+              }}
+            >
+              {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation Drawer */}
@@ -497,6 +504,15 @@ const Navbar = () => {
                     </Link>
                   </>
                 )}
+                <Link
+                  to="/notifications"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="btn btn-secondary btn-block"
+                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+                >
+                  <Bell size={16} />
+                  <span>Notifications</span>
+                </Link>
                 <button onClick={handleLogout} className="btn btn-outline btn-block">
                   Log Out
                 </button>

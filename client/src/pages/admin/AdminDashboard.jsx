@@ -5,7 +5,8 @@ import { useToast } from '../../context/ToastContext';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import DashboardCard from '../../components/dashboard/DashboardCard';
 import DoctorReviewModal from '../../components/admin/DoctorReviewModal';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
+import { SkeletonStatCard, SkeletonListItem } from '../../components/common/Skeleton';
+import EmptyState from '../../components/common/EmptyState';
 import adminService from '../../services/adminService';
 import {
   ShieldCheck,
@@ -114,17 +115,9 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 3rem' }}>
       <div className="container">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(260px, 300px) 1fr',
-            gap: '2rem',
-            alignItems: 'start',
-          }}
-          className="dashboard-layout"
-        >
+        <div className="dashboard-layout">
           {/* Left Admin Sidebar */}
           <AdminSidebar />
 
@@ -148,27 +141,23 @@ const AdminDashboard = () => {
                     Administrator: {user?.name}
                   </span>
                 </div>
-                <h1 style={{ fontSize: '2rem', color: 'var(--slate-900)' }}>
+                <h1 style={{ fontSize: 'var(--text-3xl)', color: 'var(--slate-900)', marginBottom: '0.25rem' }}>
                   Platform Overview & Control
                 </h1>
-                <p style={{ color: 'var(--slate-600)', fontSize: '0.95rem' }}>
-                  Supervise user verification, physician credentials, platform-wide appointments, and clinical records.
+                <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-sm)' }}>
+                  Supervise verification, physician credentials, appointments, and clinical records.
                 </p>
               </div>
 
-              {/* Quick Navigation Links */}
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <Link to="/admin/doctors" className="btn btn-secondary">
-                  <Stethoscope size={16} />
-                  <span>Doctors</span>
+              <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
+                <Link to="/admin/doctors" className="btn btn-secondary btn-sm">
+                  <Stethoscope size={16} /> Doctors
                 </Link>
-                <Link to="/admin/patients" className="btn btn-secondary">
-                  <Users size={16} />
-                  <span>Patients</span>
+                <Link to="/admin/patients" className="btn btn-secondary btn-sm">
+                  <Users size={16} /> Patients
                 </Link>
-                <Link to="/admin/appointments" className="btn btn-primary">
-                  <Calendar size={16} />
-                  <span>Appointments</span>
+                <Link to="/admin/appointments" className="btn btn-primary btn-sm">
+                  <Calendar size={16} /> Appointments
                 </Link>
               </div>
             </div>
@@ -177,53 +166,23 @@ const AdminDashboard = () => {
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '1.25rem',
-                marginBottom: '2rem',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gap: '1rem',
+                marginBottom: '1.75rem',
               }}
             >
-              <DashboardCard
-                title="Total Patients"
-                value={stats.totalPatients}
-                icon={Users}
-                variant="primary"
-                subtitle="Registered patient accounts"
-              />
-              <DashboardCard
-                title="Total Doctors"
-                value={stats.totalDoctors}
-                icon={Stethoscope}
-                variant="secondary"
-                subtitle="Credentialed physicians"
-              />
-              <DashboardCard
-                title="Total Appointments"
-                value={stats.totalAppointments}
-                icon={Calendar}
-                variant="primary"
-                subtitle="All consultations logged"
-              />
-              <DashboardCard
-                title="Pending Approvals"
-                value={stats.pendingApprovals}
-                icon={AlertCircle}
-                variant="danger"
-                subtitle="Licenses awaiting review"
-              />
-              <DashboardCard
-                title="Completed Visits"
-                value={stats.completedAppointments}
-                icon={CheckCircle2}
-                variant="success"
-                subtitle="Successful consultations"
-              />
-              <DashboardCard
-                title="Cancelled Visits"
-                value={stats.cancelledAppointments}
-                icon={XCircle}
-                variant="secondary"
-                subtitle="Voided appointments"
-              />
+              {loading ? (
+                <>{[1,2,3,4,5,6].map(i => <SkeletonStatCard key={i} />)}</>
+              ) : (
+                <>
+                  <DashboardCard title="Total Patients" value={stats.totalPatients} icon={Users} variant="primary" subtitle="Registered patients" />
+                  <DashboardCard title="Total Doctors" value={stats.totalDoctors} icon={Stethoscope} variant="secondary" subtitle="Credentialed physicians" />
+                  <DashboardCard title="Total Appointments" value={stats.totalAppointments} icon={Calendar} variant="primary" subtitle="All consultations" />
+                  <DashboardCard title="Pending Approvals" value={stats.pendingApprovals} icon={AlertCircle} variant="danger" subtitle="Awaiting review" />
+                  <DashboardCard title="Completed Visits" value={stats.completedAppointments} icon={CheckCircle2} variant="success" subtitle="Successful sessions" />
+                  <DashboardCard title="Cancelled Visits" value={stats.cancelledAppointments} icon={XCircle} variant="secondary" subtitle="Voided slots" />
+                </>
+              )}
             </div>
 
             {/* Pending Doctor Approvals Review Queue */}
@@ -434,13 +393,7 @@ const AdminDashboard = () => {
         actionLoading={actionLoading}
       />
 
-      <style>{`
-        @media (max-width: 840px) {
-          .dashboard-layout {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
+
     </div>
   );
 };

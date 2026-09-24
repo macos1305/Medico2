@@ -6,7 +6,8 @@ import DoctorSidebar from '../../components/doctor/DoctorSidebar';
 import DashboardCard from '../../components/dashboard/DashboardCard';
 import PatientDetailsModal from '../../components/doctor/PatientDetailsModal';
 import ConfirmationModal from '../../components/common/ConfirmationModal';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
+import { SkeletonStatCard, SkeletonListItem } from '../../components/common/Skeleton';
+import EmptyState from '../../components/common/EmptyState';
 import appointmentService from '../../services/appointmentService';
 import {
   Calendar,
@@ -105,17 +106,9 @@ const DoctorDashboard = () => {
   const status = profile?.approvalStatus || 'PENDING';
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 3rem' }}>
       <div className="container">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(260px, 300px) 1fr',
-            gap: '2rem',
-            alignItems: 'start',
-          }}
-          className="dashboard-layout"
-        >
+        <div className="dashboard-layout">
           {/* Left Doctor Sidebar */}
           <DoctorSidebar />
 
@@ -146,23 +139,22 @@ const DoctorDashboard = () => {
                     </span>
                   )}
                 </div>
-                <h1 style={{ fontSize: '2rem', color: 'var(--slate-900)' }}>
+                <h1 style={{ fontSize: 'var(--text-3xl)', color: 'var(--slate-900)', marginBottom: '0.25rem' }}>
                   {user?.name || 'Doctor Practice'}
                 </h1>
-                <p style={{ color: 'var(--slate-600)', fontSize: '0.95rem' }}>
-                  {profile?.specialization} • {profile?.hospitalAffiliation || 'Independent Practice'}
+                <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-sm)' }}>
+                  {profile?.specialization}{profile?.hospitalAffiliation ? ` • ${profile.hospitalAffiliation}` : ''}
                 </p>
               </div>
 
-              {/* Quick Actions */}
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <Link to="/doctor/appointments" className="btn btn-secondary">
-                  <Calendar size={18} />
-                  <span>Appointments</span>
+              <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
+                <Link to="/doctor/appointments" className="btn btn-secondary btn-sm">
+                  <Calendar size={16} />
+                  Appointments
                 </Link>
-                <Link to="/doctor/availability" className="btn btn-primary">
-                  <Clock size={18} />
-                  <span>Set Availability</span>
+                <Link to="/doctor/availability" className="btn btn-primary btn-sm">
+                  <Clock size={16} />
+                  Availability
                 </Link>
               </div>
             </div>
@@ -197,46 +189,24 @@ const DoctorDashboard = () => {
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '1.25rem',
-                marginBottom: '2rem',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gap: '1rem',
+                marginBottom: '1.75rem',
               }}
             >
-              <DashboardCard
-                title="Today's Schedule"
-                value={stats.today}
-                icon={Calendar}
-                variant="primary"
-                subtitle="Visits scheduled today"
-              />
-              <DashboardCard
-                title="Upcoming"
-                value={stats.upcoming}
-                icon={Clock}
-                variant="secondary"
-                subtitle="Future appointments"
-              />
-              <DashboardCard
-                title="Completed"
-                value={stats.completed}
-                icon={CheckCircle2}
-                variant="success"
-                subtitle="Concluded consultations"
-              />
-              <DashboardCard
-                title="Cancelled"
-                value={stats.cancelled}
-                icon={XCircle}
-                variant="danger"
-                subtitle="Voided slots"
-              />
-              <DashboardCard
-                title="Total Patients"
-                value={stats.totalPatients}
-                icon={Users}
-                variant="primary"
-                subtitle="Unique patients treated"
-              />
+              {loading ? (
+                <>
+                  {[1,2,3,4,5].map(i => <SkeletonStatCard key={i} />)}
+                </>
+              ) : (
+                <>
+                  <DashboardCard title="Today's Schedule" value={stats.today} icon={Calendar} variant="primary" subtitle="Visits scheduled today" />
+                  <DashboardCard title="Upcoming" value={stats.upcoming} icon={Clock} variant="secondary" subtitle="Future appointments" />
+                  <DashboardCard title="Completed" value={stats.completed} icon={CheckCircle2} variant="success" subtitle="Concluded consultations" />
+                  <DashboardCard title="Cancelled" value={stats.cancelled} icon={XCircle} variant="danger" subtitle="Voided slots" />
+                  <DashboardCard title="Total Patients" value={stats.totalPatients} icon={Users} variant="primary" subtitle="Unique patients treated" />
+                </>
+              )}
             </div>
 
             {/* Today's Consultations Feed */}
@@ -276,7 +246,9 @@ const DoctorDashboard = () => {
               </div>
 
               {loading ? (
-                <LoadingSpinner text="Retrieving today's appointments..." />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {[1, 2].map(i => <SkeletonListItem key={i} />)}
+                </div>
               ) : todayAppointments.length > 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {todayAppointments.map((appt) => {
@@ -380,10 +352,12 @@ const DoctorDashboard = () => {
                   })}
                 </div>
               ) : (
-                <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--slate-500)' }}>
-                  <Calendar size={36} color="var(--slate-300)" style={{ margin: '0 auto 0.75rem auto' }} />
-                  <p style={{ fontSize: '0.95rem' }}>No patient appointments scheduled for today.</p>
-                </div>
+                <EmptyState
+                  icon="calendar"
+                  title="No Consultations Today"
+                  message="No patient appointments are scheduled for today."
+                  primaryAction={{ to: '/doctor/availability', label: 'Set Availability', icon: Clock }}
+                />
               )}
             </div>
 
@@ -457,13 +431,7 @@ const DoctorDashboard = () => {
         }}
       />
 
-      <style>{`
-        @media (max-width: 840px) {
-          .dashboard-layout {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
+
     </div>
   );
 };

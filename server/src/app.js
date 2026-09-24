@@ -9,6 +9,8 @@ const specializationRoutes = require('./routes/specializationRoutes');
 const availabilityRoutes = require('./routes/availabilityRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 const { sendSuccess } = require('./utils/apiResponse');
 
 const app = express();
@@ -70,6 +72,8 @@ app.use('/api/specializations', specializationRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // 404 & Centralized Error Handlers
 app.use(notFound);

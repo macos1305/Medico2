@@ -3,6 +3,7 @@ const Patient = require('../models/Patient');
 const User = require('../models/User');
 const Appointment = require('../models/Appointment');
 const Availability = require('../models/Availability');
+const { createNotification } = require('./notificationService');
 
 /**
  * Get platform-wide governance statistics
@@ -149,6 +150,27 @@ const updateDoctorApproval = async (id, approvalData) => {
     const error = new Error('Doctor not found');
     error.statusCode = 404;
     throw error;
+  }
+
+  // Notify Doctor about approval status change
+  if (doctor?.user?._id) {
+    if (approvalStatus === 'APPROVED') {
+      createNotification({
+        recipient: doctor.user._id,
+        type: 'DOCTOR_APPROVAL',
+        title: 'Credentials Approved',
+        message: 'Congratulations! Your medical profile and credentials have been verified and approved. You can now set your availability and accept appointments.',
+        data: { doctorId: doctor._id, link: '/doctor/dashboard' },
+      });
+    } else if (approvalStatus === 'REJECTED') {
+      createNotification({
+        recipient: doctor.user._id,
+        type: 'DOCTOR_APPROVAL',
+        title: 'Application Status Update',
+        message: `Your doctor verification application was reviewed and declined.${doctor.rejectionReason ? ` Reason: ${doctor.rejectionReason}` : ''}`,
+        data: { doctorId: doctor._id, link: '/doctor/profile' },
+      });
+    }
   }
 
   return doctor;
@@ -325,7 +347,7 @@ const cancelAppointmentByAdmin = async (appointmentId, cancellationReason) => {
 
   await appointment.save();
 
-  return Appointment.findById(appointment._id)
+  const populated = await Appointment.findById(appointment._id)
     .populate({
       path: 'doctor',
       populate: { path: 'user', select: 'name email phone' },
@@ -334,6 +356,36 @@ const cancelAppointmentByAdmin = async (appointmentId, cancellationReason) => {
       path: 'patient',
       populate: { path: 'user', select: 'name email phone' },
     });
+
+  // Notify Doctor: appointment cancelled by admin
+  if (populated?.doctor?.user?._id) {
+    createNotification({
+      recipient: populated.doctor.user._id,
+      type: 'APPOINTMENT_CANCELLED',
+      title: 'Appointment Cancelled by Admin',
+      message: `Appointment with ${populated.patient?.user?.name || 'Patient'} on ${populated.date} at ${populated.startTime} was cancelled by administrator.${populated.cancellationReason ? ` Reason: ${populated.cancellationReason}` : ''}`,
+      data: {
+        appointmentId: populated._id,
+        link: '/doctor/appointments',
+      },
+    });
+  }
+
+  // Notify Patient: appointment cancelled by admin
+  if (populated?.patient?.user?._id) {
+    createNotification({
+      recipient: populated.patient.user._id,
+      type: 'APPOINTMENT_CANCELLED',
+      title: 'Appointment Cancelled by Admin',
+      message: `Your appointment with Dr. ${populated.doctor?.user?.name || 'Doctor'} on ${populated.date} at ${populated.startTime} was cancelled by administrator.${populated.cancellationReason ? ` Reason: ${populated.cancellationReason}` : ''}`,
+      data: {
+        appointmentId: populated._id,
+        link: '/patient/appointments',
+      },
+    });
+  }
+
+  return populated;
 };
 
 module.exports = {

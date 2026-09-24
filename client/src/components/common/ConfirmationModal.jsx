@@ -1,5 +1,5 @@
-import React from 'react';
-import { AlertTriangle, X } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { AlertTriangle, Trash2, X } from 'lucide-react';
 
 const ConfirmationModal = ({
   isOpen,
@@ -11,84 +11,94 @@ const ConfirmationModal = ({
   loading = false,
   onConfirm,
   onCancel,
+  children,
 }) => {
+  const cancelRef = useRef(null);
+
+  // Focus trap & ESC key
+  useEffect(() => {
+    if (!isOpen) return;
+    cancelRef.current?.focus();
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onCancel?.();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    // Lock body scroll
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onCancel]);
+
   if (!isOpen) return null;
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(4px)',
-        WebkitBackdropFilter: 'blur(4px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1050,
-        padding: '1.5rem',
-        animation: 'fadeIn 0.2s ease-out',
-      }}
+      className="modal-overlay"
       onClick={onCancel}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-modal-title"
     >
       <div
-        className="card"
-        style={{
-          width: '100%',
-          maxWidth: '460px',
-          padding: '2rem',
-          borderRadius: 'var(--radius-lg)',
-          boxShadow: 'var(--shadow-xl)',
-          backgroundColor: '#ffffff',
-          position: 'relative',
-        }}
+        className="modal-panel modal-panel-sm"
+        style={{ padding: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          onClick={onCancel}
-          style={{
-            position: 'absolute',
-            top: '1.25rem',
-            right: '1.25rem',
-            background: 'transparent',
-            border: 'none',
-            color: 'var(--slate-400)',
-            cursor: 'pointer',
-            padding: '4px',
-          }}
-          aria-label="Close modal"
-        >
-          <X size={20} />
-        </button>
-
-        <div
-          style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            backgroundColor: isDangerous ? '#ffe4e6' : '#fef3c7',
-            color: isDangerous ? 'var(--accent-rose)' : 'var(--accent-amber)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '1rem',
-          }}
-        >
-          <AlertTriangle size={24} />
+        {/* Header */}
+        <div className="modal-header">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                backgroundColor: isDangerous ? '#fff1f2' : '#fffbeb',
+                color: isDangerous ? 'var(--accent-rose)' : 'var(--accent-amber)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              {isDangerous ? <Trash2 size={20} /> : <AlertTriangle size={20} />}
+            </div>
+            <h3 id="confirm-modal-title" className="modal-title" style={{ fontSize: 'var(--text-lg)' }}>
+              {title}
+            </h3>
+          </div>
+          <button
+            onClick={onCancel}
+            className="modal-close"
+            aria-label="Close dialog"
+            disabled={loading}
+          >
+            <X size={18} />
+          </button>
         </div>
 
-        <h3 style={{ fontSize: '1.3rem', color: 'var(--slate-900)', marginBottom: '0.5rem' }}>
-          {title}
-        </h3>
-        <p style={{ color: 'var(--slate-600)', fontSize: '0.925rem', lineHeight: 1.6, marginBottom: '1.75rem' }}>
-          {message}
-        </p>
+        {/* Body */}
+        <div className="modal-body">
+          {typeof message === 'string' ? (
+            <p style={{ color: 'var(--slate-600)', fontSize: 'var(--text-sm)', lineHeight: 1.7 }}>
+              {message}
+            </p>
+          ) : (
+            message
+          )}
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+          {children && (
+            <div style={{ marginTop: '1rem' }}>
+              {children}
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="modal-footer">
           <button
+            ref={cancelRef}
             type="button"
             className="btn btn-secondary"
             onClick={onCancel}
@@ -103,7 +113,10 @@ const ConfirmationModal = ({
             disabled={loading}
           >
             {loading ? (
-              <div className="spinner" style={{ width: '18px', height: '18px' }}></div>
+              <>
+                <div className="spinner spinner-sm" />
+                Processing...
+              </>
             ) : (
               confirmText
             )}

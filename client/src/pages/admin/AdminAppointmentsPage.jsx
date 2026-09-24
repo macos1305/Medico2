@@ -450,13 +450,8 @@ const AdminAppointmentsPage = () => {
         }}
       />
 
-      <style>{`
-        @media (max-width: 840px) {
-          .dashboard-layout {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
+
+
     </div>
   );
 };

@@ -21,6 +21,7 @@ router.put(
 
 // Public doctor browsing and profiles
 router.get('/', doctorController.getDoctors);
+router.post('/recommend', doctorController.recommendDoctors);
 router.get('/:id', doctorController.getDoctor);
 
 module.exports = router;

@@ -49,9 +49,26 @@ const updateMyDoctorProfile = async (req, res, next) => {
   }
 };
 
+const aiRecommendationService = require('../services/aiRecommendationService');
+
+/**
+ * AI Doctor Recommendation based on natural language symptoms
+ * POST /api/doctors/recommend
+ */
+const recommendDoctors = async (req, res, next) => {
+  try {
+    const { symptoms } = req.body;
+    const result = await aiRecommendationService.recommendDoctors(symptoms);
+    return sendSuccess(res, 200, 'Doctor recommendations generated successfully', result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getDoctors,
   getDoctor,
   getMyDoctorProfile,
   updateMyDoctorProfile,
+  recommendDoctors,
 };

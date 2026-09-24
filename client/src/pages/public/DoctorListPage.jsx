@@ -2,10 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import SearchBar from '../../components/doctor/SearchBar';
 import DoctorFilters from '../../components/doctor/DoctorFilters';
 import DoctorCard from '../../components/doctor/DoctorCard';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
+import { SkeletonDoctorCard } from '../../components/common/Skeleton';
+import EmptyState from '../../components/common/EmptyState';
 import doctorService from '../../services/doctorService';
 import specializationService from '../../services/specializationService';
-import { Stethoscope, Users, RotateCcw } from 'lucide-react';
+import { Stethoscope, RotateCcw } from 'lucide-react';
 
 const DoctorListPage = () => {
   const [doctors, setDoctors] = useState([]);
@@ -100,7 +101,7 @@ const DoctorListPage = () => {
           style={{
             display: 'grid',
             gridTemplateColumns: 'minmax(250px, 280px) 1fr',
-            gap: '2rem',
+            gap: '1.75rem',
             alignItems: 'start',
           }}
           className="directory-layout"
@@ -135,13 +136,23 @@ const DoctorListPage = () => {
             </div>
 
             {loading ? (
-              <LoadingSpinner text="Searching doctor registry..." />
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                  gap: '1.25rem',
+                }}
+              >
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <SkeletonDoctorCard key={i} />
+                ))}
+              </div>
             ) : doctors.length > 0 ? (
               <div
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                  gap: '1.5rem',
+                  gap: '1.25rem',
                 }}
               >
                 {doctors.map((doc) => (
@@ -149,61 +160,20 @@ const DoctorListPage = () => {
                 ))}
               </div>
             ) : (
-              /* Empty state */
-              <div
-                className="card"
-                style={{
-                  padding: '3.5rem 2rem',
-                  textAlign: 'center',
-                  borderRadius: 'var(--radius-lg)',
-                }}
-              >
-                <div
-                  style={{
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '50%',
-                    backgroundColor: 'var(--primary-50)',
-                    color: 'var(--primary-600)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 1.25rem auto',
-                  }}
-                >
-                  <Stethoscope size={32} />
-                </div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--slate-900)' }}>
-                  No Doctors Matched Your Criteria
-                </h3>
-                <p
-                  style={{
-                    color: 'var(--slate-500)',
-                    fontSize: '0.95rem',
-                    maxWidth: '420px',
-                    margin: '0 auto 1.5rem auto',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  We could not find any active physicians matching your selected filters. Try broadening your criteria or reset the search.
-                </p>
-                <button onClick={handleResetFilters} className="btn btn-secondary">
-                  <RotateCcw size={16} />
-                  <span>Reset All Filters</span>
-                </button>
+              <div className="card">
+                <EmptyState
+                  IconComponent={Stethoscope}
+                  title="No Doctors Matched Your Criteria"
+                  message="We could not find any active physicians matching your selected filters. Try broadening your criteria or reset the search."
+                  primaryAction={{ onClick: handleResetFilters, label: 'Reset Filters', icon: RotateCcw }}
+                />
               </div>
             )}
           </div>
         </div>
       </div>
 
-      <style>{`
-        @media (max-width: 820px) {
-          .directory-layout {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
+
     </div>
   );
 };

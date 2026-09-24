@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Patient = require('../models/Patient');
 const Doctor = require('../models/Doctor');
 const { signToken } = require('../utils/jwt');
+const { notifyAdmins } = require('./notificationService');
 
 /**
  * Service to register a new Patient
@@ -114,6 +115,18 @@ const registerDoctor = async (data) => {
 
   // Generate JWT Token
   const token = signToken({ id: user._id, role: user.role });
+
+  // Notify Admins: new doctor registration requiring approval
+  notifyAdmins({
+    type: 'DOCTOR_REGISTRATION',
+    title: 'New Doctor Registration',
+    message: `Dr. ${name} (${specialization}) has registered and requires administrative credential verification.`,
+    data: {
+      doctorId: doctor._id,
+      doctorUserId: user._id,
+      link: '/admin/doctors',
+    },
+  });
 
   return {
     user,

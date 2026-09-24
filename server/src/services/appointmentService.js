@@ -2,6 +2,7 @@ const Appointment = require('../models/Appointment');
 const Patient = require('../models/Patient');
 const Doctor = require('../models/Doctor');
 const availabilityService = require('./availabilityService');
+const { createNotification } = require('./notificationService');
 
 // Helper to get today's date formatted as YYYY-MM-DD
 const getTodayString = () => {
@@ -116,6 +117,36 @@ const createAppointment = async (userId, data) => {
       populate: { path: 'user', select: 'name email phone' },
     });
 
+  // Notify Patient: appointment booked
+  if (populated.patient?.user?._id) {
+    createNotification({
+      recipient: populated.patient.user._id,
+      type: 'APPOINTMENT_BOOKED',
+      title: 'Appointment Booked',
+      message: `Your appointment with Dr. ${populated.doctor?.user?.name || 'Doctor'} on ${date} at ${startTime} has been successfully booked.`,
+      data: {
+        appointmentId: populated._id,
+        doctorId: populated.doctor?._id,
+        link: '/patient/appointments',
+      },
+    });
+  }
+
+  // Notify Doctor: new appointment
+  if (populated.doctor?.user?._id) {
+    createNotification({
+      recipient: populated.doctor.user._id,
+      type: 'NEW_APPOINTMENT',
+      title: 'New Appointment Scheduled',
+      message: `New appointment scheduled by ${populated.patient?.user?.name || 'a patient'} for ${date} at ${startTime}.`,
+      data: {
+        appointmentId: populated._id,
+        patientId: populated.patient?._id,
+        link: '/doctor/appointments',
+      },
+    });
+  }
+
   return populated;
 };
 
@@ -229,11 +260,45 @@ const cancelAppointment = async (appointmentId, userId, cancellationReason) => {
   await appointment.save();
 
   // Return populated appointment
-  return Appointment.findById(appointment._id)
+  const populated = await Appointment.findById(appointment._id)
     .populate({
       path: 'doctor',
       populate: { path: 'user', select: 'name email phone' },
+    })
+    .populate({
+      path: 'patient',
+      populate: { path: 'user', select: 'name email phone' },
     });
+
+  // Notify Doctor: appointment cancelled
+  if (populated?.doctor?.user?._id) {
+    createNotification({
+      recipient: populated.doctor.user._id,
+      type: 'APPOINTMENT_CANCELLED',
+      title: 'Appointment Cancelled',
+      message: `Patient ${populated.patient?.user?.name || 'A patient'} cancelled their appointment on ${populated.date} at ${populated.startTime}.${populated.cancellationReason ? ` Reason: ${populated.cancellationReason}` : ''}`,
+      data: {
+        appointmentId: populated._id,
+        link: '/doctor/appointments',
+      },
+    });
+  }
+
+  // Notify Patient: appointment cancelled
+  if (populated?.patient?.user?._id) {
+    createNotification({
+      recipient: populated.patient.user._id,
+      type: 'APPOINTMENT_CANCELLED',
+      title: 'Appointment Cancelled',
+      message: `Your appointment with Dr. ${populated.doctor?.user?.name || 'Doctor'} on ${populated.date} at ${populated.startTime} has been cancelled.`,
+      data: {
+        appointmentId: populated._id,
+        link: '/patient/appointments',
+      },
+    });
+  }
+
+  return populated;
 };
 
 /**
@@ -330,11 +395,45 @@ const rescheduleAppointment = async (appointmentId, userId, rescheduleData) => {
 
   await appointment.save();
 
-  return Appointment.findById(appointment._id)
+  const populated = await Appointment.findById(appointment._id)
     .populate({
       path: 'doctor',
       populate: { path: 'user', select: 'name email phone' },
+    })
+    .populate({
+      path: 'patient',
+      populate: { path: 'user', select: 'name email phone' },
     });
+
+  // Notify Patient: appointment rescheduled
+  if (populated?.patient?.user?._id) {
+    createNotification({
+      recipient: populated.patient.user._id,
+      type: 'APPOINTMENT_RESCHEDULED',
+      title: 'Appointment Rescheduled',
+      message: `Your appointment with Dr. ${populated.doctor?.user?.name || 'Doctor'} was rescheduled to ${newDate} at ${newStartTime}.`,
+      data: {
+        appointmentId: populated._id,
+        link: '/patient/appointments',
+      },
+    });
+  }
+
+  // Notify Doctor: appointment rescheduled
+  if (populated?.doctor?.user?._id) {
+    createNotification({
+      recipient: populated.doctor.user._id,
+      type: 'APPOINTMENT_RESCHEDULED',
+      title: 'Appointment Rescheduled',
+      message: `Patient ${populated.patient?.user?.name || 'A patient'} rescheduled their appointment to ${newDate} at ${newStartTime}.`,
+      data: {
+        appointmentId: populated._id,
+        link: '/doctor/appointments',
+      },
+    });
+  }
+
+  return populated;
 };
 
 /**
@@ -479,7 +578,7 @@ const updateAppointmentStatusByDoctor = async (
 
   await appointment.save();
 
-  return Appointment.findById(appointment._id)
+  const populated = await Appointment.findById(appointment._id)
     .populate({
       path: 'patient',
       populate: {
@@ -492,6 +591,46 @@ const updateAppointmentStatusByDoctor = async (
       path: 'doctor',
       populate: { path: 'user', select: 'name email phone' },
     });
+
+  if (status === 'CONFIRMED' && populated?.patient?.user?._id) {
+    createNotification({
+      recipient: populated.patient.user._id,
+      type: 'APPOINTMENT_CONFIRMED',
+      title: 'Appointment Confirmed',
+      message: `Dr. ${populated.doctor?.user?.name || 'Doctor'} has confirmed your appointment on ${populated.date} at ${populated.startTime}.`,
+      data: {
+        appointmentId: populated._id,
+        link: '/patient/appointments',
+      },
+    });
+  } else if (status === 'CANCELLED') {
+    if (populated?.patient?.user?._id) {
+      createNotification({
+        recipient: populated.patient.user._id,
+        type: 'APPOINTMENT_CANCELLED',
+        title: 'Appointment Cancelled by Doctor',
+        message: `Dr. ${populated.doctor?.user?.name || 'Doctor'} cancelled your appointment scheduled for ${populated.date} at ${populated.startTime}.${populated.cancellationReason ? ` Reason: ${populated.cancellationReason}` : ''}`,
+        data: {
+          appointmentId: populated._id,
+          link: '/patient/appointments',
+        },
+      });
+    }
+    if (populated?.doctor?.user?._id) {
+      createNotification({
+        recipient: populated.doctor.user._id,
+        type: 'APPOINTMENT_CANCELLED',
+        title: 'Appointment Cancelled',
+        message: `Appointment with ${populated.patient?.user?.name || 'Patient'} on ${populated.date} at ${populated.startTime} was cancelled.`,
+        data: {
+          appointmentId: populated._id,
+          link: '/doctor/appointments',
+        },
+      });
+    }
+  }
+
+  return populated;
 };
 
 module.exports = {

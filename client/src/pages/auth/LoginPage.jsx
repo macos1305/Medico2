@@ -2,7 +2,18 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import { Activity, Lock, Mail, ArrowRight, ShieldCheck, UserCheck, Stethoscope } from 'lucide-react';
+import {
+  Activity,
+  Lock,
+  Mail,
+  ArrowRight,
+  ShieldCheck,
+  UserCheck,
+  Stethoscope,
+  Eye,
+  EyeOff,
+  AlertCircle,
+} from 'lucide-react';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -10,20 +21,16 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
-    }
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+    if (errors.form) setErrors((prev) => ({ ...prev, form: '' }));
   };
 
   const validate = () => {
@@ -31,10 +38,12 @@ const LoginPage = () => {
     if (!formData.email.trim()) {
       errs.email = 'Email address is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errs.email = 'Please provide a valid email';
+      errs.email = 'Please provide a valid email address';
     }
     if (!formData.password) {
       errs.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      errs.password = 'Password must be at least 6 characters';
     }
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -47,26 +56,18 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const result = await login({
-        email: formData.email.trim(),
+        email: formData.email.trim().toLowerCase(),
         password: formData.password,
       });
 
-      success(`Welcome back, ${result.user.name}!`, 'Authentication Successful');
+      success(`Welcome back, ${result.user.name}!`, 'Signed In');
 
-      // Determine redirect path
       const destination = location.state?.from?.pathname;
-      if (destination) {
-        navigate(destination, { replace: true });
-        return;
-      }
+      if (destination) { navigate(destination, { replace: true }); return; }
 
-      if (result.user.role === 'ADMIN') {
-        navigate('/admin/dashboard', { replace: true });
-      } else if (result.user.role === 'DOCTOR') {
-        navigate('/doctor/dashboard', { replace: true });
-      } else {
-        navigate('/patient/dashboard', { replace: true });
-      }
+      if (result.user.role === 'ADMIN') navigate('/admin/dashboard', { replace: true });
+      else if (result.user.role === 'DOCTOR') navigate('/doctor/dashboard', { replace: true });
+      else navigate('/patient/dashboard', { replace: true });
     } catch (err) {
       const message = err.message || 'Login failed. Please check your credentials.';
       toastError(message, 'Authentication Error');
@@ -76,7 +77,6 @@ const LoginPage = () => {
     }
   };
 
-  // Quick-fill helper for test credentials
   const fillCredentials = (email, password) => {
     setFormData({ email, password });
     setErrors({});
@@ -90,6 +90,7 @@ const LoginPage = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '3rem 1.5rem',
+        minHeight: '80vh',
       }}
     >
       <div style={{ width: '100%', maxWidth: '440px' }}>
@@ -97,118 +98,127 @@ const LoginPage = () => {
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div
             style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '14px',
+              width: 56,
+              height: 56,
+              borderRadius: 16,
               background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
               margin: '0 auto 1rem auto',
-              boxShadow: '0 4px 14px rgba(13, 148, 136, 0.3)',
+              boxShadow: '0 6px 20px rgba(13, 148, 136, 0.32)',
             }}
           >
             <Activity size={28} strokeWidth={2.5} />
           </div>
-          <h1 style={{ fontSize: '1.75rem', marginBottom: '0.4rem' }}>Sign In to Medico</h1>
-          <p style={{ color: 'var(--slate-500)', fontSize: '0.9rem' }}>
+          <h1 style={{ fontSize: 'var(--text-2xl)', marginBottom: '0.4rem' }}>Sign In to Medico</h1>
+          <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-sm)' }}>
             Access your health dashboard, appointments, and medical network.
           </p>
         </div>
 
         {/* Card */}
-        <div className="card glass-card" style={{ padding: '2rem' }}>
+        <div className="card" style={{ padding: '2rem' }}>
+          {/* Form-level error */}
           {errors.form && (
-            <div
-              style={{
-                backgroundColor: '#ffe4e6',
-                border: '1px solid #fecdd3',
-                color: 'var(--accent-rose)',
-                padding: '0.75rem 1rem',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '0.875rem',
-                marginBottom: '1.25rem',
-              }}
-            >
-              {errors.form}
+            <div className="alert alert-error" style={{ marginBottom: '1.25rem' }}>
+              <AlertCircle size={18} style={{ flexShrink: 0 }} />
+              <span>{errors.form}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit} noValidate>
             {/* Email */}
             <div className="form-group">
-              <label className="form-label" htmlFor="email">
-                Email Address
+              <label className="form-label" htmlFor="login-email">
+                Email Address <span className="required">*</span>
               </label>
-              <div style={{ position: 'relative' }}>
+              <div className="form-input-wrapper">
+                <span className="form-input-icon">
+                  <Mail size={17} />
+                </span>
                 <input
-                  id="email"
+                  id="login-email"
                   type="email"
                   name="email"
-                  className="form-input"
+                  autoComplete="email"
+                  className={`form-input${errors.email ? ' error' : ''}`}
                   placeholder="name@example.com"
                   value={formData.email}
                   onChange={handleChange}
-                  style={{ paddingLeft: '2.5rem' }}
                   disabled={loading}
                 />
-                <Mail
-                  size={18}
-                  color="var(--slate-400)"
-                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
-                />
               </div>
-              {errors.email && <div className="form-error">{errors.email}</div>}
+              {errors.email && <div className="form-error"><AlertCircle size={12} />{errors.email}</div>}
             </div>
 
             {/* Password */}
             <div className="form-group">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <label className="form-label" htmlFor="password">
-                  Password
-                </label>
-              </div>
-              <div style={{ position: 'relative' }}>
+              <label className="form-label" htmlFor="login-password">
+                Password <span className="required">*</span>
+              </label>
+              <div className="form-input-wrapper" style={{ position: 'relative' }}>
+                <span className="form-input-icon">
+                  <Lock size={17} />
+                </span>
                 <input
-                  id="password"
-                  type="password"
+                  id="login-password"
+                  type={showPassword ? 'text' : 'password'}
                   name="password"
-                  className="form-input"
+                  autoComplete="current-password"
+                  className={`form-input${errors.password ? ' error' : ''}`}
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={handleChange}
-                  style={{ paddingLeft: '2.5rem' }}
                   disabled={loading}
+                  style={{ paddingRight: '2.75rem' }}
                 />
-                <Lock
-                  size={18}
-                  color="var(--slate-400)"
-                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
-                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  style={{
+                    position: 'absolute',
+                    right: '0.75rem',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: 'var(--slate-400)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '0.25rem',
+                  }}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+                </button>
               </div>
-              {errors.password && <div className="form-error">{errors.password}</div>}
+              {errors.password && <div className="form-error"><AlertCircle size={12} />{errors.password}</div>}
             </div>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <button
               type="submit"
-              className="btn btn-primary btn-block"
-              style={{ marginTop: '1.5rem', height: '46px' }}
+              className="btn btn-primary btn-block btn-lg"
+              style={{ marginTop: '1.25rem' }}
               disabled={loading}
+              id="login-submit-btn"
             >
               {loading ? (
-                <div className="spinner" style={{ width: '20px', height: '20px' }}></div>
+                <>
+                  <div className="spinner spinner-sm" />
+                  Signing In...
+                </>
               ) : (
                 <>
-                  <span>Sign In</span>
+                  Sign In
                   <ArrowRight size={18} />
                 </>
               )}
             </button>
           </form>
 
-          {/* Quick-Fill Demo Roles for Testing */}
+          {/* Quick-Fill Demo Roles */}
           <div
             style={{
               marginTop: '1.75rem',
@@ -216,61 +226,56 @@ const LoginPage = () => {
               borderTop: '1px solid var(--border-subtle)',
             }}
           >
-            <div
+            <p
               style={{
-                fontSize: '0.75rem',
+                fontSize: 'var(--text-xs)',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.05em',
+                letterSpacing: '0.06em',
                 color: 'var(--slate-400)',
                 marginBottom: '0.65rem',
                 textAlign: 'center',
               }}
             >
               Quick Test Credentials
-            </div>
+            </p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
                 onClick={() => fillCredentials('patient@test.com', 'Password123')}
-                style={{ fontSize: '0.75rem', padding: '0.35rem 0.5rem' }}
+                style={{ fontSize: '0.72rem' }}
               >
-                <UserCheck size={12} />
-                Patient
+                <UserCheck size={12} /> Patient
               </button>
-
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
                 onClick={() => fillCredentials('doctor@test.com', 'Doctor123')}
-                style={{ fontSize: '0.75rem', padding: '0.35rem 0.5rem' }}
+                style={{ fontSize: '0.72rem' }}
               >
-                <Stethoscope size={12} />
-                Doctor
+                <Stethoscope size={12} /> Doctor
               </button>
-
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
                 onClick={() => fillCredentials('admin@medico.com', 'Admin@12345')}
-                style={{ fontSize: '0.75rem', padding: '0.35rem 0.5rem' }}
+                style={{ fontSize: '0.72rem' }}
               >
-                <ShieldCheck size={12} />
-                Admin
+                <ShieldCheck size={12} /> Admin
               </button>
             </div>
           </div>
         </div>
 
         {/* Footer Links */}
-        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--slate-500)' }}>
+        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: 'var(--text-sm)', color: 'var(--slate-500)' }}>
           Don't have an account?{' '}
-          <Link to="/register/patient" style={{ fontWeight: 600, color: 'var(--primary-600)' }}>
+          <Link to="/register/patient" style={{ fontWeight: 700, color: 'var(--primary-600)' }}>
             Register as Patient
           </Link>{' '}
           or{' '}
-          <Link to="/register/doctor" style={{ fontWeight: 600, color: 'var(--primary-600)' }}>
+          <Link to="/register/doctor" style={{ fontWeight: 700, color: 'var(--primary-600)' }}>
             Doctor
           </Link>
         </div>

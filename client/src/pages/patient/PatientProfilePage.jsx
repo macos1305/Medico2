@@ -55,55 +55,35 @@ const PatientProfilePage = () => {
   }
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 3rem' }}>
       <div className="container">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(260px, 300px) 1fr',
-            gap: '2rem',
-            alignItems: 'start',
-          }}
-          className="dashboard-layout"
-        >
+        <div className="dashboard-layout">
           {/* Left Sidebar */}
           <PatientSidebar />
 
-          {/* Main Content Area */}
-          <div>
+          <main>
             {/* Header */}
-            <div style={{ marginBottom: '2rem' }}>
+            <div style={{ marginBottom: '1.75rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
                 <span className="badge badge-patient">Medical Record</span>
-                <span style={{ fontSize: '0.85rem', color: 'var(--slate-500)' }}>
-                  Confidential & Encrypted
-                </span>
+                <span style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-400)' }}>Confidential & Encrypted</span>
               </div>
-              <h1 style={{ fontSize: '2rem', color: 'var(--slate-900)' }}>
+              <h1 style={{ fontSize: 'var(--text-3xl)', color: 'var(--slate-900)', marginBottom: '0.25rem' }}>
                 Patient Profile & Medical Info
               </h1>
-              <p style={{ color: 'var(--slate-600)', fontSize: '0.95rem' }}>
+              <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-sm)' }}>
                 Keep your personal, clinical, and emergency contact information current.
               </p>
             </div>
 
-            {/* Profile Form */}
             <ProfileForm
               initialData={patientData}
               onSave={handleSave}
               loading={saving}
             />
-          </div>
+          </main>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 840px) {
-          .dashboard-layout {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </div>
   );
 };

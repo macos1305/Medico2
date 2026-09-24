@@ -9,5 +9,6 @@ router.use(protect, authorizeRoles('PATIENT'));
 
 router.get('/profile', patientController.getProfile);
 router.put('/profile', patientController.updateProfile);
+router.post('/recommend-doctor', patientController.recommendDoctor);
 
 module.exports = router;
