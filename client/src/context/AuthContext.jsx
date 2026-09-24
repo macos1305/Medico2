@@ -151,9 +151,11 @@ export const AuthProvider = ({ children }) => {
     loading,
     isAuthenticated,
     login,
+    register,
     registerPatient,
     registerDoctor,
     logout,
+    updateUserData,
     refreshUser,
   };
 

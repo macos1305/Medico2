@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 
 const DoctorProfilePage = () => {
-  const { user, profile, updateUser } = useAuth();
+  const { user, profile, updateUserData } = useAuth();
   const { success, error: toastError } = useToast();
 
   const [loading, setLoading] = useState(true);
@@ -109,8 +109,8 @@ const DoctorProfilePage = () => {
       const res = await doctorService.updateMyProfile(payload);
       success('Your practice profile has been updated successfully!', 'Profile Updated');
 
-      if (res.data?.user && updateUser) {
-        updateUser(res.data.user);
+      if (res.data?.user && updateUserData) {
+        updateUserData(res.data.user, res.data.profile || null);
       }
       fetchProfile();
     } catch (err) {
