@@ -91,7 +91,7 @@ const doctors = [
     languages: ['English', 'Hindi', 'Kannada', 'Telugu'],
     rating: 4.9,
     reviews: 195,
-    profileImage: 'https://images.unsplash.com/photo-1594824813633-898243832f2b?auto=format&fit=crop&q=80&w=600',
+    profileImage: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600',
   },
   {
     name: 'Dr. Arjun Nair',

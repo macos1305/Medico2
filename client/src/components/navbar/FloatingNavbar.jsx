@@ -154,11 +154,10 @@ const FloatingNavbar = () => {
 
               {/* Dashboard Button */}
               <GlassButton
-                as={Link}
                 to={getDashboardPath()}
                 variant="primary"
                 size="sm"
-                icon={LayoutDashboard}
+                icon={<LayoutDashboard size={16} />}
                 style={{
                   borderRadius: '24px',
                   background: 'rgba(255, 255, 255, 0.95)',
@@ -174,7 +173,7 @@ const FloatingNavbar = () => {
               <GlassButton
                 variant="ghost"
                 size="sm"
-                icon={LogOut}
+                icon={<LogOut size={16} />}
                 onClick={handleLogout}
                 style={{ borderRadius: '24px', color: 'rgba(255, 255, 255, 0.75)' }}
                 title="Sign Out"
@@ -188,7 +187,6 @@ const FloatingNavbar = () => {
                 Sign In
               </Link>
               <GlassButton
-                as={Link}
                 to="/register"
                 variant="primary"
                 size="sm"
@@ -272,11 +270,10 @@ const FloatingNavbar = () => {
           {isAuthenticated ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <GlassButton
-                as={Link}
                 to={getDashboardPath()}
                 variant="primary"
                 onClick={() => setMobileMenuOpen(false)}
-                icon={LayoutDashboard}
+                icon={<LayoutDashboard size={16} />}
                 style={{ width: '100%', justifyContent: 'center' }}
               >
                 Dashboard
@@ -284,7 +281,7 @@ const FloatingNavbar = () => {
               <GlassButton
                 variant="ghost"
                 onClick={handleLogout}
-                icon={LogOut}
+                icon={<LogOut size={16} />}
                 style={{ width: '100%', justifyContent: 'center', color: '#f43f5e' }}
               >
                 Sign Out
@@ -293,7 +290,6 @@ const FloatingNavbar = () => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <GlassButton
-                as={Link}
                 to="/login"
                 variant="secondary"
                 onClick={() => setMobileMenuOpen(false)}
@@ -302,7 +298,6 @@ const FloatingNavbar = () => {
                 Sign In
               </GlassButton>
               <GlassButton
-                as={Link}
                 to="/register"
                 variant="primary"
                 onClick={() => setMobileMenuOpen(false)}
