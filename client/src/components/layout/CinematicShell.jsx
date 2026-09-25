@@ -1,24 +1,34 @@
 import React from 'react';
+import AmbientBackground from '../landing/AmbientBackground';
+import FloatingNavbar from '../navbar/FloatingNavbar';
+import LandingFooter from '../landing/LandingFooter';
+import '../landing/cinematicLanding.css';
 
 /**
- * CinematicShell — wraps any page content with the dark cinematic background
- * and ambient lighting glows consistent with the landing page design language.
- *
- * Usage: <CinematicShell>…page content…</CinematicShell>
+ * CinematicShell — wraps pages with the exact dark cinematic landing page environment:
+ * - Dynamic animated ambient radial lighting (AmbientBackground)
+ * - 28px curved desktop glass frame (cinematic-outer-frame)
+ * - Floating glass pill navigation dock (FloatingNavbar)
+ * - Minimal dark footer with live operational status beacon (LandingFooter)
  */
 const CinematicShell = ({ children, className = '' }) => {
   return (
-    <div className={`cinematic-bg-container ${className}`}>
-      {/* Ambient lighting canvas */}
-      <div className="cinematic-ambient-canvas" aria-hidden="true">
-        <div className="cinematic-ambient-left" />
-        <div className="cinematic-ambient-right" />
-        <div className="cinematic-ambient-center" />
-      </div>
+    <div className={`cinematic-landing-root ${className}`}>
+      {/* Dynamic ambient radial lighting */}
+      <AmbientBackground />
 
-      {/* Page content sits above the ambient layer */}
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        {children}
+      {/* Outer cinematic desktop frame */}
+      <div className="cinematic-outer-frame">
+        {/* Floating Glass Navigation Dock */}
+        <FloatingNavbar />
+
+        {/* Page content sits within the frame */}
+        <div style={{ flex: 1, position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column' }}>
+          {children}
+        </div>
+
+        {/* Minimal Dark Footer */}
+        <LandingFooter />
       </div>
     </div>
   );

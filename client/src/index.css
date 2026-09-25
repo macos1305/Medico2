@@ -16,6 +16,7 @@
 @import './styles/cinematic/cinematicTables.css';
 @import './styles/cinematic/cinematicModals.css';
 @import './styles/cinematic/cinematicDashboard.css';
+@import './components/landing/cinematicLanding.css';
 
 :root {
   /* ── Medico Glass Button System Variables (Section 5) ───────────────────── */

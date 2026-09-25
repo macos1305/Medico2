@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import { Activity, Menu, X, ArrowRight, LayoutDashboard, LogOut } from 'lucide-react';
+import { Activity, Menu, X, ArrowRight, LayoutDashboard, LogOut, Calendar, Stethoscope, Users } from 'lucide-react';
 import { GlassButton } from '../common/buttons';
+import NotificationBell from '../notification/NotificationBell';
 
 const FloatingNavbar = () => {
   const { user, role, isAuthenticated, logout } = useAuth();
   const { success } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -26,11 +28,18 @@ const FloatingNavbar = () => {
 
   const scrollToSection = (id) => {
     setMobileMenuOpen(false);
+    if (location.pathname !== '/') {
+      navigate(`/#${id}`);
+      return;
+    }
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  const isHome = location.pathname === '/';
+  const isDoctors = location.pathname.startsWith('/doctors');
 
   return (
     <header className="floating-nav-container">
@@ -40,58 +49,110 @@ const FloatingNavbar = () => {
           <div className="floating-nav-logo-icon">
             <Activity size={20} strokeWidth={2.5} />
           </div>
-          <span style={{ fontWeight: 700, letterSpacing: '0.04em' }}>MEDICO</span>
+          <span style={{ fontWeight: 800, letterSpacing: '0.04em' }}>MEDICO</span>
         </Link>
 
         {/* Center: Desktop Navigation Links */}
         <ul className="floating-nav-links">
           <li>
-            <a
-              href="#home"
-              className="floating-nav-link active-pill"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            <Link
+              to="/"
+              className={`floating-nav-link ${isHome ? 'active-pill' : ''}`}
+              onClick={() => {
+                if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <Link to="/doctors" className="floating-nav-link">
+            <Link to="/doctors" className={`floating-nav-link ${isDoctors ? 'active-pill' : ''}`}>
               Find Doctors
             </Link>
           </li>
           <li>
-            <a
-              href="#specialties"
+            <button
+              type="button"
               className="floating-nav-link"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('specialties');
-              }}
+              style={{ background: 'transparent', border: 'none', cursor: 'pointer', font: 'inherit' }}
+              onClick={() => scrollToSection('specialties')}
             >
               Specializations
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="#how-it-works"
+            <button
+              type="button"
               className="floating-nav-link"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('how-it-works');
-              }}
+              style={{ background: 'transparent', border: 'none', cursor: 'pointer', font: 'inherit' }}
+              onClick={() => scrollToSection('how-it-works')}
             >
               How It Works
-            </a>
+            </button>
           </li>
+          {isAuthenticated && role === 'PATIENT' && (
+            <li>
+              <Link to="/patient/appointments" className={`floating-nav-link ${location.pathname.includes('/appointments') ? 'active-pill' : ''}`}>
+                Appointments
+              </Link>
+            </li>
+          )}
+          {isAuthenticated && role === 'DOCTOR' && (
+            <li>
+              <Link to="/doctor/appointments" className={`floating-nav-link ${location.pathname.includes('/appointments') ? 'active-pill' : ''}`}>
+                Schedule
+              </Link>
+            </li>
+          )}
+          {isAuthenticated && role === 'ADMIN' && (
+            <li>
+              <Link to="/admin/doctors" className={`floating-nav-link ${location.pathname.includes('/admin/doctors') ? 'active-pill' : ''}`}>
+                Physicians
+              </Link>
+            </li>
+          )}
         </ul>
 
         {/* Right: Actions */}
-        <div className="floating-nav-actions">
+        <div className="floating-nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
           {isAuthenticated ? (
             <>
+              {/* Notification Bell */}
+              <NotificationBell />
+
+              {/* Role Badge */}
+              <span
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  padding: '0.2rem 0.65rem',
+                  borderRadius: '9999px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  background:
+                    role === 'ADMIN'
+                      ? 'rgba(168, 85, 247, 0.15)'
+                      : role === 'DOCTOR'
+                      ? 'rgba(59, 130, 246, 0.15)'
+                      : 'rgba(16, 185, 129, 0.15)',
+                  color:
+                    role === 'ADMIN'
+                      ? '#c084fc'
+                      : role === 'DOCTOR'
+                      ? '#60a5fa'
+                      : '#34d399',
+                  border:
+                    role === 'ADMIN'
+                      ? '1px solid rgba(168, 85, 247, 0.3)'
+                      : role === 'DOCTOR'
+                      ? '1px solid rgba(59, 130, 246, 0.3)'
+                      : '1px solid rgba(16, 185, 129, 0.3)',
+                }}
+              >
+                {role}
+              </span>
+
+              {/* Dashboard Button */}
               <GlassButton
                 as={Link}
                 to={getDashboardPath()}
@@ -103,16 +164,20 @@ const FloatingNavbar = () => {
                   background: 'rgba(255, 255, 255, 0.95)',
                   color: '#0f172a',
                   fontWeight: 600,
+                  boxShadow: '0 4px 14px rgba(255, 255, 255, 0.15)',
                 }}
               >
                 Dashboard
               </GlassButton>
+
+              {/* Sign Out Button */}
               <GlassButton
                 variant="ghost"
                 size="sm"
                 icon={LogOut}
                 onClick={handleLogout}
-                style={{ borderRadius: '24px', color: 'rgba(255,255,255,0.7)' }}
+                style={{ borderRadius: '24px', color: 'rgba(255, 255, 255, 0.75)' }}
+                title="Sign Out"
               >
                 Sign Out
               </GlassButton>
@@ -157,7 +222,7 @@ const FloatingNavbar = () => {
         <div className="floating-mobile-menu">
           <Link
             to="/"
-            className="floating-nav-link active-pill"
+            className={`floating-nav-link ${isHome ? 'active-pill' : ''}`}
             style={{ textAlign: 'center' }}
             onClick={() => {
               setMobileMenuOpen(false);
@@ -168,13 +233,14 @@ const FloatingNavbar = () => {
           </Link>
           <Link
             to="/doctors"
-            className="floating-nav-link"
+            className={`floating-nav-link ${isDoctors ? 'active-pill' : ''}`}
             style={{ textAlign: 'center' }}
             onClick={() => setMobileMenuOpen(false)}
           >
             Find Doctors
           </Link>
           <button
+            type="button"
             className="floating-nav-link"
             style={{ background: 'transparent', border: 'none', textAlign: 'center', cursor: 'pointer' }}
             onClick={() => scrollToSection('specialties')}
@@ -182,6 +248,7 @@ const FloatingNavbar = () => {
             Specializations
           </button>
           <button
+            type="button"
             className="floating-nav-link"
             style={{ background: 'transparent', border: 'none', textAlign: 'center', cursor: 'pointer' }}
             onClick={() => scrollToSection('how-it-works')}
@@ -189,10 +256,21 @@ const FloatingNavbar = () => {
             How It Works
           </button>
 
+          {isAuthenticated && (
+            <Link
+              to={getDashboardPath()}
+              className="floating-nav-link"
+              style={{ textAlign: 'center' }}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
+          )}
+
           <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '0.5rem 0' }} />
 
           {isAuthenticated ? (
-            <>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <GlassButton
                 as={Link}
                 to={getDashboardPath()}
@@ -211,7 +289,7 @@ const FloatingNavbar = () => {
               >
                 Sign Out
               </GlassButton>
-            </>
+            </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <GlassButton
