@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   FileText,
 } from 'lucide-react';
+import { SecondaryGlassButton, PrimaryGlassButton } from '../common/buttons';
 
 const RescheduleModal = ({ isOpen, appointment, onClose, onSuccess }) => {
   const { success, error: toastError } = useToast();
@@ -246,29 +247,21 @@ const RescheduleModal = ({ isOpen, appointment, onClose, onSuccess }) => {
               borderTop: '1px solid var(--border-subtle)',
             }}
           >
-            <button
-              type="button"
-              className="btn btn-secondary"
+            <SecondaryGlassButton
               onClick={onClose}
               disabled={loading}
             >
               Cancel
-            </button>
-            <button
+            </SecondaryGlassButton>
+            <PrimaryGlassButton
               type="submit"
-              className="btn btn-primary"
               disabled={loading || !selectedSlot}
+              loading={loading}
+              icon={<RotateCcw size={16} />}
               style={{ minWidth: '170px' }}
             >
-              {loading ? (
-                <div className="spinner" style={{ width: '18px', height: '18px' }}></div>
-              ) : (
-                <>
-                  <RotateCcw size={16} />
-                  <span>Confirm Reschedule</span>
-                </>
-              )}
-            </button>
+              Confirm Reschedule
+            </PrimaryGlassButton>
           </div>
         </form>
       </div>

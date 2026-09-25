@@ -19,6 +19,7 @@ import {
   Moon,
   Sparkles,
 } from 'lucide-react';
+import { GlassButton, PrimaryGlassButton, SecondaryGlassButton, DangerGlassButton } from '../../components/common/buttons';
 
 const allDays = [
   'Monday',
@@ -236,15 +237,13 @@ const DoctorAvailabilityPage = () => {
                 </p>
               </div>
 
-              <button
-                type="button"
+              <SecondaryGlassButton
                 onClick={() => setResetModalOpen(true)}
-                className="btn btn-secondary btn-sm"
-                style={{ gap: '0.4rem' }}
+                size="small"
+                icon={<RotateCcw size={15} />}
               >
-                <RotateCcw size={15} />
-                <span>Reset to Standard</span>
-              </button>
+                Reset to Standard
+              </SecondaryGlassButton>
             </div>
 
             {loading ? (
@@ -423,15 +422,14 @@ const DoctorAvailabilityPage = () => {
                         <span style={{ fontWeight: 600 }}>Enable Online Consultation Bookings</span>
                       </label>
 
-                      <button
+                      <PrimaryGlassButton
                         type="submit"
-                        className="btn btn-primary"
-                        disabled={saving}
-                        style={{ minWidth: '160px', gap: '0.4rem' }}
+                        loading={saving}
+                        icon={<Save size={16} />}
+                        style={{ minWidth: '160px' }}
                       >
-                        <Save size={16} />
-                        <span>{saving ? 'Saving...' : 'Save Schedule'}</span>
-                      </button>
+                        Save Schedule
+                      </PrimaryGlassButton>
                     </div>
                   </form>
                 </div>
@@ -467,15 +465,14 @@ const DoctorAvailabilityPage = () => {
                         placeholder="Select date to block"
                       />
                     </div>
-                    <button
+                    <GlassButton
+                      variant="warning"
                       type="submit"
                       disabled={saving || !newBlockDate}
-                      className="btn btn-secondary"
-                      style={{ gap: '0.4rem' }}
+                      icon={<Plus size={16} />}
                     >
-                      <Plus size={16} />
-                      <span>Block Selected Date</span>
-                    </button>
+                      Block Selected Date
+                    </GlassButton>
                   </form>
 
                   {/* Blocked Dates Chips */}
@@ -503,22 +500,14 @@ const DoctorAvailabilityPage = () => {
                           >
                             <Calendar size={14} />
                             <span>{date}</span>
-                            <button
-                              type="button"
+                            <DangerGlassButton
+                              size="small"
+                              iconOnly
                               onClick={() => handleRemoveBlockDate(date)}
-                              style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: 'var(--accent-rose)',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                padding: '2px',
-                              }}
+                              icon={<Trash2 size={13} />}
                               title="Unblock this date"
-                            >
-                              <Trash2 size={13} />
-                            </button>
+                              style={{ width: '24px', height: '24px', minHeight: '24px', padding: 0 }}
+                            />
                           </div>
                         ))}
                       </div>

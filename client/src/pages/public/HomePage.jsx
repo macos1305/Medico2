@@ -18,6 +18,7 @@ import {
   Building2,
   MapPin,
 } from 'lucide-react';
+import { GlassButton, MedicoAiButton } from '../../components/common/buttons';
 
 const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#e0f2f1"/><circle cx="100" cy="78" r="38" fill="#80cbc4"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#80cbc4"/><text x="100" y="88" text-anchor="middle" fill="white" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
 
@@ -212,16 +213,33 @@ const HomePage = () => {
               </p>
 
               {/* CTAs */}
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-                <Link to={getStartedLink()} className="btn btn-primary btn-lg">
-                  <span>Get Started Now</span>
-                  <ArrowRight size={18} />
-                </Link>
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2.5rem', alignItems: 'center' }}>
+                <GlassButton
+                  to={getStartedLink()}
+                  variant="primary"
+                  size="large"
+                  glow
+                  icon={<ArrowRight size={18} />}
+                  iconPosition="right"
+                >
+                  Get Started Now
+                </GlassButton>
 
-                <Link to="/doctors" className="btn btn-secondary btn-lg">
-                  <Search size={18} />
-                  <span>Browse Specialists</span>
-                </Link>
+                <GlassButton
+                  to="/doctors"
+                  variant="secondary"
+                  size="large"
+                  icon={<Search size={18} />}
+                >
+                  Browse Specialists
+                </GlassButton>
+
+                <MedicoAiButton
+                  to="/patient/recommend-doctor"
+                  size="large"
+                >
+                  Find Doctors Using AI
+                </MedicoAiButton>
               </div>
 
               {/* Trust badges */}
@@ -457,10 +475,15 @@ const HomePage = () => {
             </div>
 
             <div style={{ textAlign: 'center' }}>
-              <Link to="/doctors" className="btn btn-outline btn-lg" style={{ gap: '0.5rem' }}>
+              <GlassButton
+                to="/doctors"
+                variant="outline"
+                size="large"
+                icon={<ArrowRight size={16} />}
+                iconPosition="right"
+              >
                 View All Doctors
-                <ArrowRight size={16} />
-              </Link>
+              </GlassButton>
             </div>
           </div>
         </section>
@@ -568,9 +591,9 @@ const HomePage = () => {
               <p style={{ color: 'var(--slate-600)', fontSize: '0.9rem', marginBottom: '1.5rem', flex: 1 }}>
                 Register in seconds, discover board-certified doctors, book appointment slots with transparent consultation fees, and access your visit records.
               </p>
-              <Link to="/register/patient" className="btn btn-outline btn-block">
+              <GlassButton to="/register/patient" variant="outline" fullWidth>
                 Register as Patient
-              </Link>
+              </GlassButton>
             </div>
 
             {/* Doctor Card */}
@@ -591,9 +614,9 @@ const HomePage = () => {
               <p style={{ color: 'var(--slate-600)', fontSize: '0.9rem', marginBottom: '1.5rem', flex: 1 }}>
                 Submit medical licensing credentials, customize your consultation pricing and availability schedule, and accept patient bookings efficiently.
               </p>
-              <Link to="/register/doctor" className="btn btn-primary btn-block">
+              <GlassButton to="/register/doctor" variant="primary" fullWidth>
                 Join as a Doctor
-              </Link>
+              </GlassButton>
             </div>
 
             {/* Admin Card */}
@@ -605,9 +628,9 @@ const HomePage = () => {
               <p style={{ color: 'var(--slate-600)', fontSize: '0.9rem', marginBottom: '1.5rem', flex: 1 }}>
                 Review and approve doctor registrations, monitor clinic metrics, oversee patient safety standards, and manage system operations.
               </p>
-              <Link to="/login" className="btn btn-secondary btn-block">
+              <GlassButton to="/login" variant="secondary" fullWidth>
                 Administrator Sign In
-              </Link>
+              </GlassButton>
             </div>
           </div>
         </div>

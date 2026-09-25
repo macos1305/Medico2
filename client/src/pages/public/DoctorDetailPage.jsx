@@ -24,6 +24,7 @@ import {
   User,
   Star,
 } from 'lucide-react';
+import { GlassButton, PrimaryGlassButton } from '../../components/common/buttons';
 
 const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#e0f2f1"/><circle cx="100" cy="78" r="38" fill="#80cbc4"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#80cbc4"/><text x="100" y="88" text-anchor="middle" fill="white" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
 
@@ -63,10 +64,9 @@ const DoctorDetailPage = () => {
         <p style={{ color: 'var(--slate-500)', marginBottom: '1.5rem' }}>
           The requested physician profile could not be located in our verified directory.
         </p>
-        <Link to="/doctors" className="btn btn-primary">
-          <ArrowLeft size={16} />
+        <PrimaryGlassButton to="/doctors" icon={<ArrowLeft size={16} />}>
           Return to Doctors Directory
-        </Link>
+        </PrimaryGlassButton>
       </div>
     );
   }
@@ -102,22 +102,16 @@ const DoctorDetailPage = () => {
     <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 3rem' }}>
       <div className="container" style={{ maxWidth: '1000px' }}>
         {/* Back Link */}
-        <Link
-          to="/doctors"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            color: 'var(--slate-500)',
-            fontSize: 'var(--text-sm)',
-            fontWeight: 600,
-            marginBottom: '1.5rem',
-            textDecoration: 'none',
-          }}
-        >
-          <ArrowLeft size={16} />
-          Back to Doctor Directory
-        </Link>
+        <div style={{ marginBottom: '1.5rem' }}>
+          <GlassButton
+            to="/doctors"
+            variant="ghost"
+            size="small"
+            icon={<ArrowLeft size={16} />}
+          >
+            Back to Doctor Directory
+          </GlassButton>
+        </div>
 
         {/* ── Doctor Header Card ─────────────────────────────────────────── */}
         <div className="card" style={{ padding: '2rem', marginBottom: '1.75rem' }}>
@@ -437,18 +431,26 @@ const DoctorDetailPage = () => {
             </div>
 
             {isPatient ? (
-              <button
+              <GlassButton
+                variant="primary"
+                size="large"
+                fullWidth
+                icon={<Calendar size={18} />}
                 onClick={() => setBookingModalOpen(true)}
-                className="btn btn-primary btn-block btn-lg"
               >
-                <Calendar size={18} />
                 Book Appointment
-              </button>
+              </GlassButton>
             ) : !isAuthenticated ? (
-              <Link to="/login" state={{ from: { pathname: `/doctors/${id}` } }} className="btn btn-primary btn-block btn-lg">
-                <Calendar size={18} />
+              <GlassButton
+                to="/login"
+                state={{ from: { pathname: `/doctors/${id}` } }}
+                variant="primary"
+                size="large"
+                fullWidth
+                icon={<Calendar size={18} />}
+              >
                 Sign In to Book
-              </Link>
+              </GlassButton>
             ) : null}
           </div>
         </div>

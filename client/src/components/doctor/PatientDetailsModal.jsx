@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   MapPin,
 } from 'lucide-react';
+import { SecondaryGlassButton } from '../common/buttons';
 
 const PatientDetailsModal = ({ isOpen, appointment, onClose }) => {
   if (!isOpen || !appointment) return null;
@@ -266,9 +267,9 @@ const PatientDetailsModal = ({ isOpen, appointment, onClose }) => {
 
         {/* Footer */}
         <div style={{ textAlign: 'right', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
-          <button type="button" className="btn btn-secondary" onClick={onClose}>
+          <SecondaryGlassButton onClick={onClose}>
             Close Dossier
-          </button>
+          </SecondaryGlassButton>
         </div>
       </div>
     </div>

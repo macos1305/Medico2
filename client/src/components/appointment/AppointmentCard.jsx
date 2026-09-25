@@ -10,6 +10,7 @@ import {
   Ban,
   CheckCircle2,
 } from 'lucide-react';
+import { GlassButton, SecondaryGlassButton, DangerGlassButton } from '../common/buttons';
 
 const AppointmentCard = ({
   appointment,
@@ -128,38 +129,36 @@ const AppointmentCard = ({
           flexWrap: 'wrap',
         }}
       >
-        <button
-          type="button"
+        <SecondaryGlassButton
+          size="small"
           onClick={() => onView(appointment)}
-          className="btn btn-secondary btn-sm"
-          style={{ flex: 1, gap: '0.35rem' }}
+          icon={<Eye size={14} />}
+          style={{ flex: 1 }}
         >
-          <Eye size={14} />
-          <span>View</span>
-        </button>
+          View
+        </SecondaryGlassButton>
 
         {isActionable && (
           <>
-            <button
-              type="button"
+            <GlassButton
+              variant="warning"
+              size="small"
               onClick={() => onReschedule(appointment)}
-              className="btn btn-outline btn-sm"
-              style={{ flex: 1, gap: '0.35rem' }}
+              icon={<RotateCcw size={14} />}
+              style={{ flex: 1 }}
               title="Reschedule appointment"
             >
-              <RotateCcw size={14} />
-              <span>Reschedule</span>
-            </button>
+              Reschedule
+            </GlassButton>
 
-            <button
-              type="button"
+            <DangerGlassButton
+              size="small"
               onClick={() => onCancel(appointment)}
-              className="btn btn-ghost btn-sm"
-              style={{ color: 'var(--accent-rose)', padding: '0.4rem 0.6rem' }}
+              icon={<Ban size={14} />}
               title="Cancel appointment"
             >
-              <Ban size={15} />
-            </button>
+              Cancel
+            </DangerGlassButton>
           </>
         )}
       </div>

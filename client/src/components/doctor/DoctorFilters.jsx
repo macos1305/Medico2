@@ -1,5 +1,6 @@
 import React from 'react';
 import { Filter, RotateCcw, Stethoscope, IndianRupee, Award, Star, Users, ArrowUpDown } from 'lucide-react';
+import { GlassButton } from '../common/buttons';
 
 const DoctorFilters = ({
   specializations = [],
@@ -33,15 +34,16 @@ const DoctorFilters = ({
           <Filter size={18} color="var(--primary-600)" />
           Filter Doctors
         </div>
-        <button
+        <GlassButton
+          variant="ghost"
+          size="small"
           onClick={onReset}
-          className="btn btn-ghost btn-sm"
-          style={{ fontSize: '0.8rem', padding: '0.25rem 0.5rem', color: 'var(--slate-500)' }}
+          icon={<RotateCcw size={14} />}
           title="Reset filters"
+          style={{ fontSize: '0.8rem', padding: '0.25rem 0.5rem', minHeight: '30px' }}
         >
-          <RotateCcw size={14} />
-          <span>Reset</span>
-        </button>
+          Reset
+        </GlassButton>
       </div>
 
       {/* Sort By */}

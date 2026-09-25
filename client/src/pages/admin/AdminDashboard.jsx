@@ -23,6 +23,7 @@ import {
   Ban,
   Clock,
 } from 'lucide-react';
+import { GlassButton, PrimaryGlassButton, SecondaryGlassButton } from '../../components/common/buttons';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -150,15 +151,15 @@ const AdminDashboard = () => {
               </div>
 
               <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
-                <Link to="/admin/doctors" className="btn btn-secondary btn-sm">
-                  <Stethoscope size={16} /> Doctors
-                </Link>
-                <Link to="/admin/patients" className="btn btn-secondary btn-sm">
-                  <Users size={16} /> Patients
-                </Link>
-                <Link to="/admin/appointments" className="btn btn-primary btn-sm">
-                  <Calendar size={16} /> Appointments
-                </Link>
+                <SecondaryGlassButton to="/admin/doctors" size="small" icon={<Stethoscope size={15} />}>
+                  Manage Doctors
+                </SecondaryGlassButton>
+                <SecondaryGlassButton to="/admin/patients" size="small" icon={<Users size={15} />}>
+                  Manage Patients
+                </SecondaryGlassButton>
+                <PrimaryGlassButton to="/admin/appointments" size="small" icon={<Calendar size={15} />}>
+                  Manage Appointments
+                </PrimaryGlassButton>
               </div>
             </div>
 
@@ -261,29 +262,28 @@ const AdminDashboard = () => {
                           </td>
                           <td style={{ padding: '0.85rem 1rem' }}>
                             <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-                              <button
-                                type="button"
+                              <SecondaryGlassButton
+                                size="small"
                                 onClick={() => {
                                   setSelectedDoctor(doc);
                                   setReviewModalOpen(true);
                                 }}
-                                className="btn btn-secondary btn-sm"
-                                style={{ gap: '0.25rem', padding: '0.35rem 0.65rem' }}
+                                icon={<Eye size={13} />}
+                                style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', minHeight: '30px' }}
                               >
-                                <Eye size={13} />
-                                <span>Review</span>
-                              </button>
-                              <button
-                                type="button"
+                                Review
+                              </SecondaryGlassButton>
+                              <GlassButton
+                                variant="success"
+                                size="small"
                                 disabled={actionLoading}
                                 onClick={() => handleApprove(doc._id)}
-                                className="btn btn-primary btn-sm"
-                                style={{ gap: '0.25rem', padding: '0.35rem 0.65rem' }}
+                                icon={<Check size={13} />}
                                 title="Approve immediately"
+                                style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem', minHeight: '30px' }}
                               >
-                                <Check size={13} />
-                                <span>Approve</span>
-                              </button>
+                                Approve
+                              </GlassButton>
                             </div>
                           </td>
                         </tr>

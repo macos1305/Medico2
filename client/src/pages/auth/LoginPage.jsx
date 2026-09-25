@@ -14,6 +14,7 @@ import {
   EyeOff,
   AlertCircle,
 } from 'lucide-react';
+import { GlassButton, SecondaryGlassButton } from '../../components/common/buttons';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -197,25 +198,20 @@ const LoginPage = () => {
             </div>
 
             {/* Submit */}
-            <button
-              type="submit"
-              className="btn btn-primary btn-block btn-lg"
-              style={{ marginTop: '1.25rem' }}
-              disabled={loading}
-              id="login-submit-btn"
-            >
-              {loading ? (
-                <>
-                  <div className="spinner spinner-sm" />
-                  Signing In...
-                </>
-              ) : (
-                <>
-                  Sign In
-                  <ArrowRight size={18} />
-                </>
-              )}
-            </button>
+            <div style={{ marginTop: '1.25rem' }}>
+              <GlassButton
+                type="submit"
+                variant="primary"
+                size="large"
+                fullWidth
+                loading={loading}
+                icon={<ArrowRight size={18} />}
+                iconPosition="right"
+                id="login-submit-btn"
+              >
+                Sign In
+              </GlassButton>
+            </div>
           </form>
 
           {/* Quick-Fill Demo Roles */}
@@ -240,30 +236,30 @@ const LoginPage = () => {
               Quick Test Credentials
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
+              <SecondaryGlassButton
+                size="small"
                 onClick={() => fillCredentials('patient@test.com', 'Password123')}
-                style={{ fontSize: '0.72rem' }}
+                icon={<UserCheck size={12} />}
+                style={{ fontSize: '0.72rem', padding: '0.35rem 0.5rem' }}
               >
-                <UserCheck size={12} /> Patient
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
+                Patient
+              </SecondaryGlassButton>
+              <SecondaryGlassButton
+                size="small"
                 onClick={() => fillCredentials('doctor@test.com', 'Doctor123')}
-                style={{ fontSize: '0.72rem' }}
+                icon={<Stethoscope size={12} />}
+                style={{ fontSize: '0.72rem', padding: '0.35rem 0.5rem' }}
               >
-                <Stethoscope size={12} /> Doctor
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
+                Doctor
+              </SecondaryGlassButton>
+              <SecondaryGlassButton
+                size="small"
                 onClick={() => fillCredentials('admin@medico.com', 'Admin@12345')}
-                style={{ fontSize: '0.72rem' }}
+                icon={<ShieldCheck size={12} />}
+                style={{ fontSize: '0.72rem', padding: '0.35rem 0.5rem' }}
               >
-                <ShieldCheck size={12} /> Admin
-              </button>
+                Admin
+              </SecondaryGlassButton>
             </div>
           </div>
         </div>

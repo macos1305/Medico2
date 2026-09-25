@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { ShieldAlert, ArrowLeft, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { PrimaryGlassButton, SecondaryGlassButton } from '../../components/common/buttons';
 
 const UnauthorizedPage = () => {
   const { role, isAuthenticated } = useAuth();
@@ -126,15 +126,19 @@ const UnauthorizedPage = () => {
             flexWrap: 'wrap',
           }}
         >
-          <button onClick={() => window.history.back()} className="btn btn-secondary">
-            <ArrowLeft size={16} />
+          <SecondaryGlassButton
+            onClick={() => window.history.back()}
+            icon={<ArrowLeft size={16} />}
+          >
             Go Back
-          </button>
+          </SecondaryGlassButton>
 
-          <Link to={getDashboardPath()} className="btn btn-primary">
-            <LayoutDashboard size={16} />
+          <PrimaryGlassButton
+            to={getDashboardPath()}
+            icon={<LayoutDashboard size={16} />}
+          >
             {isAuthenticated ? 'My Dashboard' : 'Sign In'}
-          </Link>
+          </PrimaryGlassButton>
         </div>
       </div>
     </div>

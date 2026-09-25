@@ -16,6 +16,7 @@ import {
   Bell,
 } from 'lucide-react';
 import NotificationBell from '../notification/NotificationBell';
+import { GlassButton, PrimaryGlassButton, SecondaryGlassButton, IconGlassButton } from './buttons';
 
 const Navbar = () => {
   const { user, role, isAuthenticated, logout } = useAuth();
@@ -161,83 +162,78 @@ const Navbar = () => {
             className="desktop-actions"
           >
             {isAuthenticated ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-                <Link
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <PrimaryGlassButton
                   to={getDashboardPath()}
-                  className="btn btn-primary btn-sm"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                  size="small"
+                  icon={<LayoutDashboard size={15} />}
                 >
-                  <LayoutDashboard size={16} />
                   Dashboard
-                </Link>
+                </PrimaryGlassButton>
 
                 {role === 'PATIENT' && (
                   <>
-                    <Link
+                    <SecondaryGlassButton
                       to="/patient/appointments"
-                      className="btn btn-secondary btn-sm"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                      size="small"
+                      icon={<Calendar size={14} />}
                     >
-                      <Calendar size={15} />
                       Appointments
-                    </Link>
-                    <Link
+                    </SecondaryGlassButton>
+                    <GlassButton
                       to="/patient/profile"
-                      className="btn btn-ghost btn-sm"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                      variant="ghost"
+                      size="small"
+                      icon={<User size={14} />}
                     >
-                      <User size={15} />
                       Profile
-                    </Link>
+                    </GlassButton>
                   </>
                 )}
 
                 {role === 'DOCTOR' && (
                   <>
-                    <Link
+                    <SecondaryGlassButton
                       to="/doctor/appointments"
-                      className="btn btn-secondary btn-sm"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                      size="small"
+                      icon={<Calendar size={14} />}
                     >
-                      <Calendar size={15} />
                       Appointments
-                    </Link>
-                    <Link
+                    </SecondaryGlassButton>
+                    <GlassButton
                       to="/doctor/availability"
-                      className="btn btn-ghost btn-sm"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                      variant="ghost"
+                      size="small"
                     >
                       Availability
-                    </Link>
+                    </GlassButton>
                   </>
                 )}
 
                 {role === 'ADMIN' && (
                   <>
-                    <Link
+                    <SecondaryGlassButton
                       to="/admin/doctors"
-                      className="btn btn-secondary btn-sm"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                      size="small"
+                      icon={<Stethoscope size={14} />}
                     >
-                      <Stethoscope size={15} />
                       Doctors
-                    </Link>
-                    <Link
+                    </SecondaryGlassButton>
+                    <SecondaryGlassButton
                       to="/admin/patients"
-                      className="btn btn-secondary btn-sm"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                      size="small"
+                      icon={<User size={14} />}
                     >
-                      <User size={15} />
                       Patients
-                    </Link>
-                    <Link
+                    </SecondaryGlassButton>
+                    <GlassButton
                       to="/admin/appointments"
-                      className="btn btn-ghost btn-sm"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                      variant="ghost"
+                      size="small"
+                      icon={<Calendar size={14} />}
                     >
-                      <Calendar size={15} />
                       Appointments
-                    </Link>
+                    </GlassButton>
                   </>
                 )}
 
@@ -279,31 +275,28 @@ const Navbar = () => {
                   </div>
                 </div>
 
-                <button
+                <IconGlassButton
                   onClick={handleLogout}
-                  className="btn btn-ghost btn-sm"
                   title="Log out"
-                  style={{ color: 'var(--slate-500)', padding: '0.5rem' }}
-                >
-                  <LogOut size={18} />
-                </button>
+                  icon={<LogOut size={16} />}
+                />
               </div>
             ) : (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <Link to="/login" className="btn btn-ghost btn-sm">
+                <GlassButton to="/login" variant="ghost" size="small">
                   Sign In
-                </Link>
+                </GlassButton>
 
                 {/* Register Dropdown */}
                 <div style={{ position: 'relative' }}>
-                  <button
+                  <PrimaryGlassButton
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="btn btn-primary btn-sm"
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                    size="small"
+                    icon={<ChevronDown size={14} />}
+                    iconPosition="right"
                   >
-                    <span>Create Account</span>
-                    <ChevronDown size={14} />
-                  </button>
+                    Create Account
+                  </PrimaryGlassButton>
 
                   {dropdownOpen && (
                     <div
@@ -438,84 +431,86 @@ const Navbar = () => {
                   <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>{user?.name}</span>
                   {getRoleBadge()}
                 </div>
-                <Link
+                <PrimaryGlassButton
                   to={getDashboardPath()}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="btn btn-primary btn-block"
+                  fullWidth
                 >
                   Go to Dashboard
-                </Link>
+                </PrimaryGlassButton>
                 {role === 'PATIENT' && (
-                  <Link
+                  <SecondaryGlassButton
                     to="/patient/appointments"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="btn btn-secondary btn-block"
+                    fullWidth
                   >
                     My Appointments
-                  </Link>
+                  </SecondaryGlassButton>
                 )}
                 {role === 'DOCTOR' && (
                   <>
-                    <Link
+                    <SecondaryGlassButton
                       to="/doctor/appointments"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="btn btn-secondary btn-block"
+                      fullWidth
                     >
                       Appointments
-                    </Link>
-                    <Link
+                    </SecondaryGlassButton>
+                    <GlassButton
                       to="/doctor/availability"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="btn btn-outline btn-block"
+                      variant="outline"
+                      fullWidth
                     >
                       Availability Settings
-                    </Link>
-                    <Link
+                    </GlassButton>
+                    <GlassButton
                       to="/doctor/profile"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="btn btn-outline btn-block"
+                      variant="outline"
+                      fullWidth
                     >
                       Practice Profile
-                    </Link>
+                    </GlassButton>
                   </>
                 )}
                 {role === 'ADMIN' && (
                   <>
-                    <Link
+                    <SecondaryGlassButton
                       to="/admin/doctors"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="btn btn-secondary btn-block"
+                      fullWidth
                     >
                       Manage Doctors
-                    </Link>
-                    <Link
+                    </SecondaryGlassButton>
+                    <SecondaryGlassButton
                       to="/admin/patients"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="btn btn-secondary btn-block"
+                      fullWidth
                     >
                       Manage Patients
-                    </Link>
-                    <Link
+                    </SecondaryGlassButton>
+                    <GlassButton
                       to="/admin/appointments"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="btn btn-outline btn-block"
+                      variant="outline"
+                      fullWidth
                     >
                       All Appointments
-                    </Link>
+                    </GlassButton>
                   </>
                 )}
-                <Link
+                <SecondaryGlassButton
                   to="/notifications"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="btn btn-secondary btn-block"
-                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+                  fullWidth
+                  icon={<Bell size={16} />}
                 >
-                  <Bell size={16} />
-                  <span>Notifications</span>
-                </Link>
-                <button onClick={handleLogout} className="btn btn-outline btn-block">
+                  Notifications
+                </SecondaryGlassButton>
+                <GlassButton onClick={handleLogout} variant="outline" fullWidth>
                   Log Out
-                </button>
+                </GlassButton>
               </div>
             ) : (
               <div
@@ -527,27 +522,28 @@ const Navbar = () => {
                   borderTop: '1px solid var(--border-subtle)',
                 }}
               >
-                <Link
+                <SecondaryGlassButton
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="btn btn-secondary btn-block"
+                  fullWidth
                 >
                   Sign In
-                </Link>
-                <Link
+                </SecondaryGlassButton>
+                <PrimaryGlassButton
                   to="/register/patient"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="btn btn-primary btn-block"
+                  fullWidth
                 >
                   Register as Patient
-                </Link>
-                <Link
+                </PrimaryGlassButton>
+                <GlassButton
                   to="/register/doctor"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="btn btn-outline btn-block"
+                  variant="outline"
+                  fullWidth
                 >
                   Register as Doctor
-                </Link>
+                </GlassButton>
               </div>
             )}
           </div>

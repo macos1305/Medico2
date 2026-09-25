@@ -1,6 +1,6 @@
 import React from 'react';
 import { InboxIcon, Search, Calendar, Users, FileText, AlertCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { PrimaryGlassButton, SecondaryGlassButton } from './buttons';
 
 const iconMap = {
   inbox: InboxIcon,
@@ -50,30 +50,22 @@ const EmptyState = ({
       {(primaryAction || secondaryAction) && (
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: '0.5rem' }}>
           {secondaryAction && (
-            secondaryAction.to ? (
-              <Link to={secondaryAction.to} className="btn btn-secondary">
-                {secondaryAction.icon && <secondaryAction.icon size={16} />}
-                {secondaryAction.label}
-              </Link>
-            ) : (
-              <button onClick={secondaryAction.onClick} className="btn btn-secondary">
-                {secondaryAction.icon && <secondaryAction.icon size={16} />}
-                {secondaryAction.label}
-              </button>
-            )
+            <SecondaryGlassButton
+              to={secondaryAction.to}
+              onClick={secondaryAction.onClick}
+              icon={secondaryAction.icon ? <secondaryAction.icon size={16} /> : null}
+            >
+              {secondaryAction.label}
+            </SecondaryGlassButton>
           )}
           {primaryAction && (
-            primaryAction.to ? (
-              <Link to={primaryAction.to} className="btn btn-primary">
-                {primaryAction.icon && <primaryAction.icon size={16} />}
-                {primaryAction.label}
-              </Link>
-            ) : (
-              <button onClick={primaryAction.onClick} className="btn btn-primary">
-                {primaryAction.icon && <primaryAction.icon size={16} />}
-                {primaryAction.label}
-              </button>
-            )
+            <PrimaryGlassButton
+              to={primaryAction.to}
+              onClick={primaryAction.onClick}
+              icon={primaryAction.icon ? <primaryAction.icon size={16} /> : null}
+            >
+              {primaryAction.label}
+            </PrimaryGlassButton>
           )}
         </div>
       )}

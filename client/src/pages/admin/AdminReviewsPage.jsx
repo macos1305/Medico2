@@ -14,6 +14,7 @@ import {
   AlertCircle,
   Filter,
 } from 'lucide-react';
+import { SecondaryGlassButton, DangerGlassButton, IconGlassButton } from '../../components/common/buttons';
 
 const formatDate = (d) => {
   try {
@@ -285,25 +286,23 @@ const AdminReviewsPage = () => {
                             </td>
                             <td>
                               <div style={{ display: 'flex', gap: '0.35rem', justifyContent: 'flex-end' }}>
-                                <button
+                                <SecondaryGlassButton
                                   onClick={() => handleToggleVisibility(review)}
-                                  className="btn btn-secondary btn-sm"
+                                  size="sm"
                                   disabled={isActing}
                                   title={isHidden ? 'Restore review' : 'Hide review'}
-                                  style={{ padding: '0.3rem 0.6rem' }}
+                                  icon={isHidden ? <Eye size={13} /> : <EyeOff size={13} />}
                                 >
-                                  {isHidden ? <Eye size={13} /> : <EyeOff size={13} />}
-                                  <span style={{ fontSize: '0.7rem' }}>{isHidden ? 'Restore' : 'Hide'}</span>
-                                </button>
-                                <button
+                                  {isHidden ? 'Restore' : 'Hide'}
+                                </SecondaryGlassButton>
+                                <IconGlassButton
                                   onClick={() => setDeleteModal({ open: true, review })}
-                                  className="btn btn-danger btn-sm"
+                                  variant="danger"
+                                  size="sm"
                                   disabled={isActing}
                                   title="Delete permanently"
-                                  style={{ padding: '0.3rem 0.6rem' }}
-                                >
-                                  <Trash2 size={13} />
-                                </button>
+                                  icon={<Trash2 size={13} />}
+                                />
                               </div>
                             </td>
                           </tr>
@@ -317,13 +316,13 @@ const AdminReviewsPage = () => {
               {/* Load more */}
               {page < totalPages && (
                 <div style={{ padding: '1rem', textAlign: 'center' }}>
-                  <button
-                    className="btn btn-secondary btn-sm"
+                  <SecondaryGlassButton
+                    size="sm"
                     onClick={() => { const next = page + 1; setPage(next); fetchReviews(next); }}
                     disabled={loading}
                   >
                     Load More
-                  </button>
+                  </SecondaryGlassButton>
                 </div>
               )}
             </div>

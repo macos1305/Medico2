@@ -19,6 +19,7 @@ import {
   FileText,
   Activity,
 } from 'lucide-react';
+import { GlassButton, PrimaryGlassButton, SecondaryGlassButton, DangerGlassButton } from '../../components/common/buttons';
 
 const DoctorAppointmentsPage = () => {
   const { success, error: toastError } = useToast();
@@ -334,54 +335,49 @@ const DoctorAppointmentsPage = () => {
                           flexWrap: 'wrap',
                         }}
                       >
-                        <button
-                          type="button"
+                        <SecondaryGlassButton
+                          size="small"
                           onClick={() => handleView(appt)}
-                          className="btn btn-secondary btn-sm"
-                          style={{ flex: 1, gap: '0.35rem' }}
+                          icon={<Eye size={14} />}
+                          style={{ flex: 1 }}
                         >
-                          <Eye size={14} />
-                          <span>Dossier</span>
-                        </button>
+                          Dossier
+                        </SecondaryGlassButton>
 
                         {isActionable && (
                           <>
                             {appt.status !== 'CONFIRMED' && (
-                              <button
-                                type="button"
+                              <GlassButton
+                                variant="success"
+                                size="small"
                                 disabled={actionLoading}
                                 onClick={() => handleConfirm(appt)}
-                                className="btn btn-outline btn-sm"
-                                style={{ gap: '0.35rem' }}
+                                icon={<Check size={14} />}
                                 title="Confirm Appointment"
                               >
-                                <Check size={14} />
-                                <span>Confirm</span>
-                              </button>
+                                Confirm
+                              </GlassButton>
                             )}
 
-                            <button
-                              type="button"
+                            <PrimaryGlassButton
+                              size="small"
                               disabled={actionLoading}
                               onClick={() => handleMarkComplete(appt)}
-                              className="btn btn-primary btn-sm"
-                              style={{ gap: '0.35rem' }}
+                              icon={<CheckCircle2 size={14} />}
                               title="Mark as Completed"
                             >
-                              <CheckCircle2 size={14} />
-                              <span>Complete</span>
-                            </button>
+                              Complete
+                            </PrimaryGlassButton>
 
-                            <button
-                              type="button"
+                            <DangerGlassButton
+                              size="small"
                               disabled={actionLoading}
                               onClick={() => handleOpenReject(appt)}
-                              className="btn btn-ghost btn-sm"
-                              style={{ color: 'var(--accent-rose)', padding: '0.4rem 0.5rem' }}
+                              icon={<Ban size={14} />}
                               title="Cancel / Reject"
                             >
-                              <Ban size={15} />
-                            </button>
+                              Reject
+                            </DangerGlassButton>
                           </>
                         )}
                       </div>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Activity, Home, Stethoscope, ArrowLeft, Search } from 'lucide-react';
+import { Activity, Home, ArrowLeft, Search, Stethoscope } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { PrimaryGlassButton, SecondaryGlassButton, GlassButton } from '../../components/common/buttons';
 
 const NotFoundPage = () => {
   const { isAuthenticated, role } = useAuth();
@@ -121,21 +122,18 @@ const NotFoundPage = () => {
             flexWrap: 'wrap',
           }}
         >
-          <button onClick={() => navigate(-1)} className="btn btn-secondary">
-            <ArrowLeft size={16} />
+          <SecondaryGlassButton onClick={() => navigate(-1)} icon={<ArrowLeft size={16} />}>
             Go Back
-          </button>
+          </SecondaryGlassButton>
 
-          <Link to="/" className="btn btn-primary">
-            <Home size={16} />
+          <PrimaryGlassButton to="/" icon={<Home size={16} />}>
             Return Home
-          </Link>
+          </PrimaryGlassButton>
 
           {isAuthenticated && dashboardPath && (
-            <Link to={dashboardPath} className="btn btn-outline">
-              <Search size={16} />
+            <GlassButton to={dashboardPath} variant="outline" icon={<Search size={16} />}>
               Go to Dashboard
-            </Link>
+            </GlassButton>
           )}
         </div>
 

@@ -12,6 +12,7 @@ import {
   MapPin,
   FileText,
 } from 'lucide-react';
+import { GlassButton, SecondaryGlassButton } from '../common/buttons';
 
 const PatientDetailsModal = ({
   isOpen,
@@ -211,29 +212,19 @@ const PatientDetailsModal = ({
             borderTop: '1px solid var(--border-subtle)',
           }}
         >
-          <button
-            type="button"
+          <GlassButton
+            variant={isActive ? 'outline' : 'secondary'}
+            size="sm"
             disabled={actionLoading}
             onClick={() => onToggleStatus(patientData._id, !isActive)}
-            className={`btn btn-sm ${isActive ? 'btn-outline' : 'btn-secondary'}`}
-            style={{ gap: '0.4rem' }}
+            icon={isActive ? <UserX size={15} color="var(--accent-rose)" /> : <UserCheck size={15} color="var(--primary-600)" />}
           >
-            {isActive ? (
-              <>
-                <UserX size={15} color="var(--accent-rose)" />
-                <span>Deactivate Patient Account</span>
-              </>
-            ) : (
-              <>
-                <UserCheck size={15} color="var(--primary-600)" />
-                <span>Activate Patient Account</span>
-              </>
-            )}
-          </button>
+            {isActive ? 'Deactivate Patient Account' : 'Activate Patient Account'}
+          </GlassButton>
 
-          <button type="button" className="btn btn-secondary btn-sm" onClick={onClose}>
+          <SecondaryGlassButton size="sm" onClick={onClose}>
             Close
-          </button>
+          </SecondaryGlassButton>
         </div>
       </div>
     </div>

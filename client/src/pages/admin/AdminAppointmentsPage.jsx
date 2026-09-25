@@ -17,6 +17,7 @@ import {
   Stethoscope,
   FileText,
 } from 'lucide-react';
+import { SecondaryGlassButton, DangerGlassButton } from '../../components/common/buttons';
 
 const AdminAppointmentsPage = () => {
   const { success, error: toastError } = useToast();
@@ -293,29 +294,26 @@ const AdminAppointmentsPage = () => {
                           borderTop: '1px solid var(--border-subtle)',
                         }}
                       >
-                        <button
-                          type="button"
+                        <SecondaryGlassButton
+                          size="small"
                           onClick={() => {
                             setSelectedAppt(appt);
                             setDetailsModalOpen(true);
                           }}
-                          className="btn btn-secondary btn-sm"
-                          style={{ flex: 1, gap: '0.35rem' }}
+                          icon={<Eye size={14} />}
+                          style={{ flex: 1 }}
                         >
-                          <Eye size={14} />
-                          <span>Details</span>
-                        </button>
+                          Details
+                        </SecondaryGlassButton>
 
                         {isActionable && (
-                          <button
-                            type="button"
+                          <DangerGlassButton
+                            size="small"
+                            iconOnly
                             onClick={() => handleOpenCancel(appt)}
-                            className="btn btn-ghost btn-sm"
-                            style={{ color: 'var(--accent-rose)' }}
+                            icon={<Ban size={15} />}
                             title="Cancel Appointment"
-                          >
-                            <Ban size={15} />
-                          </button>
+                          />
                         )}
                       </div>
                     </div>
@@ -419,16 +417,15 @@ const AdminAppointmentsPage = () => {
             </div>
 
             <div style={{ textAlign: 'right', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
+              <SecondaryGlassButton
+                size="small"
                 onClick={() => {
                   setDetailsModalOpen(false);
                   setSelectedAppt(null);
                 }}
               >
                 Close
-              </button>
+              </SecondaryGlassButton>
             </div>
           </div>
         </div>

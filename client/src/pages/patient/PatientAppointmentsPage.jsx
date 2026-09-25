@@ -20,6 +20,7 @@ import {
   CheckCircle2,
   X,
 } from 'lucide-react';
+import { GlassButton, PrimaryGlassButton, SecondaryGlassButton } from '../../components/common/buttons';
 
 /* ─── Compact appointment card with review prompt ─────────────────────────── */
 const AppointmentRowCard = ({ appointment, onView, onCancel, onReschedule, onReviewClick, reviewedIds }) => {
@@ -101,29 +102,25 @@ const AppointmentRowCard = ({ appointment, onView, onCancel, onReschedule, onRev
       </span>
 
       {/* Actions */}
-      <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, flexWrap: 'wrap' }}>
-        <button
+      <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, flexWrap: 'wrap', alignItems: 'center' }}>
+        <SecondaryGlassButton
+          size="small"
           onClick={() => onView(appointment)}
-          className="btn btn-secondary btn-sm"
-          style={{ fontSize: 'var(--text-xs)' }}
+          style={{ fontSize: 'var(--text-xs)', minHeight: '30px', padding: '0.25rem 0.65rem' }}
         >
           Details
-        </button>
+        </SecondaryGlassButton>
 
         {isCompleted && !alreadyReviewed && (
-          <button
+          <GlassButton
+            variant="warning"
+            size="small"
+            icon={<Star size={12} />}
             onClick={() => onReviewClick(appointment)}
-            className="btn btn-sm"
-            style={{
-              background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
-              color: '#fff',
-              border: 'none',
-              fontSize: 'var(--text-xs)',
-            }}
+            style={{ fontSize: 'var(--text-xs)', minHeight: '30px', padding: '0.25rem 0.65rem' }}
           >
-            <Star size={12} />
             Write Review
-          </button>
+          </GlassButton>
         )}
 
         {isCompleted && alreadyReviewed && (
@@ -266,9 +263,13 @@ const PatientAppointmentsPage = () => {
                   Track visits, reschedule, or rate completed consultations.
                 </p>
               </div>
-              <Link to="/doctors" className="btn btn-primary btn-sm">
-                <Plus size={15} /> Book New Visit
-              </Link>
+              <PrimaryGlassButton
+                to="/doctors"
+                size="small"
+                icon={<Plus size={15} />}
+              >
+                Book New Visit
+              </PrimaryGlassButton>
             </div>
 
             {/* Tabs */}

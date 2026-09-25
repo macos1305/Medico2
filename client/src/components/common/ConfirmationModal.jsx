@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { AlertTriangle, Trash2, X } from 'lucide-react';
+import { GlassButton, SecondaryGlassButton } from './buttons';
 
 const ConfirmationModal = ({
   isOpen,
@@ -96,31 +97,22 @@ const ConfirmationModal = ({
         </div>
 
         {/* Footer */}
-        <div className="modal-footer">
-          <button
+        <div className="modal-footer" style={{ gap: '0.75rem' }}>
+          <SecondaryGlassButton
             ref={cancelRef}
-            type="button"
-            className="btn btn-secondary"
             onClick={onCancel}
             disabled={loading}
           >
             {cancelText}
-          </button>
-          <button
-            type="button"
-            className={`btn ${isDangerous ? 'btn-danger' : 'btn-primary'}`}
+          </SecondaryGlassButton>
+          <GlassButton
+            variant={isDangerous ? 'danger' : 'primary'}
             onClick={onConfirm}
-            disabled={loading}
+            loading={loading}
+            icon={isDangerous ? <Trash2 size={16} /> : undefined}
           >
-            {loading ? (
-              <>
-                <div className="spinner spinner-sm" />
-                Processing...
-              </>
-            ) : (
-              confirmText
-            )}
-          </button>
+            {confirmText}
+          </GlassButton>
         </div>
       </div>
     </div>

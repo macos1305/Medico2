@@ -19,6 +19,7 @@ import { useNotifications } from '../../context/NotificationContext';
 import ConfirmationModal from '../../components/common/ConfirmationModal';
 import notificationService from '../../services/notificationService';
 import { useToast } from '../../context/ToastContext';
+import { GlassButton, PrimaryGlassButton, SecondaryGlassButton, DangerGlassButton } from '../../components/common/buttons';
 
 const formatFullDate = (timestamp) => {
   if (!timestamp) return '';
@@ -195,31 +196,28 @@ const NotificationsPage = () => {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
             {unreadCount > 0 && (
-              <button
+              <SecondaryGlassButton
                 onClick={markAllAsRead}
-                className="btn btn-secondary btn-sm"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                size="sm"
+                icon={<CheckCheck size={15} />}
               >
-                <CheckCheck size={15} />
-                <span>Mark All Read</span>
-              </button>
+                Mark All Read
+              </SecondaryGlassButton>
             )}
 
             {notifications.length > 0 && (
-              <button
+              <GlassButton
                 onClick={() => setConfirmClearOpen(true)}
-                className="btn btn-outline btn-sm"
+                variant="outline"
+                size="sm"
+                icon={<Trash2 size={15} />}
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
                   color: 'var(--danger-600)',
                   borderColor: 'var(--danger-200)',
                 }}
               >
-                <Trash2 size={15} />
-                <span>Clear All</span>
-              </button>
+                Clear All
+              </GlassButton>
             )}
           </div>
         </div>
@@ -439,58 +437,52 @@ const NotificationsPage = () => {
                     {/* Actions bar */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                       {item.data?.link && (
-                        <button
+                        <PrimaryGlassButton
+                          size="sm"
                           onClick={() => {
                             if (!item.isRead) markAsRead(item._id);
                             navigate(item.data.link);
                           }}
-                          className="btn btn-primary btn-sm"
+                          icon={<ArrowRight size={13} />}
+                          iconPosition="right"
                           style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.35rem',
                             padding: '0.35rem 0.75rem',
                             fontSize: '0.8rem',
                           }}
                         >
-                          <span>Open Activity</span>
-                          <ArrowRight size={13} />
-                        </button>
+                          Open Activity
+                        </PrimaryGlassButton>
                       )}
 
                       {!item.isRead && (
-                        <button
+                        <GlassButton
+                          variant="ghost"
+                          size="sm"
                           onClick={() => markAsRead(item._id)}
-                          className="btn btn-ghost btn-sm"
+                          icon={<CheckCheck size={14} />}
                           style={{
                             fontSize: '0.8rem',
                             color: 'var(--primary-600)',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.35rem',
                           }}
                         >
-                          <CheckCheck size={14} />
-                          <span>Mark as Read</span>
-                        </button>
+                          Mark as Read
+                        </GlassButton>
                       )}
 
-                      <button
+                      <GlassButton
+                        variant="ghost"
+                        size="sm"
                         onClick={() => deleteNotification(item._id)}
-                        className="btn btn-ghost btn-sm"
+                        icon={<Trash2 size={14} />}
                         style={{
                           fontSize: '0.8rem',
                           color: 'var(--slate-400)',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.35rem',
                           marginLeft: 'auto',
                         }}
                         title="Delete notification"
                       >
-                        <Trash2 size={14} />
-                        <span>Remove</span>
-                      </button>
+                        Remove
+                      </GlassButton>
                     </div>
                   </div>
                 </div>

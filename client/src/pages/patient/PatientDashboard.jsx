@@ -5,6 +5,7 @@ import PatientSidebar from '../../components/patient/PatientSidebar';
 import { SkeletonStatCard, SkeletonText } from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import appointmentService from '../../services/appointmentService';
+import { PrimaryGlassButton, SecondaryGlassButton, GlassButton, GlassAiButtonWrapper } from '../../components/common/buttons';
 import {
   Calendar,
   CheckCircle2,
@@ -157,15 +158,28 @@ const PatientDashboard = () => {
                 </p>
               </div>
               <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
-                <Link to="/patient/recommend-doctor" className="btn btn-primary btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <Sparkles size={15} /> AI Doctor Finder
-                </Link>
-                <Link to="/patient/appointments" className="btn btn-secondary btn-sm">
-                  <Calendar size={16} /> My Appointments
-                </Link>
-                <Link to="/doctors" className="btn btn-outline btn-sm">
-                  <Search size={16} /> Find Doctors
-                </Link>
+                <GlassAiButtonWrapper
+                  to="/patient/recommend-doctor"
+                  size="sm"
+                  icon={<Sparkles size={15} />}
+                >
+                  AI Doctor Finder
+                </GlassAiButtonWrapper>
+                <SecondaryGlassButton
+                  to="/patient/appointments"
+                  size="sm"
+                  icon={<Calendar size={15} />}
+                >
+                  My Appointments
+                </SecondaryGlassButton>
+                <GlassButton
+                  to="/doctors"
+                  variant="outline"
+                  size="sm"
+                  icon={<Search size={15} />}
+                >
+                  Find Doctors
+                </GlassButton>
               </div>
             </div>
 

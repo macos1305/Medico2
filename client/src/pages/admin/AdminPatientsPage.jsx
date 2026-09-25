@@ -14,6 +14,7 @@ import {
   Phone,
   Calendar,
 } from 'lucide-react';
+import { SecondaryGlassButton, IconGlassButton } from '../../components/common/buttons';
 
 const AdminPatientsPage = () => {
   const { success, error: toastError } = useToast();
@@ -225,26 +226,23 @@ const AdminPatientsPage = () => {
                           borderTop: '1px solid var(--border-subtle)',
                         }}
                       >
-                        <button
-                          type="button"
+                        <SecondaryGlassButton
+                          size="small"
                           onClick={() => handleViewPatient(pat._id)}
-                          className="btn btn-secondary btn-sm"
-                          style={{ flex: 1, gap: '0.35rem' }}
+                          icon={<Eye size={14} />}
+                          style={{ flex: 1 }}
                         >
-                          <Eye size={14} />
-                          <span>Dossier</span>
-                        </button>
+                          Dossier
+                        </SecondaryGlassButton>
 
-                        <button
-                          type="button"
+                        <IconGlassButton
+                          variant={isActive ? 'ghost' : 'outline'}
+                          size="small"
                           disabled={actionLoading}
                           onClick={() => handleToggleStatus(pat._id, !isActive)}
-                          className={`btn btn-sm ${isActive ? 'btn-ghost' : 'btn-outline'}`}
-                          style={{ color: isActive ? 'var(--accent-rose)' : 'var(--primary-600)', padding: '0.4rem 0.5rem' }}
+                          icon={isActive ? <UserX size={15} color="var(--accent-rose)" /> : <UserCheck size={15} color="var(--medico-primary)" />}
                           title={isActive ? 'Deactivate Patient Account' : 'Activate Patient Account'}
-                        >
-                          {isActive ? <UserX size={15} /> : <UserCheck size={15} />}
-                        </button>
+                        />
                       </div>
                     </div>
                   );

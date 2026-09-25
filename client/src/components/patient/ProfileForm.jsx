@@ -10,6 +10,7 @@ import {
   Save,
   CheckCircle2,
 } from 'lucide-react';
+import { PrimaryGlassButton } from '../common/buttons';
 
 const ProfileForm = ({ initialData, onSave, loading }) => {
   const [formData, setFormData] = useState({
@@ -453,21 +454,16 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
 
       {/* Submit Button */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-        <button
+        <PrimaryGlassButton
           type="submit"
-          className="btn btn-primary btn-lg"
+          size="lg"
+          loading={loading}
           disabled={loading}
+          icon={<Save size={18} />}
           style={{ minWidth: '180px' }}
         >
-          {loading ? (
-            <div className="spinner" style={{ width: '20px', height: '20px' }}></div>
-          ) : (
-            <>
-              <Save size={18} />
-              <span>Save Profile Changes</span>
-            </>
-          )}
-        </button>
+          Save Profile Changes
+        </PrimaryGlassButton>
       </div>
     </form>
   );

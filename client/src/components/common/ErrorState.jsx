@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertCircle, RefreshCw, WifiOff } from 'lucide-react';
+import { SecondaryGlassButton } from './buttons';
 
 const ErrorState = ({
   title = 'Something went wrong',
@@ -61,14 +62,13 @@ const ErrorState = ({
       </div>
 
       {onRetry && (
-        <button
+        <SecondaryGlassButton
           onClick={onRetry}
-          className="btn btn-outline"
+          icon={<RefreshCw size={16} />}
           style={{ marginTop: '0.5rem' }}
         >
-          <RefreshCw size={16} />
           Try Again
-        </button>
+        </SecondaryGlassButton>
       )}
     </div>
   );

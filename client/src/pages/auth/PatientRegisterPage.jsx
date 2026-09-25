@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { User, Mail, Lock, Phone, Heart, Calendar, ArrowRight, Activity } from 'lucide-react';
+import { GlassButton } from '../../components/common/buttons';
 
 const PatientRegisterPage = () => {
   const { registerPatient } = useAuth();
@@ -296,21 +297,19 @@ const PatientRegisterPage = () => {
             </div>
 
             {/* Submit */}
-            <button
-              type="submit"
-              className="btn btn-primary btn-block"
-              style={{ marginTop: '1.5rem', height: '46px' }}
-              disabled={loading}
-            >
-              {loading ? (
-                <div className="spinner" style={{ width: '20px', height: '20px' }}></div>
-              ) : (
-                <>
-                  <span>Complete Patient Registration</span>
-                  <ArrowRight size={18} />
-                </>
-              )}
-            </button>
+            <div style={{ marginTop: '1.5rem' }}>
+              <GlassButton
+                type="submit"
+                variant="primary"
+                size="large"
+                fullWidth
+                loading={loading}
+                icon={<ArrowRight size={18} />}
+                iconPosition="right"
+              >
+                Complete Patient Registration
+              </GlassButton>
+            </div>
           </form>
         </div>
 

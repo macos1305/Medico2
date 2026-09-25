@@ -10,6 +10,7 @@ import {
   Calendar,
   User,
 } from 'lucide-react';
+import { PrimaryGlassButton, SecondaryGlassButton } from '../common/buttons';
 
 const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#e0f2f1"/><circle cx="100" cy="78" r="38" fill="#80cbc4"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#80cbc4"/><text x="100" y="88" text-anchor="middle" fill="white" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
 
@@ -261,22 +262,22 @@ const DoctorCard = ({ doctor }) => {
             </span>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.4rem' }}>
-            <Link
+          <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+            <SecondaryGlassButton
               to={`/doctors/${doctorId}`}
-              className="btn btn-outline btn-sm"
-              style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem', height: 'auto' }}
+              size="small"
+              style={{ fontSize: '0.75rem', padding: '0.35rem 0.7rem', minHeight: '32px' }}
             >
               View Profile
-            </Link>
-            <Link
+            </SecondaryGlassButton>
+            <PrimaryGlassButton
               to={`/doctors/${doctorId}`}
-              className="btn btn-primary btn-sm"
-              style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem', height: 'auto', gap: '0.25rem' }}
+              size="small"
+              icon={<Calendar size={13} />}
+              style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem', minHeight: '32px' }}
             >
-              <Calendar size={12} />
-              Book
-            </Link>
+              Book Appointment
+            </PrimaryGlassButton>
           </div>
         </div>
       </div>

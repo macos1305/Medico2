@@ -27,6 +27,7 @@ import {
   Info,
   MapPin,
 } from 'lucide-react';
+import { GlassButton, PrimaryGlassButton, SecondaryGlassButton } from '../../components/common/buttons';
 
 const SAMPLE_PROMPTS = [
   'I have frequent headaches and dizziness.',
@@ -258,43 +259,29 @@ const RecommendDoctorPage = () => {
                 </div>
 
                 {/* Submit Action */}
-                <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+                <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', alignItems: 'center' }}>
                   {result && (
-                    <button
-                      type="button"
+                    <GlassButton
+                      variant="outline"
+                      size="medium"
                       onClick={() => {
                         setSymptoms('');
                         setResult(null);
                       }}
-                      className="btn btn-outline"
                     >
                       Clear
-                    </button>
+                    </GlassButton>
                   )}
-                  <button
+                  <GlassButton
+                    variant="ai"
                     type="submit"
-                    disabled={loading || !symptoms.trim()}
-                    className="btn btn-primary"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      padding: '0.65rem 1.4rem',
-                      fontWeight: 700,
-                    }}
+                    size="medium"
+                    loading={loading}
+                    disabled={!symptoms.trim()}
+                    icon={<Sparkles size={17} />}
                   >
-                    {loading ? (
-                      <>
-                        <RefreshCw size={17} className="animate-spin" />
-                        <span>Analyzing Symptoms...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles size={17} />
-                        <span>Find Matching Specialists</span>
-                      </>
-                    )}
-                  </button>
+                    Find Matching Specialists
+                  </GlassButton>
                 </div>
               </form>
             </div>
@@ -580,9 +567,9 @@ const RecommendDoctorPage = () => {
                     <p style={{ margin: '0.35rem 0 1rem 0', fontSize: '0.85rem', color: 'var(--slate-500)' }}>
                       Try selecting "All" to view all practitioners matching your symptoms.
                     </p>
-                    <button onClick={() => setFilterSpecialty('ALL')} className="btn btn-secondary btn-sm">
+                    <SecondaryGlassButton onClick={() => setFilterSpecialty('ALL')} size="sm">
                       View All Matches
-                    </button>
+                    </SecondaryGlassButton>
                   </div>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -817,23 +804,20 @@ const RecommendDoctorPage = () => {
                               flexWrap: 'wrap',
                             }}
                           >
-                            <button
-                              type="button"
-                              onClick={() => navigate(`/doctors/${doc._id}`)}
-                              className="btn btn-outline btn-sm"
+                            <SecondaryGlassButton
+                              size="small"
+                              to={`/doctors/${doc._id}`}
                             >
                               View Full Profile
-                            </button>
+                            </SecondaryGlassButton>
 
-                            <button
-                              type="button"
+                            <PrimaryGlassButton
+                              size="small"
                               onClick={() => handleBookDoctor(doc)}
-                              className="btn btn-primary btn-sm"
-                              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
+                              icon={<Calendar size={15} />}
                             >
-                              <Calendar size={15} />
-                              <span>Book Consultation</span>
-                            </button>
+                              Book Consultation
+                            </PrimaryGlassButton>
                           </div>
                         </div>
                       );

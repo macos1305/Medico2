@@ -20,6 +20,7 @@ import {
   ShieldCheck,
   Camera,
 } from 'lucide-react';
+import { PrimaryGlassButton } from '../../components/common/buttons';
 
 const DoctorProfilePage = () => {
   const { user, profile, updateUserData } = useAuth();
@@ -397,15 +398,15 @@ const DoctorProfilePage = () => {
                     borderTop: '1px solid var(--border-subtle)',
                   }}
                 >
-                  <button
+                  <PrimaryGlassButton
                     type="submit"
-                    className="btn btn-primary btn-lg"
-                    disabled={saving}
-                    style={{ minWidth: '180px', gap: '0.5rem' }}
+                    size="large"
+                    loading={saving}
+                    icon={<Save size={18} />}
+                    style={{ minWidth: '180px' }}
                   >
-                    <Save size={18} />
-                    <span>{saving ? 'Saving Profile...' : 'Save Profile Changes'}</span>
-                  </button>
+                    Save Profile Changes
+                  </PrimaryGlassButton>
                 </div>
               </form>
             )}

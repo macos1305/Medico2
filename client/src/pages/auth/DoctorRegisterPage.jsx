@@ -17,6 +17,7 @@ import {
   AlertCircle,
   Activity,
 } from 'lucide-react';
+import { GlassButton } from '../../components/common/buttons';
 
 const DoctorRegisterPage = () => {
   const { registerDoctor } = useAuth();
@@ -449,21 +450,19 @@ const DoctorRegisterPage = () => {
             </div>
 
             {/* Submit */}
-            <button
-              type="submit"
-              className="btn btn-primary btn-block"
-              style={{ marginTop: '1.5rem', height: '46px' }}
-              disabled={loading}
-            >
-              {loading ? (
-                <div className="spinner" style={{ width: '20px', height: '20px' }}></div>
-              ) : (
-                <>
-                  <span>Submit Application for Credentialing</span>
-                  <ArrowRight size={18} />
-                </>
-              )}
-            </button>
+            <div style={{ marginTop: '1.5rem' }}>
+              <GlassButton
+                type="submit"
+                variant="primary"
+                size="large"
+                fullWidth
+                loading={loading}
+                icon={<ArrowRight size={18} />}
+                iconPosition="right"
+              >
+                Submit Application for Credentialing
+              </GlassButton>
+            </div>
           </form>
         </div>
 

@@ -25,6 +25,7 @@ import {
   Building2,
   Phone,
 } from 'lucide-react';
+import { GlassButton, PrimaryGlassButton, SecondaryGlassButton, DangerGlassButton } from '../../components/common/buttons';
 
 const DoctorDashboard = () => {
   const { user, profile } = useAuth();
@@ -148,14 +149,12 @@ const DoctorDashboard = () => {
               </div>
 
               <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
-                <Link to="/doctor/appointments" className="btn btn-secondary btn-sm">
-                  <Calendar size={16} />
+                <SecondaryGlassButton to="/doctor/appointments" size="small" icon={<Calendar size={15} />}>
                   Appointments
-                </Link>
-                <Link to="/doctor/availability" className="btn btn-primary btn-sm">
-                  <Clock size={16} />
-                  Availability
-                </Link>
+                </SecondaryGlassButton>
+                <PrimaryGlassButton to="/doctor/availability" size="small" icon={<Clock size={15} />}>
+                  Manage Availability
+                </PrimaryGlassButton>
               </div>
             </div>
 
@@ -307,43 +306,38 @@ const DoctorDashboard = () => {
 
                         {/* Right: Actions */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <button
-                            type="button"
+                          <SecondaryGlassButton
+                            size="small"
                             onClick={() => {
                               setSelectedAppt(appt);
                               setDetailsModalOpen(true);
                             }}
-                            className="btn btn-secondary btn-sm"
-                            style={{ gap: '0.35rem' }}
+                            icon={<Eye size={14} />}
                           >
-                            <Eye size={14} />
-                            <span>Details</span>
-                          </button>
+                            Details
+                          </SecondaryGlassButton>
 
                           {isActionable && (
                             <>
-                              <button
-                                type="button"
+                              <PrimaryGlassButton
+                                size="small"
                                 disabled={actionLoading}
                                 onClick={() => handleMarkComplete(appt)}
-                                className="btn btn-primary btn-sm"
-                                style={{ gap: '0.35rem' }}
+                                icon={<Check size={14} />}
                                 title="Mark as Completed"
                               >
-                                <Check size={14} />
-                                <span>Complete</span>
-                              </button>
+                                Complete
+                              </PrimaryGlassButton>
 
-                              <button
-                                type="button"
+                              <DangerGlassButton
+                                size="small"
                                 disabled={actionLoading}
                                 onClick={() => handleOpenReject(appt)}
-                                className="btn btn-ghost btn-sm"
-                                style={{ color: 'var(--accent-rose)' }}
+                                icon={<Ban size={14} />}
                                 title="Cancel visit"
                               >
-                                <Ban size={15} />
-                              </button>
+                                Cancel
+                              </DangerGlassButton>
                             </>
                           )}
                         </div>

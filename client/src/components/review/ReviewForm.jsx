@@ -3,6 +3,7 @@ import StarRating from './StarRating';
 import reviewService from '../../services/reviewService';
 import { useToast } from '../../context/ToastContext';
 import { Send, X, AlertCircle } from 'lucide-react';
+import { IconGlassButton, SecondaryGlassButton, PrimaryGlassButton } from '../common/buttons';
 
 /**
  * ReviewForm
@@ -80,13 +81,13 @@ const ReviewForm = ({ appointment, doctorName, onSuccess, onClose }) => {
           </p>
         </div>
         {onClose && (
-          <button
+          <IconGlassButton
             onClick={onClose}
-            className="btn btn-ghost btn-icon btn-sm"
+            variant="ghost"
+            size="sm"
+            icon={<X size={16} />}
             aria-label="Close review form"
-          >
-            <X size={16} />
-          </button>
+          />
         )}
       </div>
 
@@ -149,22 +150,20 @@ const ReviewForm = ({ appointment, doctorName, onSuccess, onClose }) => {
         {/* Actions */}
         <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
           {onClose && (
-            <button type="button" onClick={onClose} className="btn btn-secondary btn-sm">
+            <SecondaryGlassButton size="sm" onClick={onClose}>
               Cancel
-            </button>
+            </SecondaryGlassButton>
           )}
-          <button
+          <PrimaryGlassButton
             type="submit"
-            className="btn btn-primary btn-sm"
+            size="sm"
             disabled={submitting || rating === 0}
+            loading={submitting}
+            icon={<Send size={14} />}
             id="submit-review-btn"
           >
-            {submitting ? (
-              <><div className="spinner spinner-sm" /> Submitting...</>
-            ) : (
-              <><Send size={14} /> Submit Review</>
-            )}
-          </button>
+            {submitting ? 'Submitting...' : 'Submit Review'}
+          </PrimaryGlassButton>
         </div>
       </form>
     </div>

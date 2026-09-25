@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertCircle, RefreshCw } from 'lucide-react';
+import { SecondaryGlassButton } from './buttons';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -91,10 +92,9 @@ class ErrorBoundary extends React.Component {
             )}
           </div>
 
-          <button onClick={this.handleReset} className="btn btn-outline">
-            <RefreshCw size={16} />
+          <SecondaryGlassButton onClick={this.handleReset} icon={<RefreshCw size={16} />}>
             Try Again
-          </button>
+          </SecondaryGlassButton>
         </div>
       );
     }

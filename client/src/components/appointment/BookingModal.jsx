@@ -16,6 +16,7 @@ import {
   Stethoscope,
   LogIn,
 } from 'lucide-react';
+import { GlassButton, PrimaryGlassButton, SecondaryGlassButton } from '../common/buttons';
 
 const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
   const { isAuthenticated, role } = useAuth();
@@ -177,12 +178,12 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
               You must be logged in as a patient to schedule verified medical consultations.
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
-              <Link to="/login" className="btn btn-primary" onClick={onClose}>
+              <PrimaryGlassButton to="/login" onClick={onClose}>
                 Sign In
-              </Link>
-              <Link to="/register/patient" className="btn btn-secondary" onClick={onClose}>
+              </PrimaryGlassButton>
+              <SecondaryGlassButton to="/register/patient" onClick={onClose}>
                 Register Account
-              </Link>
+              </SecondaryGlassButton>
             </div>
           </div>
         ) : role !== 'PATIENT' ? (
@@ -301,29 +302,22 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
                 borderTop: '1px solid var(--border-subtle)',
               }}
             >
-              <button
-                type="button"
-                className="btn btn-secondary"
+              <SecondaryGlassButton
                 onClick={onClose}
                 disabled={loading}
               >
                 Cancel
-              </button>
-              <button
+              </SecondaryGlassButton>
+              <GlassButton
+                variant="success"
                 type="submit"
-                className="btn btn-primary"
-                disabled={loading || !selectedSlot}
-                style={{ minWidth: '160px' }}
+                loading={loading}
+                disabled={!selectedSlot}
+                icon={<CheckCircle2 size={16} />}
+                style={{ minWidth: '170px' }}
               >
-                {loading ? (
-                  <div className="spinner" style={{ width: '18px', height: '18px' }}></div>
-                ) : (
-                  <>
-                    <CheckCircle2 size={16} />
-                    <span>Confirm Booking</span>
-                  </>
-                )}
-              </button>
+                Confirm Booking
+              </GlassButton>
             </div>
           </form>
         )}

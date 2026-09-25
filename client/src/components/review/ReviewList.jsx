@@ -6,6 +6,7 @@ import EmptyState from '../common/EmptyState';
 import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
 import { Trash2, EyeOff, Eye, MessageSquare, ChevronDown } from 'lucide-react';
+import { IconGlassButton, SecondaryGlassButton } from '../common/buttons';
 
 const formatDate = (dateStr) => {
   try {
@@ -234,24 +235,24 @@ const ReviewList = ({ doctorId, summary }) => {
                     <StarRating value={review.rating} readOnly size={16} />
                     {isAdmin && (
                       <>
-                        <button
+                        <IconGlassButton
                           onClick={() => handleToggleVisibility(review._id, review.isVisible !== false)}
-                          className="btn btn-ghost btn-icon btn-sm"
+                          variant="ghost"
+                          size="sm"
                           disabled={isActing}
                           title={review.isVisible === false ? 'Restore review' : 'Hide review'}
                           style={{ color: review.isVisible === false ? 'var(--primary-600)' : 'var(--slate-400)' }}
-                        >
-                          {review.isVisible === false ? <Eye size={14} /> : <EyeOff size={14} />}
-                        </button>
-                        <button
+                          icon={review.isVisible === false ? <Eye size={14} /> : <EyeOff size={14} />}
+                        />
+                        <IconGlassButton
                           onClick={() => handleDelete(review._id)}
-                          className="btn btn-ghost btn-icon btn-sm"
+                          variant="ghost"
+                          size="sm"
                           disabled={isActing}
                           title="Delete review"
                           style={{ color: 'var(--accent-rose)' }}
-                        >
-                          <Trash2 size={14} />
-                        </button>
+                          icon={<Trash2 size={14} />}
+                        />
                       </>
                     )}
                   </div>
@@ -300,14 +301,14 @@ const ReviewList = ({ doctorId, summary }) => {
           {/* Load more */}
           {page < totalPages && (
             <div style={{ textAlign: 'center', marginTop: '0.5rem' }}>
-              <button
-                className="btn btn-secondary btn-sm"
+              <SecondaryGlassButton
+                size="sm"
                 onClick={handleLoadMore}
                 disabled={loading}
+                icon={<ChevronDown size={16} />}
               >
-                <ChevronDown size={16} />
                 Load More Reviews
-              </button>
+              </SecondaryGlassButton>
             </div>
           )}
 

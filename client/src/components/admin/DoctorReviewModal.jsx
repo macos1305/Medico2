@@ -18,6 +18,7 @@ import {
   UserCheck,
   UserX,
 } from 'lucide-react';
+import { GlassButton, SecondaryGlassButton, DangerGlassButton } from '../common/buttons';
 
 const DoctorReviewModal = ({
   isOpen,
@@ -230,20 +231,19 @@ const DoctorReviewModal = ({
               style={{ marginBottom: '0.75rem' }}
             />
             <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
+              <SecondaryGlassButton
+                size="small"
                 onClick={() => setRejecting(false)}
               >
                 Cancel
-              </button>
-              <button
+              </SecondaryGlassButton>
+              <DangerGlassButton
+                size="small"
                 type="submit"
-                className="btn btn-danger btn-sm"
-                disabled={actionLoading}
+                loading={actionLoading}
               >
                 Confirm Rejection
-              </button>
+              </DangerGlassButton>
             </div>
           </form>
         )}
@@ -261,60 +261,46 @@ const DoctorReviewModal = ({
           }}
         >
           {/* Account Activate / Deactivate Toggle */}
-          <button
-            type="button"
+          <GlassButton
+            variant={isActive ? 'outline' : 'secondary'}
+            size="small"
             disabled={actionLoading}
             onClick={() => onToggleStatus(doctor._id, !isActive)}
-            className={`btn btn-sm ${isActive ? 'btn-outline' : 'btn-secondary'}`}
-            style={{ gap: '0.4rem' }}
+            icon={isActive ? <UserX size={15} color="var(--accent-rose)" /> : <UserCheck size={15} color="var(--primary-600)" />}
           >
-            {isActive ? (
-              <>
-                <UserX size={15} color="var(--accent-rose)" />
-                <span>Deactivate Account</span>
-              </>
-            ) : (
-              <>
-                <UserCheck size={15} color="var(--primary-600)" />
-                <span>Activate Account</span>
-              </>
-            )}
-          </button>
+            {isActive ? 'Deactivate Account' : 'Activate Account'}
+          </GlassButton>
 
           {/* Approval Controls */}
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <button
-              type="button"
-              className="btn btn-secondary btn-sm"
+            <SecondaryGlassButton
+              size="small"
               onClick={onClose}
             >
               Close
-            </button>
+            </SecondaryGlassButton>
 
             {status !== 'APPROVED' && (
-              <button
-                type="button"
+              <GlassButton
+                variant="success"
+                size="small"
                 disabled={actionLoading}
                 onClick={() => onApprove(doctor._id)}
-                className="btn btn-primary btn-sm"
-                style={{ gap: '0.35rem' }}
+                icon={<CheckCircle2 size={15} />}
               >
-                <CheckCircle2 size={15} />
-                <span>Approve Credentials</span>
-              </button>
+                Approve Credentials
+              </GlassButton>
             )}
 
             {status !== 'REJECTED' && !rejecting && (
-              <button
-                type="button"
+              <DangerGlassButton
+                size="small"
                 disabled={actionLoading}
                 onClick={() => setRejecting(true)}
-                className="btn btn-danger btn-sm"
-                style={{ gap: '0.35rem' }}
+                icon={<XCircle size={15} />}
               >
-                <XCircle size={15} />
-                <span>Reject</span>
-              </button>
+                Reject
+              </DangerGlassButton>
             )}
           </div>
         </div>

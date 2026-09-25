@@ -14,6 +14,7 @@ import {
   Ban,
   CheckCircle2,
 } from 'lucide-react';
+import { SecondaryGlassButton, GlassButton, DangerGlassButton } from '../common/buttons';
 
 const AppointmentDetails = ({
   isOpen,
@@ -240,35 +241,32 @@ const AppointmentDetails = ({
             gap: '0.75rem',
           }}
         >
-          <button type="button" className="btn btn-secondary" onClick={onClose}>
+          <SecondaryGlassButton onClick={onClose}>
             Close
-          </button>
+          </SecondaryGlassButton>
 
           {isActionable && (
             <div style={{ display: 'flex', gap: '0.75rem' }}>
-              <button
-                type="button"
-                className="btn btn-outline"
+              <GlassButton
+                variant="outline"
                 onClick={() => {
                   onClose();
                   if (onRescheduleClick) onRescheduleClick(appointment);
                 }}
+                icon={<RotateCcw size={15} />}
               >
-                <RotateCcw size={15} />
-                <span>Reschedule</span>
-              </button>
+                Reschedule
+              </GlassButton>
 
-              <button
-                type="button"
-                className="btn btn-danger"
+              <DangerGlassButton
                 onClick={() => {
                   onClose();
                   if (onCancelClick) onCancelClick(appointment);
                 }}
+                icon={<Ban size={15} />}
               >
-                <Ban size={15} />
-                <span>Cancel</span>
-              </button>
+                Cancel
+              </DangerGlassButton>
             </div>
           )}
         </div>

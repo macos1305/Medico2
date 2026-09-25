@@ -19,6 +19,7 @@ import {
   Building2,
   ShieldCheck,
 } from 'lucide-react';
+import { GlassButton, SecondaryGlassButton, IconGlassButton } from '../../components/common/buttons';
 
 const AdminDoctorsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -304,43 +305,39 @@ const AdminDoctorsPage = () => {
                           flexWrap: 'wrap',
                         }}
                       >
-                        <button
-                          type="button"
+                        <SecondaryGlassButton
+                          size="small"
                           onClick={() => {
                             setSelectedDoctor(doc);
                             setReviewModalOpen(true);
                           }}
-                          className="btn btn-secondary btn-sm"
-                          style={{ flex: 1, gap: '0.35rem' }}
+                          icon={<Eye size={14} />}
+                          style={{ flex: 1 }}
                         >
-                          <Eye size={14} />
-                          <span>Review</span>
-                        </button>
+                          Review
+                        </SecondaryGlassButton>
 
                         {status !== 'APPROVED' && (
-                          <button
-                            type="button"
+                          <GlassButton
+                            variant="success"
+                            size="small"
                             disabled={actionLoading}
                             onClick={() => handleApprove(doc._id)}
-                            className="btn btn-primary btn-sm"
-                            style={{ gap: '0.25rem' }}
+                            icon={<Check size={14} />}
                             title="Approve Credentials"
                           >
-                            <Check size={14} />
-                            <span>Approve</span>
-                          </button>
+                            Approve
+                          </GlassButton>
                         )}
 
-                        <button
-                          type="button"
+                        <IconGlassButton
+                          variant={isActive ? 'ghost' : 'outline'}
+                          size="small"
                           disabled={actionLoading}
                           onClick={() => handleToggleStatus(doc._id, !isActive)}
-                          className={`btn btn-sm ${isActive ? 'btn-ghost' : 'btn-outline'}`}
-                          style={{ color: isActive ? 'var(--accent-rose)' : 'var(--primary-600)', padding: '0.4rem 0.5rem' }}
+                          icon={isActive ? <UserX size={15} color="var(--accent-rose)" /> : <UserCheck size={15} color="var(--medico-primary)" />}
                           title={isActive ? 'Deactivate Doctor Account' : 'Activate Doctor Account'}
-                        >
-                          {isActive ? <UserX size={15} /> : <UserCheck size={15} />}
-                        </button>
+                        />
                       </div>
                     </div>
                   );
