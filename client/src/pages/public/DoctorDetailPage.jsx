@@ -25,8 +25,8 @@ import {
   Star,
 } from 'lucide-react';
 import { GlassButton, PrimaryGlassButton } from '../../components/common/buttons';
+import DoctorAvatar from '../../components/common/DoctorAvatar';
 
-const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#0f172a"/><circle cx="100" cy="78" r="38" fill="#1e293b"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#1e293b"/><text x="100" y="88" text-anchor="middle" fill="#60a5fa" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
 
 const DoctorDetailPage = () => {
   const { id } = useParams();
@@ -36,7 +36,7 @@ const DoctorDetailPage = () => {
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
-  const [imgError, setImgError] = useState(false);
+
 
   useEffect(() => {
     const fetchDoctor = async () => {
@@ -139,11 +139,12 @@ const DoctorDetailPage = () => {
                 boxShadow: '0 0 25px rgba(59, 130, 246, 0.25)',
               }}
             >
-              <img
-                src={imgError || !profileImg ? FALLBACK_AVATAR : profileImg}
-                alt={doctorName}
-                onError={() => setImgError(true)}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              <DoctorAvatar
+                src={profileImg}
+                name={doctorName}
+                fullWidth
+                borderRadius="18px"
+                objectPosition="center top"
               />
             </div>
 

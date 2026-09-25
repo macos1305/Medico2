@@ -3,12 +3,8 @@ import { Link } from 'react-router-dom';
 import { Star, ArrowRight } from 'lucide-react';
 import doctorService from '../../services/doctorService';
 import { GlassButton } from '../common/buttons';
+import DoctorAvatar from '../common/DoctorAvatar';
 
-const FALLBACK_AVATAR =
-  'data:image/svg+xml,' +
-  encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 200 200"><rect width="200" height="200" fill="#0f172a"/><circle cx="100" cy="78" r="38" fill="#334155"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#334155"/><text x="100" y="88" text-anchor="middle" fill="white" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`
-  );
 
 const FeaturedDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -70,19 +66,18 @@ const FeaturedDoctors = () => {
             const exp = doc.experienceYears ?? doc.experience ?? 8;
             const rating = doc.rating?.average || 4.8;
             const fee = doc.consultationFee || 800;
-            const avatar = doc.user?.profileImage || doc.user?.avatar || doc.profileImage || FALLBACK_AVATAR;
+            const avatar = doc.user?.profileImage || doc.user?.avatar || doc.profileImage;
 
             return (
               <div key={id} className="doctor-glass-card">
                 {/* Media image */}
                 <div className="doctor-card-media">
-                  <img
+                  <DoctorAvatar
                     src={avatar}
-                    alt={name}
-                    className="doctor-card-img"
-                    onError={(e) => {
-                      e.currentTarget.src = FALLBACK_AVATAR;
-                    }}
+                    name={name}
+                    fullWidth
+                    borderRadius="0"
+                    objectPosition="center top"
                   />
                   <div className="doctor-card-badge">
                     <Star size={12} fill="#fbbf24" color="#fbbf24" />

@@ -11,6 +11,8 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { GlassButton, SecondaryGlassButton, DangerGlassButton } from '../common/buttons';
+import DoctorAvatar from '../common/DoctorAvatar';
+
 
 const AppointmentCard = ({
   appointment,
@@ -22,6 +24,10 @@ const AppointmentCard = ({
     appointment.doctor?.user?.name ||
     appointment.doctor?.name ||
     'Medical Specialist';
+  const doctorImg =
+    appointment.doctor?.user?.profileImage ||
+    appointment.doctor?.user?.avatar ||
+    appointment.doctor?.profileImage;
   const specialization =
     appointment.doctor?.specialization || 'Clinical Specialist';
   const hospital =
@@ -126,17 +132,26 @@ const AppointmentCard = ({
         </div>
 
         {/* Doctor Info */}
-        <div style={{ marginBottom: '1.2rem' }}>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.35rem' }}>
-            {doctorName}
-          </h3>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: '#818cf8', fontWeight: 600 }}>
-            <Stethoscope size={14} />
-            <span>{specialization}</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.5)', marginTop: '0.25rem' }}>
-            <Building2 size={13} />
-            <span>{hospital}</span>
+        <div style={{ marginBottom: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <DoctorAvatar
+            src={doctorImg}
+            name={doctorName}
+            size={52}
+            borderRadius="14px"
+            style={{ flexShrink: 0 }}
+          />
+          <div>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.3rem' }}>
+              {doctorName}
+            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem', color: '#818cf8', fontWeight: 600 }}>
+              <Stethoscope size={13} />
+              <span>{specialization}</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.5)', marginTop: '0.2rem' }}>
+              <Building2 size={12} />
+              <span>{hospital}</span>
+            </div>
           </div>
         </div>
 

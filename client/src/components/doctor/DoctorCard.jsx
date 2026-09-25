@@ -11,8 +11,8 @@ import {
   User,
 } from 'lucide-react';
 import { PrimaryGlassButton, SecondaryGlassButton } from '../common/buttons';
+import DoctorAvatar from '../common/DoctorAvatar';
 
-const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#0f172a"/><circle cx="100" cy="78" r="38" fill="#38bdf8" opacity="0.3"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#38bdf8" opacity="0.2"/><text x="100" y="88" text-anchor="middle" fill="#38bdf8" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
 
 const DoctorCard = ({ doctor }) => {
   const doctorName = doctor.user?.name || doctor.name || 'Medical Specialist';
@@ -29,7 +29,6 @@ const DoctorCard = ({ doctor }) => {
   const ratingCount = doctor.rating?.count || 0;
   const doctorId = doctor._id;
 
-  const [imgError, setImgError] = useState(false);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -83,16 +82,12 @@ const DoctorCard = ({ doctor }) => {
           justifyContent: 'center',
         }}
       >
-        <img
-          src={imgError || !profileImg ? FALLBACK_AVATAR : profileImg}
-          alt={doctorName}
-          onError={() => setImgError(true)}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center top',
-          }}
+        <DoctorAvatar
+          src={profileImg}
+          name={doctorName}
+          fullWidth
+          borderRadius="0"
+          objectPosition="center top"
         />
         {/* Subtle dark gradient overlay at bottom of photo */}
         <div
