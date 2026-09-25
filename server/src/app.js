@@ -41,6 +41,10 @@ app.use(
       if (allowedOrigins.includes('*') || allowedOrigins.includes(normalizedOrigin)) {
         return callback(null, true);
       }
+      // Allow Vercel preview deployments (e.g. medico2-xyz-username.vercel.app)
+      if (/^https:\/\/medico2[a-z0-9-]*\.vercel\.app$/.test(normalizedOrigin)) {
+        return callback(null, true);
+      }
       return callback(new Error(`Origin ${origin} not allowed by CORS`));
     },
     credentials: true,
