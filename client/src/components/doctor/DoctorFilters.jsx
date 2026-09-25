@@ -1,5 +1,5 @@
 import React from 'react';
-import { Filter, RotateCcw, Stethoscope, DollarSign, Award, Star, Users, ArrowUpDown } from 'lucide-react';
+import { Filter, RotateCcw, Stethoscope, IndianRupee, Award, Star, Users, ArrowUpDown } from 'lucide-react';
 
 const DoctorFilters = ({
   specializations = [],
@@ -107,7 +107,7 @@ const DoctorFilters = ({
       <div className="form-group" style={{ marginBottom: '1rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
           <label className="form-label" style={{ marginBottom: 0, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <DollarSign size={15} color="var(--primary-600)" />
+            <IndianRupee size={15} color="var(--primary-600)" />
             Max Fee
           </label>
           <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary-700)' }}>

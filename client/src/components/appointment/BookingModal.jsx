@@ -8,7 +8,7 @@ import {
   X,
   Calendar,
   Clock,
-  DollarSign,
+  IndianRupee,
   AlertCircle,
   FileText,
   Activity,
@@ -156,7 +156,7 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
             <span>•</span>
             <span style={{ color: 'var(--primary-700)', fontWeight: 600 }}>{specialization}</span>
             <span>•</span>
-            <span style={{ fontWeight: 700, color: 'var(--slate-900)' }}>${fee}</span>
+            <span style={{ fontWeight: 700, color: 'var(--slate-900)' }}>₹{fee}</span>
           </div>
         </div>
 
@@ -251,7 +251,7 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
                     <strong>{selectedSlot.startTime} - {selectedSlot.endTime}</strong>
                   </span>
                 </div>
-                <span style={{ fontWeight: 700, color: 'var(--primary-800)' }}>${fee}</span>
+                <span style={{ fontWeight: 700, color: 'var(--primary-800)' }}>₹{fee}</span>
               </div>
             )}
 

@@ -10,7 +10,7 @@ import {
   Stethoscope,
   Award,
   Building2,
-  DollarSign,
+  IndianRupee,
   Calendar,
   Clock,
   MapPin,
@@ -220,7 +220,7 @@ const DoctorDetailPage = () => {
                   color: 'var(--primary-800)',
                 }}
               >
-                <DollarSign size={14} />
+                <IndianRupee size={14} />
                 Consultation Fee: ₹{fee}
               </div>
             </div>

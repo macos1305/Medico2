@@ -11,7 +11,7 @@ import {
   Stethoscope,
   GraduationCap,
   Award,
-  DollarSign,
+  IndianRupee,
   Building2,
   MapPin,
   FileText,
@@ -298,7 +298,7 @@ const DoctorProfilePage = () => {
                   {/* Consultation Fee */}
                   <div className="form-group" style={{ marginBottom: 0 }}>
                     <label className="form-label" htmlFor="fee">
-                      Consultation Fee (USD $) *
+                      Consultation Fee (INR ₹) *
                     </label>
                     <input
                       id="fee"

@@ -282,7 +282,7 @@ const AdminDoctorsPage = () => {
                           </div>
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <span style={{ color: 'var(--slate-400)' }}>Experience / Fee:</span>
-                            <span>{doc.experienceYears} Years • ${doc.consultationFee}</span>
+                            <span>{doc.experienceYears} Years • ₹{doc.consultationFee}</span>
                           </div>
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <span style={{ color: 'var(--slate-400)' }}>Hospital:</span>

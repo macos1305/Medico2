@@ -8,7 +8,7 @@ import {
   Building2,
   MapPin,
   Award,
-  DollarSign,
+  IndianRupee,
   GraduationCap,
   FileText,
   Mail,
@@ -145,7 +145,7 @@ const DoctorReviewModal = ({
           </div>
           <div>
             <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Experience & Fee</span>
-            <span>{doctor.experienceYears} Years • ${doctor.consultationFee} / visit</span>
+            <span>{doctor.experienceYears} Years • ₹{doctor.consultationFee} / visit</span>
           </div>
           <div>
             <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Hospital & Location</span>

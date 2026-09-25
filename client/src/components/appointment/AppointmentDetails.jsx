@@ -6,7 +6,7 @@ import {
   User,
   Stethoscope,
   Building2,
-  DollarSign,
+  IndianRupee,
   FileText,
   Activity,
   AlertCircle,
@@ -141,7 +141,7 @@ const AppointmentDetails = ({
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '0.75rem', color: 'var(--slate-400)' }}>Consultation Fee</div>
             <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--slate-900)' }}>
-              ${fee}
+              ₹{fee}
             </div>
           </div>
         </div>

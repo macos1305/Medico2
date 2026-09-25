@@ -16,7 +16,7 @@ import {
   CheckCircle2,
   Clock,
   Award,
-  DollarSign,
+  IndianRupee,
   Building2,
   ArrowRight,
   ShieldCheck,
@@ -747,7 +747,7 @@ const RecommendDoctorPage = () => {
                                 <span>{doc.matchScore}% Match</span>
                               </div>
                               <span style={{ fontSize: '0.75rem', color: 'var(--slate-400)', marginTop: '0.25rem' }}>
-                                Fee: ${doc.consultationFee || 50}
+                                Fee: ₹{doc.consultationFee || 500}
                               </span>
                             </div>
                           </div>

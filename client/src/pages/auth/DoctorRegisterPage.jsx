@@ -9,7 +9,7 @@ import {
   Lock,
   Phone,
   Award,
-  DollarSign,
+  IndianRupee,
   Building2,
   FileText,
   ArrowRight,
@@ -382,14 +382,14 @@ const DoctorRegisterPage = () => {
 
               <div className="form-group">
                 <label className="form-label" htmlFor="consultationFee">
-                  Consultation Fee (USD $)
+                  Consultation Fee (INR ₹)
                 </label>
                 <div style={{ position: 'relative' }}>
                   <input
                     id="consultationFee"
                     type="number"
                     min="0"
-                    step="5"
+                    step="50"
                     name="consultationFee"
                     className="form-input"
                     value={formData.consultationFee}
@@ -397,7 +397,7 @@ const DoctorRegisterPage = () => {
                     style={{ paddingLeft: '2.5rem' }}
                     disabled={loading}
                   />
-                  <DollarSign
+                  <IndianRupee
                     size={18}
                     color="var(--slate-400)"
                     style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}

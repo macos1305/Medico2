@@ -389,7 +389,7 @@ const DoctorDashboard = () => {
                 </div>
                 <div>
                   <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Consultation Fee</span>
-                  <span style={{ fontWeight: 700, color: 'var(--primary-700)' }}>${profile?.consultationFee || 0}</span>
+                  <span style={{ fontWeight: 700, color: 'var(--primary-700)' }}>₹{profile?.consultationFee || 0}</span>
                 </div>
                 <div>
                   <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Hospital Affiliation</span>
