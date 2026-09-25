@@ -3,15 +3,19 @@ const User = require('../models/User');
 
 /**
  * Query doctors with search, filters, and sorting
+ * Publicly returns ONLY approved and active doctors
  */
 const getAllDoctors = async (query = {}) => {
   const {
     search,
     specialization,
     minExperience,
+    maxExperience,
     experience,
+    minFee,
     maxFee,
     fee,
+    location,
     sort,
     sortBy,
     approvalStatus,
@@ -23,30 +27,46 @@ const getAllDoctors = async (query = {}) => {
   const filter = {};
 
   // Status filter (default to APPROVED for public queries)
-  if (approvalStatus) {
-    filter.approvalStatus = approvalStatus;
-  }
+  filter.approvalStatus = approvalStatus || 'APPROVED';
+  filter.isActive = { $ne: false };
 
   // Specialization filter
-  if (specialization && specialization !== 'All') {
+  if (specialization && specialization !== 'All' && specialization.trim()) {
     filter.specialization = new RegExp(`^${specialization.trim()}$`, 'i');
   }
 
-  // Experience filter
-  const expValue = Number(experience || minExperience);
-  if (!isNaN(expValue) && expValue > 0) {
-    filter.experienceYears = { $gte: expValue };
+  // Location filter
+  if (location && location.trim()) {
+    filter.location = new RegExp(location.trim(), 'i');
   }
 
-  // Fee filter
-  const feeValue = Number(fee || maxFee);
-  if (!isNaN(feeValue) && feeValue > 0) {
-    filter.consultationFee = { $lte: feeValue };
+  // Experience filter (supports minExperience, maxExperience, or experience alias)
+  const minExp = Number(minExperience || experience);
+  const maxExp = Number(maxExperience);
+  if (!isNaN(minExp) || !isNaN(maxExp)) {
+    filter.experienceYears = {};
+    if (!isNaN(minExp) && minExp > 0) filter.experienceYears.$gte = minExp;
+    if (!isNaN(maxExp) && maxExp > 0) filter.experienceYears.$lte = maxExp;
+    if (Object.keys(filter.experienceYears).length === 0) {
+      delete filter.experienceYears;
+    }
+  }
+
+  // Fee filter (supports minFee, maxFee, or fee alias)
+  const minF = Number(minFee);
+  const maxF = Number(maxFee || fee);
+  if (!isNaN(minF) || !isNaN(maxF)) {
+    filter.consultationFee = {};
+    if (!isNaN(minF) && minF > 0) filter.consultationFee.$gte = minF;
+    if (!isNaN(maxF) && maxF > 0) filter.consultationFee.$lte = maxF;
+    if (Object.keys(filter.consultationFee).length === 0) {
+      delete filter.consultationFee;
+    }
   }
 
   // Gender filter
-  if (gender && gender !== 'All') {
-    filter.gender = gender;
+  if (gender && gender !== 'All' && gender.trim()) {
+    filter.gender = gender.trim();
   }
 
   // Rating filter
@@ -58,31 +78,31 @@ const getAllDoctors = async (query = {}) => {
   // Build query
   let mongoQuery = Doctor.find(filter).populate({
     path: 'user',
-    select: 'name email phone profileImage avatar isActive',
+    select: 'name email phone profileImage avatar isActive role',
   });
 
   // Sorting - support both 'sort' and 'sortBy' params
   const sortParam = sortBy || sort;
-  if (sortParam === 'fee_asc' || sortParam === 'fee-asc') {
+  if (sortParam === 'fee_asc' || sortParam === 'fee-asc' || sortParam === 'fee_low') {
     mongoQuery = mongoQuery.sort({ consultationFee: 1 });
-  } else if (sortParam === 'fee_desc' || sortParam === 'fee-desc') {
+  } else if (sortParam === 'fee_desc' || sortParam === 'fee-desc' || sortParam === 'fee_high') {
     mongoQuery = mongoQuery.sort({ consultationFee: -1 });
   } else if (sortParam === 'experience_desc' || sortParam === 'experience-desc' || sortParam === 'experience') {
     mongoQuery = mongoQuery.sort({ experienceYears: -1 });
   } else if (sortParam === 'rating' || sortParam === 'rating_desc' || sortParam === 'rating-desc') {
-    mongoQuery = mongoQuery.sort({ 'rating.average': -1 });
-  } else if (sortParam === 'fee') {
-    mongoQuery = mongoQuery.sort({ consultationFee: 1 });
+    mongoQuery = mongoQuery.sort({ 'rating.average': -1, 'rating.count': -1 });
+  } else if (sortParam === 'newest') {
+    mongoQuery = mongoQuery.sort({ createdAt: -1 });
   } else {
-    mongoQuery = mongoQuery.sort({ 'rating.average': -1, createdAt: -1 });
+    mongoQuery = mongoQuery.sort({ 'rating.average': -1, 'rating.count': -1, createdAt: -1 });
   }
 
   let doctors = await mongoQuery;
 
-  // Filter out inactive users
-  doctors = doctors.filter((doc) => doc.user?.isActive !== false);
+  // Filter out any entries where linked user is inactive or missing
+  doctors = doctors.filter((doc) => doc.user && doc.user.isActive !== false && doc.isActive !== false);
 
-  // Search keyword filter across populated user name or bio/hospital
+  // Search keyword filter across user name, specialization, hospital, bio, or location
   if (search && search.trim()) {
     const term = search.trim().toLowerCase();
     doctors = doctors.filter((doc) => {
@@ -104,16 +124,17 @@ const getAllDoctors = async (query = {}) => {
 const getFeaturedDoctors = async (limit = 6) => {
   const doctors = await Doctor.find({
     approvalStatus: 'APPROVED',
+    isActive: { $ne: false },
     'rating.average': { $gt: 0 },
   })
     .populate({
       path: 'user',
-      select: 'name email phone profileImage avatar isActive',
+      select: 'name email phone profileImage avatar isActive role',
     })
     .sort({ 'rating.average': -1, 'rating.count': -1 })
     .limit(limit);
 
-  return doctors.filter((doc) => doc.user?.isActive !== false);
+  return doctors.filter((doc) => doc.user && doc.user.isActive !== false && doc.isActive !== false);
 };
 
 /**
@@ -126,7 +147,7 @@ const getDoctorById = async (id) => {
   if (id.match(/^[0-9a-fA-F]{24}$/)) {
     doctor = await Doctor.findById(id).populate({
       path: 'user',
-      select: 'name email phone profileImage avatar isActive',
+      select: 'name email phone profileImage avatar isActive role',
     });
   }
 
@@ -134,7 +155,7 @@ const getDoctorById = async (id) => {
   if (!doctor && id.match(/^[0-9a-fA-F]{24}$/)) {
     doctor = await Doctor.findOne({ user: id }).populate({
       path: 'user',
-      select: 'name email phone profileImage avatar isActive',
+      select: 'name email phone profileImage avatar isActive role',
     });
   }
 
@@ -144,8 +165,7 @@ const getDoctorById = async (id) => {
     throw error;
   }
 
-  // Ensure availability overview is present
-  const docObj = doctor.toObject();
+  const docObj = doctor.toObject ? doctor.toObject() : doctor;
   docObj.availability = docObj.availability || {
     days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     hours: '09:00 AM - 05:00 PM',

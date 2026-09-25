@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import SearchBar from '../../components/doctor/SearchBar';
 import DoctorFilters from '../../components/doctor/DoctorFilters';
 import DoctorCard from '../../components/doctor/DoctorCard';
@@ -9,18 +10,31 @@ import specializationService from '../../services/specializationService';
 import { Stethoscope, RotateCcw } from 'lucide-react';
 
 const DoctorListPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [doctors, setDoctors] = useState([]);
   const [specializations, setSpecializations] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filters State
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedSpecialization, setSelectedSpecialization] = useState('');
-  const [minExperience, setMinExperience] = useState('0');
-  const [maxFee, setMaxFee] = useState(2000);
-  const [selectedGender, setSelectedGender] = useState('');
-  const [minRating, setMinRating] = useState('0');
-  const [sortBy, setSortBy] = useState('');
+  // Filters State initialized from URL query params
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+  const [selectedSpecialization, setSelectedSpecialization] = useState(searchParams.get('specialization') || '');
+  const [minExperience, setMinExperience] = useState(searchParams.get('minExperience') || '0');
+  const [maxFee, setMaxFee] = useState(Number(searchParams.get('maxFee')) || 2000);
+  const [selectedGender, setSelectedGender] = useState(searchParams.get('gender') || '');
+  const [minRating, setMinRating] = useState(searchParams.get('minRating') || '0');
+  const [sortBy, setSortBy] = useState(searchParams.get('sortBy') || '');
+
+  // Synchronize when URL search parameters change
+  useEffect(() => {
+    const urlSearch = searchParams.get('search');
+    const urlSpec = searchParams.get('specialization');
+    if (urlSearch !== null && urlSearch !== searchTerm) {
+      setSearchTerm(urlSearch);
+    }
+    if (urlSpec !== null && urlSpec !== selectedSpecialization) {
+      setSelectedSpecialization(urlSpec);
+    }
+  }, [searchParams]);
 
   // Fetch specializations on mount
   useEffect(() => {
@@ -44,10 +58,12 @@ const DoctorListPage = () => {
     try {
       const params = {};
       if (searchTerm.trim()) params.search = searchTerm.trim();
-      if (selectedSpecialization) params.specialization = selectedSpecialization;
-      if (Number(minExperience) > 0) params.experience = minExperience;
-      if (maxFee < 2000) params.fee = maxFee;
-      if (selectedGender) params.gender = selectedGender;
+      if (selectedSpecialization && selectedSpecialization !== 'All') {
+        params.specialization = selectedSpecialization;
+      }
+      if (Number(minExperience) > 0) params.minExperience = minExperience;
+      if (maxFee < 2000) params.maxFee = maxFee;
+      if (selectedGender && selectedGender !== 'All') params.gender = selectedGender;
       if (Number(minRating) > 0) params.minRating = minRating;
       if (sortBy) params.sortBy = sortBy;
 
@@ -78,6 +94,7 @@ const DoctorListPage = () => {
     setSelectedGender('');
     setMinRating('0');
     setSortBy('');
+    setSearchParams({});
   };
 
   return (

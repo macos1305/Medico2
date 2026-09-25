@@ -70,6 +70,10 @@ const doctorSchema = new mongoose.Schema(
       default: 'PENDING',
       index: true,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     rejectionReason: {
       type: String,
       default: '',
@@ -81,11 +85,56 @@ const doctorSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
+// Virtual properties for universal field compatibility
+doctorSchema.virtual('name').get(function () {
+  return this.user?.name;
+});
+
+doctorSchema.virtual('email').get(function () {
+  return this.user?.email;
+});
+
+doctorSchema.virtual('role').get(function () {
+  return this.user?.role || 'DOCTOR';
+});
+
+doctorSchema.virtual('profileImage').get(function () {
+  return this.user?.profileImage || this.user?.avatar;
+});
+
+doctorSchema.virtual('qualification').get(function () {
+  return Array.isArray(this.qualifications) && this.qualifications.length > 0
+    ? this.qualifications.join(', ')
+    : '';
+});
+
+doctorSchema.virtual('experience').get(function () {
+  return this.experienceYears;
+});
+
+doctorSchema.virtual('hospital').get(function () {
+  return this.hospitalAffiliation;
+});
+
+doctorSchema.virtual('about').get(function () {
+  return this.bio;
+});
+
+doctorSchema.virtual('status').get(function () {
+  return this.approvalStatus;
+});
+
+doctorSchema.virtual('totalReviews').get(function () {
+  return this.rating?.count || 0;
+});
 
 doctorSchema.set('toJSON', {
+  virtuals: true,
   transform: (doc, ret) => {
     delete ret.__v;
     return ret;

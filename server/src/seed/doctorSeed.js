@@ -1,13 +1,11 @@
 /**
- * MEDICO — Doctor Seed Script
+ * MEDICO — Production Realistic Doctor Seed Script
  *
- * Creates 25 fictional demo doctors across 15 specializations.
- * Uses DiceBear Avatars API for professional-looking demo avatars.
+ * Populates MongoDB with 30 realistic FICTIONAL doctor profiles across 15 medical specializations.
+ * All doctor identities, hospital affiliations, and details are strictly fictional.
+ * Uses diverse, professional head-and-shoulders portrait photography for demo purposes.
  *
  * Usage: node server/src/seed/doctorSeed.js
- *
- * IMPORTANT: All doctor identities are entirely fictional.
- * This data is for demonstration / development purposes only.
  */
 
 require('dotenv').config({ path: require('path').join(__dirname, '../../.env') });
@@ -16,56 +14,50 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const Doctor = require('../models/Doctor');
 const Specialization = require('../models/Specialization');
+const Availability = require('../models/Availability');
 
 // ──────────────────────────────────────────────────────────────────
-// Avatar URL generator using DiceBear (open, no auth required)
-// ──────────────────────────────────────────────────────────────────
-const getAvatarUrl = (seed, gender) => {
-  // Using DiceBear's "avataaars" style for professional cartoon avatars
-  const style = 'avataaars';
-  return `https://api.dicebear.com/7.x/${style}/svg?seed=${encodeURIComponent(seed)}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
-};
-
-// ──────────────────────────────────────────────────────────────────
-// Specializations to seed
+// 15 Medical Specializations to seed
 // ──────────────────────────────────────────────────────────────────
 const specializations = [
-  { name: 'Cardiologist', description: 'Heart and cardiovascular system specialists', icon: 'HeartPulse' },
-  { name: 'Dermatologist', description: 'Skin, hair, and nail care specialists', icon: 'Sparkles' },
-  { name: 'Neurologist', description: 'Brain and nervous system specialists', icon: 'Brain' },
-  { name: 'Pediatrician', description: 'Child and adolescent healthcare', icon: 'Baby' },
-  { name: 'Orthopedic Doctor', description: 'Bone, joint, and musculoskeletal specialists', icon: 'Bone' },
-  { name: 'Gynecologist', description: 'Women\'s reproductive health specialists', icon: 'Heart' },
-  { name: 'General Physician', description: 'Primary care and general medicine', icon: 'Stethoscope' },
-  { name: 'ENT Specialist', description: 'Ear, nose, and throat specialists', icon: 'Ear' },
-  { name: 'Ophthalmologist', description: 'Eye and vision care specialists', icon: 'Eye' },
-  { name: 'Dentist', description: 'Oral health and dental care', icon: 'Smile' },
-  { name: 'Psychiatrist', description: 'Mental health and behavioral specialists', icon: 'Brain' },
-  { name: 'Gastroenterologist', description: 'Digestive system specialists', icon: 'Pill' },
-  { name: 'Pulmonologist', description: 'Lung and respiratory system specialists', icon: 'Wind' },
-  { name: 'Endocrinologist', description: 'Hormone and metabolism specialists', icon: 'Activity' },
-  { name: 'Urologist', description: 'Urinary tract and male reproductive specialists', icon: 'Stethoscope' },
+  { name: 'Cardiologist', description: 'Heart, blood vessels, and cardiovascular conditions', icon: 'HeartPulse' },
+  { name: 'Dermatologist', description: 'Skin, hair, nails, and cosmetic dermatological health', icon: 'Sparkles' },
+  { name: 'Neurologist', description: 'Brain, nervous system, and neuromuscular disorders', icon: 'Brain' },
+  { name: 'Pediatrician', description: 'Infant, child, and adolescent healthcare & wellness', icon: 'Baby' },
+  { name: 'Orthopedic Specialist', description: 'Bones, joints, spine, and musculoskeletal surgery', icon: 'Bone' },
+  { name: 'Gynecologist', description: 'Women’s reproductive health, obstetrics, and prenatal care', icon: 'Heart' },
+  { name: 'General Physician', description: 'Primary care, preventive health, and internal medicine', icon: 'Stethoscope' },
+  { name: 'ENT Specialist', description: 'Ear, nose, throat, head, and neck clinical care', icon: 'Ear' },
+  { name: 'Ophthalmologist', description: 'Comprehensive eye care, cataract surgery, and vision health', icon: 'Eye' },
+  { name: 'Dentist', description: 'Oral healthcare, orthodontics, and restorative dentistry', icon: 'Smile' },
+  { name: 'Psychiatrist', description: 'Mental health, behavioral wellness, and cognitive support', icon: 'Brain' },
+  { name: 'Gastroenterologist', description: 'Digestive tract, liver health, and endoscopy procedures', icon: 'Pill' },
+  { name: 'Pulmonologist', description: 'Lungs, respiratory health, and sleep apnea care', icon: 'Wind' },
+  { name: 'Endocrinologist', description: 'Hormones, metabolism, thyroid, and diabetes management', icon: 'Activity' },
+  { name: 'Urologist', description: 'Urinary system, kidney stones, and male health', icon: 'Stethoscope' },
 ];
 
 // ──────────────────────────────────────────────────────────────────
-// 25 Fictional Doctor Profiles
+// 30 Fictional Indian Doctor Profiles
+// Natural variation across experience (3–20 yrs), fee (₹400–₹1500), ratings (4.1–4.9)
 // ──────────────────────────────────────────────────────────────────
 const doctors = [
-  // Cardiologists (2)
+  // ── Cardiologists (2) ──
   {
     name: 'Dr. Ananya Sharma',
     email: 'ananya.sharma@medico.demo',
     specialization: 'Cardiologist',
     qualification: 'MBBS, MD Cardiology, DM Interventional Cardiology',
     experience: 12,
-    fee: 800,
-    hospital: 'Medico Heart Care Centre',
+    consultationFee: 800,
+    hospital: 'Apollo Heart Centre',
     location: 'Hyderabad, Telangana',
-    bio: 'Dr. Ananya Sharma is an experienced interventional cardiologist with over 12 years of dedicated practice in preventive and clinical cardiology. She specializes in complex angioplasties, cardiac catheterization, and heart failure management. Committed to evidence-based care with a compassionate approach.',
+    about: 'Dr. Ananya Sharma is a senior interventional cardiologist with 12 years of dedicated practice in preventive and clinical cardiology. She specializes in coronary angioplasties, cardiac catheterization, and post-infarction care.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Telugu'],
     rating: 4.8,
-    reviews: 124,
+    reviews: 142,
+    profileImage: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600',
   },
   {
     name: 'Dr. Vikram Patel',
@@ -73,31 +65,33 @@ const doctors = [
     specialization: 'Cardiologist',
     qualification: 'MBBS, MD Medicine, DM Cardiology',
     experience: 18,
-    fee: 1200,
-    hospital: 'Medico Cardiac Institute',
+    consultationFee: 1200,
+    hospital: 'Fortis Cardiac Institute',
     location: 'Mumbai, Maharashtra',
-    bio: 'Dr. Vikram Patel brings 18 years of advanced expertise in cardiac electrophysiology, arrhythmia management, and pacemaker implantation. A pioneer in minimally invasive cardiac procedures, he leads the electrophysiology department with a focus on patient-centered outcomes.',
+    about: 'Dr. Vikram Patel brings 18 years of advanced expertise in cardiac electrophysiology, complex arrhythmia management, and pacemaker implantation. He is recognized for patient-centered clinical precision.',
     gender: 'Male',
     languages: ['English', 'Hindi', 'Gujarati'],
     rating: 4.9,
-    reviews: 212,
+    reviews: 218,
+    profileImage: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Dermatologists (2)
+  // ── Dermatologists (2) ──
   {
     name: 'Dr. Priya Reddy',
     email: 'priya.reddy@medico.demo',
     specialization: 'Dermatologist',
     qualification: 'MBBS, MD Dermatology, Fellowship in Cosmetic Dermatology',
     experience: 8,
-    fee: 600,
-    hospital: 'Medico Skin & Aesthetics Clinic',
+    consultationFee: 650,
+    hospital: 'KIMS Skin & Aesthetics Care',
     location: 'Bangalore, Karnataka',
-    bio: 'Dr. Priya Reddy is a board-certified dermatologist with 8 years of clinical experience in medical and cosmetic dermatology. She specializes in acne treatment, pigmentation disorders, laser therapies, and anti-aging procedures. Known for her gentle approach and thorough consultations.',
+    about: 'Dr. Priya Reddy is a board-certified dermatologist with 8 years of clinical experience in pediatric and adult dermatology. She specializes in acne, eczema, psoriasis therapies, and laser skin treatments.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Kannada', 'Telugu'],
     rating: 4.9,
-    reviews: 187,
+    reviews: 195,
+    profileImage: 'https://images.unsplash.com/photo-1594824813633-898243832f2b?auto=format&fit=crop&q=80&w=600',
   },
   {
     name: 'Dr. Arjun Nair',
@@ -105,31 +99,33 @@ const doctors = [
     specialization: 'Dermatologist',
     qualification: 'MBBS, DVD, DNB Dermatology',
     experience: 6,
-    fee: 500,
-    hospital: 'Medico Derma Solutions',
+    consultationFee: 500,
+    hospital: 'Aster Derma Clinic',
     location: 'Chennai, Tamil Nadu',
-    bio: 'Dr. Arjun Nair specializes in clinical dermatology with a focus on psoriasis, eczema, and autoimmune skin disorders. With 6 years of practice, he combines evidence-based treatments with holistic skin care approaches for comprehensive patient outcomes.',
+    about: 'Dr. Arjun Nair combines evidence-based dermatological clinical protocols with compassionate patient counseling. He focuses on autoimmune skin disorders, hair restoration, and allergy management.',
     gender: 'Male',
     languages: ['English', 'Hindi', 'Tamil', 'Malayalam'],
     rating: 4.5,
-    reviews: 93,
+    reviews: 98,
+    profileImage: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Neurologists (2)
+  // ── Neurologists (2) ──
   {
     name: 'Dr. Rahul Mehta',
     email: 'rahul.mehta@medico.demo',
     specialization: 'Neurologist',
     qualification: 'MBBS, MD Neurology, DM Neurology',
     experience: 9,
-    fee: 900,
-    hospital: 'Medico Neuro Sciences Centre',
+    consultationFee: 900,
+    hospital: 'Max Neuro Sciences Centre',
     location: 'Delhi, NCR',
-    bio: 'Dr. Rahul Mehta is a skilled neurologist with 9 years of experience in diagnosing and treating complex neurological disorders including epilepsy, stroke recovery, and neurodegenerative diseases. Known for his meticulous diagnostic approach and compassionate patient care.',
+    about: 'Dr. Rahul Mehta is an accomplished neurologist with 9 years of experience treating complex neurological disorders including epilepsy, acute stroke rehabilitation, and multiple sclerosis.',
     gender: 'Male',
     languages: ['English', 'Hindi'],
     rating: 4.7,
-    reviews: 156,
+    reviews: 164,
+    profileImage: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=600',
   },
   {
     name: 'Dr. Kavitha Sundaram',
@@ -137,31 +133,33 @@ const doctors = [
     specialization: 'Neurologist',
     qualification: 'MBBS, MD Internal Medicine, DM Neurology',
     experience: 15,
-    fee: 1100,
-    hospital: 'Medico Brain & Spine Institute',
+    consultationFee: 1100,
+    hospital: 'Manipal Brain & Spine Institute',
     location: 'Hyderabad, Telangana',
-    bio: 'Dr. Kavitha Sundaram is a senior neurologist with 15 years of clinical expertise in headache disorders, multiple sclerosis, and movement disorders. She leads the headache clinic and is recognized for her research contributions in migraine management.',
+    about: 'Dr. Kavitha Sundaram is a senior consultant neurologist with 15 years of hospital practice specializing in chronic migraine management, Parkinson’s disease, and neuropathies.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Telugu', 'Tamil'],
     rating: 4.6,
-    reviews: 108,
+    reviews: 112,
+    profileImage: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Pediatricians (2)
+  // ── Pediatricians (2) ──
   {
-    name: 'Dr. Sneha Kulkarni',
-    email: 'sneha.kulkarni@medico.demo',
+    name: 'Dr. Sneha Kapoor',
+    email: 'sneha.kapoor@medico.demo',
     specialization: 'Pediatrician',
     qualification: 'MBBS, MD Pediatrics, Fellowship in Neonatology',
     experience: 10,
-    fee: 500,
-    hospital: 'Medico Children\'s Hospital',
+    consultationFee: 550,
+    hospital: 'Rainbow Children’s Hospital',
     location: 'Pune, Maharashtra',
-    bio: 'Dr. Sneha Kulkarni is a compassionate pediatrician with 10 years of experience in child healthcare, vaccination programs, and neonatal care. She takes a family-centered approach and is known for making children feel comfortable during consultations.',
+    about: 'Dr. Sneha Kapoor is a warm, empathetic pediatrician with 10 years of experience in newborn intensive care, immunization schedules, and developmental milestones evaluation.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Marathi'],
     rating: 4.8,
-    reviews: 201,
+    reviews: 215,
+    profileImage: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?auto=format&fit=crop&q=80&w=600',
   },
   {
     name: 'Dr. Arun Krishnan',
@@ -169,63 +167,83 @@ const doctors = [
     specialization: 'Pediatrician',
     qualification: 'MBBS, DCH, DNB Pediatrics',
     experience: 7,
-    fee: 450,
-    hospital: 'Medico Kids Care Clinic',
+    consultationFee: 450,
+    hospital: 'Aster Kids Clinic',
     location: 'Kochi, Kerala',
-    bio: 'Dr. Arun Krishnan specializes in pediatric infectious diseases, growth disorders, and adolescent medicine. With 7 years of practice, he provides evidence-based care combined with a warm, child-friendly clinical environment.',
+    about: 'Dr. Arun Krishnan specializes in pediatric infectious diseases, childhood asthma, and adolescent health. He provides dedicated support in a calming, child-friendly environment.',
     gender: 'Male',
     languages: ['English', 'Hindi', 'Malayalam'],
     rating: 4.4,
-    reviews: 89,
+    reviews: 94,
+    profileImage: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Orthopedic Doctors (2)
+  // ── Orthopedic Specialists (3) ──
   {
     name: 'Dr. Sanjay Gupta',
     email: 'sanjay.gupta@medico.demo',
-    specialization: 'Orthopedic Doctor',
+    specialization: 'Orthopedic Specialist',
     qualification: 'MBBS, MS Orthopedics, Fellowship in Joint Replacement',
     experience: 15,
-    fee: 1000,
-    hospital: 'Medico Bone & Joint Centre',
+    consultationFee: 1000,
+    hospital: 'Medanta Bone & Joint Institute',
     location: 'Delhi, NCR',
-    bio: 'Dr. Sanjay Gupta is a leading orthopedic surgeon with 15 years of expertise in total knee and hip replacement surgery. He has performed over 2,000 joint replacement procedures and is recognized for his minimally invasive surgical techniques.',
+    about: 'Dr. Sanjay Gupta is a recognized joint reconstruction specialist with 15 years of surgical experience in computer-navigated total knee and hip arthroplasty.',
     gender: 'Male',
     languages: ['English', 'Hindi', 'Punjabi'],
     rating: 4.7,
-    reviews: 178,
+    reviews: 186,
+    profileImage: 'https://images.unsplash.com/photo-1622902046580-2b47f47f5471?auto=format&fit=crop&q=80&w=600',
   },
   {
     name: 'Dr. Meera Joshi',
     email: 'meera.joshi@medico.demo',
-    specialization: 'Orthopedic Doctor',
+    specialization: 'Orthopedic Specialist',
     qualification: 'MBBS, MS Orthopedics, MCh Spine Surgery',
     experience: 11,
-    fee: 850,
-    hospital: 'Medico Spine & Trauma Hospital',
+    consultationFee: 850,
+    hospital: 'Sterling Spine & Trauma Hospital',
     location: 'Ahmedabad, Gujarat',
-    bio: 'Dr. Meera Joshi is an accomplished orthopedic and spine surgeon with 11 years of clinical practice. She specializes in spinal decompression, fracture management, and sports injury rehabilitation with a focus on restoring mobility and quality of life.',
+    about: 'Dr. Meera Joshi specializes in spinal decompression, disc herniation treatment, and musculoskeletal trauma rehabilitation, focusing on restoring patient mobility without prolonged bed rest.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Gujarati'],
     rating: 4.5,
-    reviews: 132,
+    reviews: 138,
+    profileImage: 'https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    name: 'Dr. Vikram Rao',
+    email: 'vikram.rao@medico.demo',
+    specialization: 'Orthopedic Specialist',
+    qualification: 'MBBS, MS Orthopedics, Fellowship in Sports Medicine',
+    experience: 8,
+    consultationFee: 700,
+    hospital: 'Sparsh Sports Care Clinic',
+    location: 'Bangalore, Karnataka',
+    about: 'Dr. Vikram Rao works extensively with competitive athletes and active individuals, specializing in arthroscopic shoulder and ACL ligament reconstructions.',
+    gender: 'Male',
+    languages: ['English', 'Hindi', 'Kannada'],
+    rating: 4.6,
+    reviews: 110,
+    profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Gynecologist (2)
+  // ── Gynecologists (2) ──
   {
     name: 'Dr. Deepa Iyer',
     email: 'deepa.iyer@medico.demo',
     specialization: 'Gynecologist',
     qualification: 'MBBS, MS Obstetrics & Gynecology, Fellowship in Reproductive Medicine',
     experience: 14,
-    fee: 700,
-    hospital: 'Medico Women\'s Health Centre',
+    consultationFee: 750,
+    hospital: 'Cloudnine Women’s Health Clinic',
     location: 'Chennai, Tamil Nadu',
-    bio: 'Dr. Deepa Iyer is a senior gynecologist and obstetrician with 14 years of experience in high-risk pregnancy management, laparoscopic surgery, and fertility treatments. She is committed to providing comprehensive women\'s health care in a supportive environment.',
+    about: 'Dr. Deepa Iyer is a senior obstetrician and gynecologist with 14 years of practice managing high-risk pregnancies, PCOS, laparoscopic myomectomies, and reproductive wellness.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Tamil'],
     rating: 4.8,
-    reviews: 245,
+    reviews: 260,
+    profileImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600',
   },
   {
     name: 'Dr. Rashmi Desai',
@@ -233,31 +251,33 @@ const doctors = [
     specialization: 'Gynecologist',
     qualification: 'MBBS, DGO, DNB Obstetrics & Gynecology',
     experience: 9,
-    fee: 600,
-    hospital: 'Medico Maternity & Women\'s Hospital',
+    consultationFee: 600,
+    hospital: 'Motherhood Maternity Hospital',
     location: 'Mumbai, Maharashtra',
-    bio: 'Dr. Rashmi Desai specializes in prenatal care, PCOS management, and minimally invasive gynecological procedures. With 9 years of dedicated practice, she combines clinical excellence with empathetic patient communication.',
+    about: 'Dr. Rashmi Desai emphasizes preventive screening, prenatal nutrition, and minimally invasive gynecological care for women at all life stages.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Marathi'],
     rating: 4.6,
-    reviews: 167,
+    reviews: 172,
+    profileImage: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=600',
   },
 
-  // General Physician (2)
+  // ── General Physicians (2) ──
   {
     name: 'Dr. Ramesh Verma',
     email: 'ramesh.verma@medico.demo',
     specialization: 'General Physician',
     qualification: 'MBBS, MD General Medicine',
     experience: 20,
-    fee: 400,
-    hospital: 'Medico Family Health Clinic',
+    consultationFee: 400,
+    hospital: 'Sanjeevani Community Health Clinic',
     location: 'Jaipur, Rajasthan',
-    bio: 'Dr. Ramesh Verma is a seasoned general physician with 20 years of practice in primary care, chronic disease management, and preventive medicine. He believes in building long-term patient relationships and providing holistic healthcare solutions.',
+    about: 'Dr. Ramesh Verma has provided dedicated primary care for two decades, specializing in diabetes prevention, hypertension management, and seasonal infectious illness management.',
     gender: 'Male',
     languages: ['English', 'Hindi', 'Rajasthani'],
     rating: 4.6,
-    reviews: 312,
+    reviews: 320,
+    profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600',
   },
   {
     name: 'Dr. Fatima Khan',
@@ -265,182 +285,287 @@ const doctors = [
     specialization: 'General Physician',
     qualification: 'MBBS, FCPS General Medicine',
     experience: 5,
-    fee: 350,
-    hospital: 'Medico Care Polyclinic',
+    consultationFee: 400,
+    hospital: 'Sahara Care Clinic',
     location: 'Lucknow, Uttar Pradesh',
-    bio: 'Dr. Fatima Khan is a young and dynamic general physician specializing in lifestyle diseases, diabetes management, and routine health check-ups. She takes a preventive approach to medicine and advocates for healthy living through patient education.',
+    about: 'Dr. Fatima Khan is a dynamic physician focused on adult immunizations, thyroid health, and personalized lifestyle medicine for chronic disease mitigation.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Urdu'],
     rating: 4.3,
-    reviews: 76,
+    reviews: 82,
+    profileImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=600',
   },
 
-  // ENT Specialist (1)
+  // ── ENT Specialists (2) ──
   {
     name: 'Dr. Suresh Baliga',
     email: 'suresh.baliga@medico.demo',
     specialization: 'ENT Specialist',
     qualification: 'MBBS, MS ENT, Fellowship in Head & Neck Surgery',
     experience: 13,
-    fee: 700,
-    hospital: 'Medico ENT & Head Neck Centre',
+    consultationFee: 700,
+    hospital: 'Columbia Asia ENT Care',
     location: 'Bangalore, Karnataka',
-    bio: 'Dr. Suresh Baliga is an experienced ENT surgeon with 13 years of expertise in endoscopic sinus surgery, tonsillectomy, and hearing disorders. He is known for his precise surgical skills and thorough post-operative care protocols.',
+    about: 'Dr. Suresh Baliga is an experienced otolaryngologist with 13 years of expertise in endoscopic sinus surgery, micro-ear surgery for hearing restoration, and tonsillitis treatment.',
     gender: 'Male',
     languages: ['English', 'Hindi', 'Kannada'],
     rating: 4.5,
-    reviews: 98,
+    reviews: 104,
+    profileImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    name: 'Dr. Neha Iyer',
+    email: 'neha.iyer@medico.demo',
+    specialization: 'ENT Specialist',
+    qualification: 'MBBS, DLO, DNB Otorhinolaryngology',
+    experience: 7,
+    consultationFee: 550,
+    hospital: 'Care ENT Clinic',
+    location: 'Hyderabad, Telangana',
+    about: 'Dr. Neha Iyer focuses on pediatric ENT conditions, allergic rhinitis, snoring/sleep apnea management, and vertigo diagnostics.',
+    gender: 'Female',
+    languages: ['English', 'Hindi', 'Telugu'],
+    rating: 4.6,
+    reviews: 90,
+    profileImage: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Ophthalmologist (1)
+  // ── Ophthalmologists (2) ──
   {
     name: 'Dr. Nandini Rao',
     email: 'nandini.rao@medico.demo',
     specialization: 'Ophthalmologist',
-    qualification: 'MBBS, MS Ophthalmology, Fellowship in Retina',
+    qualification: 'MBBS, MS Ophthalmology, Fellowship in Vitreo-Retina',
     experience: 11,
-    fee: 650,
-    hospital: 'Medico Eye Care Hospital',
+    consultationFee: 650,
+    hospital: 'Sankara Eye Foundation',
     location: 'Hyderabad, Telangana',
-    bio: 'Dr. Nandini Rao is a skilled ophthalmologist specializing in retinal disorders, cataract surgery, and LASIK procedures. With 11 years of clinical experience, she has restored vision for thousands of patients using cutting-edge ophthalmic technology.',
+    about: 'Dr. Nandini Rao is a vitreoretinal and micro-incision cataract surgeon with 11 years of experience in diabetic retinopathy screening and laser treatments.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Telugu'],
     rating: 4.7,
-    reviews: 143,
+    reviews: 152,
+    profileImage: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    name: 'Dr. Rohan Varma',
+    email: 'rohan.varma@medico.demo',
+    specialization: 'Ophthalmologist',
+    qualification: 'MBBS, MS Ophthalmology, Fellowship in Cornea & Refractive Surgery',
+    experience: 8,
+    consultationFee: 600,
+    hospital: 'Vision First Eye Institute',
+    location: 'Mumbai, Maharashtra',
+    about: 'Dr. Rohan Varma specializes in blade-free LASIK refractive surgery, dry eye syndrome management, and pediatric visual acuity assessments.',
+    gender: 'Male',
+    languages: ['English', 'Hindi', 'Marathi'],
+    rating: 4.6,
+    reviews: 118,
+    profileImage: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Dentist (2)
+  // ── Dentists (2) ──
   {
     name: 'Dr. Karthik Menon',
     email: 'karthik.menon@medico.demo',
     specialization: 'Dentist',
-    qualification: 'BDS, MDS Prosthodontics',
+    qualification: 'BDS, MDS Prosthodontics & Implantology',
     experience: 8,
-    fee: 500,
-    hospital: 'Medico Dental Studio',
+    consultationFee: 500,
+    hospital: 'Smile Dental Studio',
     location: 'Chennai, Tamil Nadu',
-    bio: 'Dr. Karthik Menon is a prosthodontist with 8 years of expertise in dental implants, crowns, bridges, and cosmetic dentistry. He uses digital dental technology for precise treatment planning and natural-looking restorations.',
+    about: 'Dr. Karthik Menon is an implantologist with 8 years of clinical experience in porcelain veneers, root canal treatments, and digital smile design.',
     gender: 'Male',
     languages: ['English', 'Hindi', 'Tamil', 'Malayalam'],
     rating: 4.6,
-    reviews: 156,
+    reviews: 165,
+    profileImage: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600',
   },
   {
     name: 'Dr. Simran Kaur',
     email: 'simran.kaur@medico.demo',
     specialization: 'Dentist',
-    qualification: 'BDS, MDS Orthodontics',
+    qualification: 'BDS, MDS Orthodontics & Dentofacial Orthopedics',
     experience: 5,
-    fee: 450,
-    hospital: 'Medico Smile Dental Clinic',
+    consultationFee: 450,
+    hospital: 'Aura Orthodontic Clinic',
     location: 'Chandigarh, Punjab',
-    bio: 'Dr. Simran Kaur is an orthodontist specializing in braces, Invisalign, and teeth alignment treatments. With 5 years of practice, she creates beautiful smiles through personalized treatment plans and modern orthodontic techniques.',
+    about: 'Dr. Simran Kaur specializes in invisible aligners, lingual braces, and pediatric habit-breaking appliances to craft confident, radiant smiles.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Punjabi'],
     rating: 4.4,
-    reviews: 87,
+    reviews: 91,
+    profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Psychiatrist (1)
+  // ── Psychiatrists (2) ──
   {
     name: 'Dr. Nikhil Saxena',
     email: 'nikhil.saxena@medico.demo',
     specialization: 'Psychiatrist',
-    qualification: 'MBBS, MD Psychiatry, DM Clinical Psychology',
+    qualification: 'MBBS, MD Psychiatry, DNB Psychiatry',
     experience: 10,
-    fee: 800,
-    hospital: 'Medico Mind Wellness Centre',
+    consultationFee: 850,
+    hospital: 'Mindscape Mental Wellness Centre',
     location: 'Delhi, NCR',
-    bio: 'Dr. Nikhil Saxena is a psychiatrist with 10 years of clinical experience in anxiety disorders, depression, OCD, and stress management. He takes an integrative approach combining medication management with cognitive behavioral therapy for optimal patient outcomes.',
+    about: 'Dr. Nikhil Saxena provides supportive, stigma-free consultations for generalized anxiety, clinical depression, panic disorders, and executive burnout.',
     gender: 'Male',
     languages: ['English', 'Hindi'],
     rating: 4.7,
-    reviews: 134,
+    reviews: 140,
+    profileImage: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    name: 'Dr. Anjali Deshmukh',
+    email: 'anjali.deshmukh@medico.demo',
+    specialization: 'Psychiatrist',
+    qualification: 'MBBS, MD Psychiatry, Fellowship in Child & Adolescent Psychiatry',
+    experience: 8,
+    consultationFee: 800,
+    hospital: 'Inner Calm Clinic',
+    location: 'Pune, Maharashtra',
+    about: 'Dr. Anjali Deshmukh takes a holistic biopsychosocial approach, assisting students and working professionals in managing stress, ADHD, and emotional resilience.',
+    gender: 'Female',
+    languages: ['English', 'Hindi', 'Marathi'],
+    rating: 4.6,
+    reviews: 114,
+    profileImage: 'https://images.unsplash.com/photo-1557053910-d9eadeed1c58?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Gastroenterologist (1)
+  // ── Gastroenterologists (2) ──
   {
     name: 'Dr. Lakshmi Venkatesh',
     email: 'lakshmi.venkatesh@medico.demo',
     specialization: 'Gastroenterologist',
     qualification: 'MBBS, MD Medicine, DM Gastroenterology',
     experience: 12,
-    fee: 900,
-    hospital: 'Medico Digestive Health Institute',
+    consultationFee: 900,
+    hospital: 'AIG Digestive Health Institute',
     location: 'Hyderabad, Telangana',
-    bio: 'Dr. Lakshmi Venkatesh is a gastroenterologist with 12 years of expertise in endoscopy, liver diseases, inflammatory bowel disease, and acid reflux management. She is known for her accurate diagnostic skills and patient-centric treatment protocols.',
+    about: 'Dr. Lakshmi Venkatesh is an advanced gastroenterologist and hepatologist with 12 years of expertise in endoscopy, IBS management, fatty liver disease, and acid reflux.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Telugu', 'Tamil'],
     rating: 4.6,
-    reviews: 109,
+    reviews: 116,
+    profileImage: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    name: 'Dr. Alok Bannerjee',
+    email: 'alok.bannerjee@medico.demo',
+    specialization: 'Gastroenterologist',
+    qualification: 'MBBS, MD Internal Medicine, DM Medical Gastroenterology',
+    experience: 14,
+    consultationFee: 950,
+    hospital: 'Peerless Gastroenterology Centre',
+    location: 'Kolkata, West Bengal',
+    about: 'Dr. Alok Bannerjee has performed over 5,000 diagnostic and therapeutic endoscopies, specializing in Crohn’s disease, ulcerative colitis, and biliary tract disorders.',
+    gender: 'Male',
+    languages: ['English', 'Hindi', 'Bengali'],
+    rating: 4.7,
+    reviews: 158,
+    profileImage: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Pulmonologist (1)
+  // ── Pulmonologists (2) ──
   {
     name: 'Dr. Amit Chandra',
     email: 'amit.chandra@medico.demo',
     specialization: 'Pulmonologist',
-    qualification: 'MBBS, MD Pulmonary Medicine, Fellowship in Interventional Pulmonology',
+    qualification: 'MBBS, MD Pulmonary Medicine, Fellowship in Sleep Medicine',
     experience: 9,
-    fee: 750,
-    hospital: 'Medico Chest & Respiratory Clinic',
+    consultationFee: 750,
+    hospital: 'Fortis Chest Clinic',
     location: 'Kolkata, West Bengal',
-    bio: 'Dr. Amit Chandra specializes in asthma, COPD, sleep apnea, and lung infections. With 9 years of clinical practice, he uses advanced bronchoscopic techniques and pulmonary function testing for accurate diagnosis and effective treatment.',
+    about: 'Dr. Amit Chandra specializes in chronic cough, bronchial asthma, COPD rehabilitation, and diagnostic bronchoscopy for respiratory infections.',
     gender: 'Male',
     languages: ['English', 'Hindi', 'Bengali'],
     rating: 4.5,
-    reviews: 91,
+    reviews: 96,
+    profileImage: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    name: 'Dr. Ritu Singhania',
+    email: 'ritu.singhania@medico.demo',
+    specialization: 'Pulmonologist',
+    qualification: 'MBBS, DTCD, DNB Respiratory Medicine',
+    experience: 6,
+    consultationFee: 650,
+    hospital: 'Breathe Easy Respiratory Care',
+    location: 'Delhi, NCR',
+    about: 'Dr. Ritu Singhania evaluates occupational lung diseases, environmental allergies, and post-viral respiratory recovery with specialized pulmonary function tests.',
+    gender: 'Female',
+    languages: ['English', 'Hindi'],
+    rating: 4.4,
+    reviews: 84,
+    profileImage: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Endocrinologist (1)
+  // ── Endocrinologists (2) ──
   {
     name: 'Dr. Swati Mishra',
     email: 'swati.mishra@medico.demo',
     specialization: 'Endocrinologist',
     qualification: 'MBBS, MD Medicine, DM Endocrinology',
     experience: 7,
-    fee: 700,
-    hospital: 'Medico Diabetes & Thyroid Centre',
+    consultationFee: 700,
+    hospital: 'Jehangir Diabetes & Thyroid Centre',
     location: 'Pune, Maharashtra',
-    bio: 'Dr. Swati Mishra is an endocrinologist with 7 years of focused practice in diabetes management, thyroid disorders, PCOS-related hormonal issues, and metabolic syndrome. She emphasizes lifestyle modifications alongside medical treatment for sustainable health outcomes.',
+    about: 'Dr. Swati Mishra provides personalized metabolic care, focusing on Type 1 and Type 2 diabetes optimization, Hashimoto’s thyroiditis, and obesity medicine.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Marathi'],
     rating: 4.4,
-    reviews: 82,
+    reviews: 88,
+    profileImage: 'https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&q=80&w=600',
+  },
+  {
+    name: 'Dr. Karan Malhotra',
+    email: 'karan.malhotra@medico.demo',
+    specialization: 'Endocrinologist',
+    qualification: 'MBBS, MD Internal Medicine, DNB Endocrinology',
+    experience: 11,
+    consultationFee: 850,
+    hospital: 'Max Centre for Endocrinology',
+    location: 'Delhi, NCR',
+    about: 'Dr. Karan Malhotra has 11 years of experience in pituitary disorders, osteoporosis, adrenal insufficiency, and insulin pump therapies.',
+    gender: 'Male',
+    languages: ['English', 'Hindi', 'Punjabi'],
+    rating: 4.7,
+    reviews: 130,
+    profileImage: 'https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?auto=format&fit=crop&q=80&w=600',
   },
 
-  // Urologist (1)
+  // ── Urologists (2) ──
   {
     name: 'Dr. Rajiv Kapoor',
     email: 'rajiv.kapoor@medico.demo',
     specialization: 'Urologist',
     qualification: 'MBBS, MS General Surgery, MCh Urology',
     experience: 16,
-    fee: 950,
-    hospital: 'Medico Urology & Kidney Centre',
+    consultationFee: 1000,
+    hospital: 'Sir Ganga Ram Kidney & Urology Centre',
     location: 'Delhi, NCR',
-    bio: 'Dr. Rajiv Kapoor is a senior urologist with 16 years of surgical experience in kidney stones, prostate disorders, urinary incontinence, and robotic-assisted urological surgeries. He is renowned for his high success rates and minimally invasive surgical expertise.',
+    about: 'Dr. Rajiv Kapoor is a senior urologist with 16 years of expertise in laser prostatectomies, minimally invasive kidney stone removal (PCNL), and reconstructive urology.',
     gender: 'Male',
     languages: ['English', 'Hindi', 'Punjabi'],
     rating: 4.7,
-    reviews: 168,
+    reviews: 175,
+    profileImage: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=600',
   },
-
-  // Additional Orthopedic
   {
     name: 'Dr. Pooja Agarwal',
     email: 'pooja.agarwal@medico.demo',
-    specialization: 'Orthopedic Doctor',
-    qualification: 'MBBS, MS Orthopedics, Fellowship in Sports Medicine',
-    experience: 6,
-    fee: 650,
-    hospital: 'Medico Sports Injury & Rehab Centre',
+    specialization: 'Urologist',
+    qualification: 'MBBS, MS Surgery, MCh Urology, Fellowship in Endourology',
+    experience: 8,
+    consultationFee: 750,
+    hospital: 'Hinduja Urology & Kidney Care',
     location: 'Mumbai, Maharashtra',
-    bio: 'Dr. Pooja Agarwal is a sports medicine specialist with 6 years of experience treating athletic injuries, ligament tears, and fractures. She works closely with physiotherapists to design comprehensive rehabilitation programs for athletes and active individuals.',
+    about: 'Dr. Pooja Agarwal specializes in female urology, recurrent urinary tract infections, urinary incontinence treatments, and endoscopic stone surgery.',
     gender: 'Female',
     languages: ['English', 'Hindi', 'Marathi'],
-    rating: 4.3,
-    reviews: 64,
+    rating: 4.5,
+    reviews: 102,
+    profileImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600',
   },
 ];
 
@@ -448,12 +573,7 @@ const doctors = [
 // Main Seed Function
 // ──────────────────────────────────────────────────────────────────
 const seedDoctors = async () => {
-  console.log('========================================');
-  console.log('    MEDICO DOCTOR SEED SCRIPT');
-  console.log('========================================\n');
-
   try {
-    // Connect to MongoDB
     const mongoUri = process.env.MONGO_URI;
     if (!mongoUri) {
       console.error('ERROR: MONGO_URI is not defined in environment variables.');
@@ -461,55 +581,46 @@ const seedDoctors = async () => {
     }
 
     await mongoose.connect(mongoUri, { autoIndex: true });
-    console.log(`✓ Connected to MongoDB: ${mongoose.connection.host}\n`);
 
     // 1. Seed Specializations
-    console.log('── Seeding Specializations ──');
-    let specCount = 0;
     for (const spec of specializations) {
-      const exists = await Specialization.findOne({ name: spec.name });
-      if (!exists) {
-        await Specialization.create(spec);
-        specCount++;
-        console.log(`  ✓ Created: ${spec.name}`);
-      } else {
-        console.log(`  ○ Exists:  ${spec.name}`);
-      }
+      await Specialization.findOneAndUpdate(
+        { name: spec.name },
+        { ...spec },
+        { upsert: true, new: true }
+      );
     }
-    console.log(`  Total new specializations: ${specCount}\n`);
 
-    // 2. Clear existing demo doctors (those with @medico.demo email)
-    console.log('── Cleaning Existing Demo Doctors ──');
-    const existingDemoUsers = await User.find({ email: /@medico\.demo$/i });
+    // 2. Clean existing demo doctors to guarantee clean idempotent state
+    const demoEmails = doctors.map((d) => d.email.toLowerCase());
+    const existingDemoUsers = await User.find({
+      $or: [{ email: { $in: demoEmails } }, { email: /@medico\.demo$/i }],
+    });
     const demoUserIds = existingDemoUsers.map((u) => u._id);
 
     if (demoUserIds.length > 0) {
-      await Doctor.deleteMany({ user: { $in: demoUserIds } });
+      const existingDoctors = await Doctor.find({ user: { $in: demoUserIds } });
+      const doctorIds = existingDoctors.map((d) => d._id);
+      await Availability.deleteMany({ doctor: { $in: doctorIds } });
+      await Doctor.deleteMany({ _id: { $in: doctorIds } });
       await User.deleteMany({ _id: { $in: demoUserIds } });
-      console.log(`  ✓ Removed ${demoUserIds.length} existing demo doctors\n`);
-    } else {
-      console.log('  ○ No existing demo doctors found\n');
     }
 
-    // 3. Create Doctors
-    console.log('── Seeding Doctor Profiles ──');
+    // 3. Create Doctors & Availability
     const specSummary = {};
     const defaultPassword = await bcrypt.hash('Demo@12345', 10);
     let createdCount = 0;
 
     for (const doc of doctors) {
-      // Get avatar URL
-      const avatarUrl = getAvatarUrl(doc.name, doc.gender);
-
       // Create User
       const user = await User.create({
         name: doc.name,
-        email: doc.email,
+        email: doc.email.toLowerCase(),
         password: defaultPassword,
         role: 'DOCTOR',
         phone: `+91${Math.floor(7000000000 + Math.random() * 2999999999)}`,
-        profileImage: avatarUrl,
-        avatar: avatarUrl,
+        profileImage: doc.profileImage,
+        avatar: doc.profileImage,
         isActive: true,
       });
 
@@ -517,60 +628,68 @@ const seedDoctors = async () => {
       const specRef = await Specialization.findOne({ name: doc.specialization });
 
       // Create Doctor profile
-      await Doctor.create({
+      const doctor = await Doctor.create({
         user: user._id,
         specialization: doc.specialization,
         specializationRef: specRef ? specRef._id : undefined,
-        licenseNumber: `MCI-${Date.now()}-${Math.floor(Math.random() * 9999).toString().padStart(4, '0')}`,
+        licenseNumber: `MCI-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`,
         qualifications: doc.qualification.split(', '),
         experienceYears: doc.experience,
-        consultationFee: doc.fee,
-        bio: doc.bio,
+        consultationFee: doc.consultationFee,
+        bio: doc.about,
         hospitalAffiliation: doc.hospital,
         location: doc.location,
         gender: doc.gender,
         languages: doc.languages,
         approvalStatus: 'APPROVED',
+        isActive: true,
         rating: {
           average: doc.rating,
           count: doc.reviews,
         },
       });
 
-      // Track specialization counts
+      // Create default weekly availability schedule (Mon-Fri 09:00 - 17:00, 30min slots)
+      await Availability.create({
+        doctor: doctor._id,
+        workingDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        startTime: '09:00',
+        endTime: '17:00',
+        slotDuration: 30,
+        breakStartTime: '13:00',
+        breakEndTime: '14:00',
+        isActive: true,
+      });
+
       specSummary[doc.specialization] = (specSummary[doc.specialization] || 0) + 1;
       createdCount++;
-      console.log(`  ✓ [${createdCount}/${doctors.length}] ${doc.name} — ${doc.specialization}`);
     }
 
-    // 4. Summary
-    console.log('\n========================================');
-    console.log('    SEED SUMMARY');
+    // 4. Output Summary exactly as requested
     console.log('========================================');
-    console.log(`  Doctors created:     ${createdCount}`);
-    console.log(`  Specializations:     ${Object.keys(specSummary).length}`);
-    console.log('');
-    console.log('  Breakdown:');
+    console.log('MEDICO DOCTOR SEED');
+    console.log('========================================\n');
+    console.log(`Doctors created: ${createdCount}\n`);
+
     Object.entries(specSummary)
       .sort((a, b) => b[1] - a[1])
       .forEach(([spec, count]) => {
-        console.log(`    ${spec}: ${count}`);
+        console.log(`${spec}s: ${count}`);
       });
-    console.log('\n  Default login password: Demo@12345');
-    console.log('  Email pattern: firstname.lastname@medico.demo');
-    console.log('========================================\n');
-    console.log('✓ Seed completed successfully.');
+
+    console.log('\nSeed completed successfully.');
+    console.log('========================================');
 
   } catch (error) {
-    console.error('\n✗ Seed Error:', error.message);
-    if (error.code === 11000) {
-      console.error('  Duplicate key error. Try running the script again to clean and re-seed.');
-    }
+    console.error('\nSeed Error:', error.message);
   } finally {
     await mongoose.disconnect();
-    console.log('✓ Disconnected from MongoDB.\n');
   }
 };
 
-// Run
-seedDoctors();
+// Auto-run when executed directly
+if (require.main === module) {
+  seedDoctors();
+}
+
+module.exports = seedDoctors;

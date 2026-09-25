@@ -200,6 +200,9 @@ const toggleUserActive = async (userId, activeData) => {
     throw error;
   }
 
+  // Also sync Doctor record if user is a doctor
+  await Doctor.findOneAndUpdate({ user: userId }, { isActive });
+
   return user;
 };
 
