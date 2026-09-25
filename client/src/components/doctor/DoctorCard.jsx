@@ -12,14 +12,14 @@ import {
 } from 'lucide-react';
 import { PrimaryGlassButton, SecondaryGlassButton } from '../common/buttons';
 
-const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#e0f2f1"/><circle cx="100" cy="78" r="38" fill="#80cbc4"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#80cbc4"/><text x="100" y="88" text-anchor="middle" fill="white" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
+const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#0f172a"/><circle cx="100" cy="78" r="38" fill="#38bdf8" opacity="0.3"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#38bdf8" opacity="0.2"/><text x="100" y="88" text-anchor="middle" fill="#38bdf8" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
 
 const DoctorCard = ({ doctor }) => {
   const doctorName = doctor.user?.name || doctor.name || 'Medical Specialist';
   const profileImg = doctor.user?.profileImage || doctor.user?.avatar || doctor.profileImage;
   const specialization = doctor.specialization || 'General Practice';
   const experienceYears = doctor.experienceYears || 0;
-  const fee = doctor.consultationFee || 50;
+  const fee = doctor.consultationFee || 500;
   const hospital = doctor.hospitalAffiliation || 'Independent Clinic';
   const location = doctor.location || '';
   const qualifications = doctor.qualifications?.length > 0
@@ -38,15 +38,15 @@ const DoctorCard = ({ doctor }) => {
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
         stars.push(
-          <Star key={i} size={13} fill="#f59e0b" color="#f59e0b" />
+          <Star key={i} size={13} fill="#fbbf24" color="#fbbf24" />
         );
       } else if (i === fullStars && hasHalf) {
         stars.push(
-          <Star key={i} size={13} fill="#f59e0b" color="#f59e0b" style={{ clipPath: 'inset(0 50% 0 0)' }} />
+          <Star key={i} size={13} fill="#fbbf24" color="#fbbf24" style={{ clipPath: 'inset(0 50% 0 0)' }} />
         );
       } else {
         stars.push(
-          <Star key={i} size={13} color="#d4d4d8" />
+          <Star key={i} size={13} color="rgba(255, 255, 255, 0.2)" />
         );
       }
     }
@@ -55,15 +55,19 @@ const DoctorCard = ({ doctor }) => {
 
   return (
     <div
-      className="card card-interactive"
+      className="glass-card glass-card-hover"
       style={{
         display: 'flex',
         flexDirection: 'column',
         padding: 0,
         height: '100%',
         overflow: 'hidden',
-        borderRadius: 'var(--radius-lg)',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+        borderRadius: '24px',
+        background: 'rgba(18, 20, 29, 0.65)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
       {/* Doctor Image Section */}
@@ -71,8 +75,8 @@ const DoctorCard = ({ doctor }) => {
         style={{
           position: 'relative',
           width: '100%',
-          height: '180px',
-          backgroundColor: 'var(--primary-50)',
+          height: '190px',
+          backgroundColor: 'rgba(56, 189, 248, 0.05)',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
@@ -90,6 +94,17 @@ const DoctorCard = ({ doctor }) => {
             objectPosition: 'center top',
           }}
         />
+        {/* Subtle dark gradient overlay at bottom of photo */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '50px',
+            background: 'linear-gradient(to top, rgba(18, 20, 29, 0.8), transparent)',
+          }}
+        />
         {/* Verified Badge Overlay */}
         <div
           style={{
@@ -98,15 +113,17 @@ const DoctorCard = ({ doctor }) => {
             right: '0.65rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.25rem',
-            backgroundColor: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(8px)',
-            padding: '0.2rem 0.55rem',
-            borderRadius: 'var(--radius-full)',
+            gap: '0.3rem',
+            backgroundColor: 'rgba(18, 20, 29, 0.85)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            padding: '0.25rem 0.6rem',
+            borderRadius: '9999px',
             fontSize: '0.68rem',
             fontWeight: 700,
-            color: 'var(--accent-emerald)',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+            color: '#34d399',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
           }}
         >
           <CheckCircle2 size={11} />
@@ -118,14 +135,16 @@ const DoctorCard = ({ doctor }) => {
             position: 'absolute',
             bottom: '0.65rem',
             left: '0.65rem',
-            backgroundColor: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(8px)',
-            padding: '0.25rem 0.65rem',
-            borderRadius: 'var(--radius-full)',
+            backgroundColor: 'rgba(18, 20, 29, 0.85)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            padding: '0.25rem 0.75rem',
+            borderRadius: '9999px',
             fontSize: '0.72rem',
-            fontWeight: 700,
-            color: 'var(--primary-700)',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+            fontWeight: 600,
+            color: '#38bdf8',
+            border: '1px solid rgba(56, 189, 248, 0.3)',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
           }}
         >
           {specialization}
@@ -133,13 +152,13 @@ const DoctorCard = ({ doctor }) => {
       </div>
 
       {/* Card Content */}
-      <div style={{ padding: '1.15rem 1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: '1.25rem 1.35rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
         {/* Name */}
         <h3
           style={{
-            fontSize: '1.1rem',
+            fontSize: '1.15rem',
             fontWeight: 700,
-            color: 'var(--slate-900)',
+            color: '#ffffff',
             margin: '0 0 0.35rem 0',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
@@ -150,15 +169,15 @@ const DoctorCard = ({ doctor }) => {
         </h3>
 
         {/* Rating Row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginBottom: '0.65rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.65rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1px' }}>
             {renderStars(avgRating)}
           </div>
-          <span style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--slate-800)' }}>
+          <span style={{ fontWeight: 700, fontSize: '0.85rem', color: '#ffffff' }}>
             {avgRating > 0 ? avgRating.toFixed(1) : '—'}
           </span>
           {ratingCount > 0 && (
-            <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)' }}>
+            <span style={{ fontSize: '0.75rem', color: 'rgba(148, 163, 184, 0.65)' }}>
               ({ratingCount} review{ratingCount !== 1 ? 's' : ''})
             </span>
           )}
@@ -167,9 +186,9 @@ const DoctorCard = ({ doctor }) => {
         {/* Qualification */}
         <p
           style={{
-            fontSize: '0.78rem',
-            color: 'var(--slate-500)',
-            margin: '0 0 0.75rem 0',
+            fontSize: '0.8rem',
+            color: 'rgba(200, 205, 225, 0.65)',
+            margin: '0 0 0.85rem 0',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -184,7 +203,7 @@ const DoctorCard = ({ doctor }) => {
             display: 'flex',
             flexWrap: 'wrap',
             gap: '0.4rem',
-            marginBottom: '0.85rem',
+            marginBottom: '1rem',
           }}
         >
           <span
@@ -192,12 +211,13 @@ const DoctorCard = ({ doctor }) => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.3rem',
-              padding: '0.2rem 0.55rem',
-              backgroundColor: 'var(--primary-50)',
-              borderRadius: 'var(--radius-sm)',
+              padding: '0.25rem 0.6rem',
+              backgroundColor: 'rgba(56, 189, 248, 0.08)',
+              borderRadius: '8px',
               fontSize: '0.72rem',
               fontWeight: 600,
-              color: 'var(--primary-700)',
+              color: '#38bdf8',
+              border: '1px solid rgba(56, 189, 248, 0.2)',
             }}
           >
             <Award size={12} />
@@ -208,16 +228,17 @@ const DoctorCard = ({ doctor }) => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.3rem',
-              padding: '0.2rem 0.55rem',
-              backgroundColor: 'var(--slate-50)',
-              borderRadius: 'var(--radius-sm)',
+              padding: '0.25rem 0.6rem',
+              backgroundColor: 'rgba(255, 255, 255, 0.04)',
+              borderRadius: '8px',
               fontSize: '0.72rem',
-              fontWeight: 600,
-              color: 'var(--slate-600)',
+              fontWeight: 500,
+              color: 'rgba(200, 205, 225, 0.8)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
             }}
           >
             <Building2 size={12} />
-            {hospital.length > 22 ? hospital.slice(0, 22) + '…' : hospital}
+            {hospital.length > 20 ? hospital.slice(0, 20) + '…' : hospital}
           </span>
           {location && (
             <span
@@ -225,12 +246,13 @@ const DoctorCard = ({ doctor }) => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.3rem',
-                padding: '0.2rem 0.55rem',
-                backgroundColor: 'var(--slate-50)',
-                borderRadius: 'var(--radius-sm)',
+                padding: '0.25rem 0.6rem',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                borderRadius: '8px',
                 fontSize: '0.72rem',
-                fontWeight: 600,
-                color: 'var(--slate-600)',
+                fontWeight: 500,
+                color: 'rgba(200, 205, 225, 0.8)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
               }}
             >
               <MapPin size={12} />
@@ -245,8 +267,8 @@ const DoctorCard = ({ doctor }) => {
         {/* Fee + Actions */}
         <div
           style={{
-            borderTop: '1px solid var(--border-subtle)',
-            paddingTop: '0.85rem',
+            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+            paddingTop: '1rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -254,10 +276,10 @@ const DoctorCard = ({ doctor }) => {
           }}
         >
           <div>
-            <span style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--primary-700)' }}>
+            <span style={{ fontSize: '1.2rem', fontWeight: 800, color: '#38bdf8' }}>
               ₹{fee}
             </span>
-            <span style={{ fontSize: '0.7rem', color: 'var(--slate-400)', marginLeft: '0.2rem' }}>
+            <span style={{ fontSize: '0.72rem', color: 'rgba(148, 163, 184, 0.65)', marginLeft: '0.25rem' }}>
               / visit
             </span>
           </div>
@@ -265,18 +287,18 @@ const DoctorCard = ({ doctor }) => {
           <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
             <SecondaryGlassButton
               to={`/doctors/${doctorId}`}
-              size="small"
-              style={{ fontSize: '0.75rem', padding: '0.35rem 0.7rem', minHeight: '32px' }}
+              size="sm"
+              style={{ fontSize: '0.78rem', padding: '0.4rem 0.75rem' }}
             >
-              View Profile
+              Profile
             </SecondaryGlassButton>
             <PrimaryGlassButton
               to={`/doctors/${doctorId}`}
-              size="small"
+              size="sm"
               icon={<Calendar size={13} />}
-              style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem', minHeight: '32px' }}
+              style={{ fontSize: '0.78rem', padding: '0.4rem 0.85rem' }}
             >
-              Book Appointment
+              Book
             </PrimaryGlassButton>
           </div>
         </div>

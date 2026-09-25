@@ -25,7 +25,6 @@ const PatientProfilePage = () => {
         }
       } catch (err) {
         console.error('Failed to load patient profile:', err);
-        // Fallback to authContext data
         setPatientData({ user, profile });
       } finally {
         setLoading(false);
@@ -55,7 +54,7 @@ const PatientProfilePage = () => {
   }
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 3rem' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 4rem' }}>
       <div className="container">
         <div className="dashboard-layout">
           {/* Left Sidebar */}
@@ -63,15 +62,41 @@ const PatientProfilePage = () => {
 
           <main>
             {/* Header */}
-            <div style={{ marginBottom: '1.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                <span className="badge badge-patient">Medical Record</span>
-                <span style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-400)' }}>Confidential & Encrypted</span>
+            <div style={{ marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.5rem' }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    padding: '0.3rem 0.75rem',
+                    borderRadius: '9999px',
+                    background: 'rgba(56, 189, 248, 0.1)',
+                    border: '1px solid rgba(56, 189, 248, 0.25)',
+                    color: '#38bdf8',
+                    fontSize: '0.72rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Medical Record
+                </span>
+                <span style={{ fontSize: '0.8rem', color: 'rgba(148, 163, 184, 0.6)' }}>• Confidential & Encrypted</span>
               </div>
-              <h1 style={{ fontSize: 'var(--text-3xl)', color: 'var(--slate-900)', marginBottom: '0.25rem' }}>
+              <h1
+                style={{
+                  fontFamily: 'var(--font-heading, "Outfit", sans-serif)',
+                  fontSize: 'clamp(1.75rem, 2.5vw, 2.35rem)',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  marginBottom: '0.35rem',
+                  letterSpacing: '-0.02em',
+                }}
+              >
                 Patient Profile & Medical Info
               </h1>
-              <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-sm)' }}>
+              <p style={{ color: 'rgba(200, 205, 225, 0.7)', fontSize: '0.92rem' }}>
                 Keep your personal, clinical, and emergency contact information current.
               </p>
             </div>

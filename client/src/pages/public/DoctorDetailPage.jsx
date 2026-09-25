@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 import { GlassButton, PrimaryGlassButton } from '../../components/common/buttons';
 
-const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#e0f2f1"/><circle cx="100" cy="78" r="38" fill="#80cbc4"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#80cbc4"/><text x="100" y="88" text-anchor="middle" fill="white" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
+const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#0f172a"/><circle cx="100" cy="78" r="38" fill="#1e293b"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#1e293b"/><text x="100" y="88" text-anchor="middle" fill="#60a5fa" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
 
 const DoctorDetailPage = () => {
   const { id } = useParams();
@@ -59,9 +59,9 @@ const DoctorDetailPage = () => {
 
   if (!doctor) {
     return (
-      <div className="container" style={{ padding: '6rem 1.5rem', textAlign: 'center' }}>
-        <h2 style={{ fontSize: '1.75rem', marginBottom: '0.75rem' }}>Doctor Profile Not Found</h2>
-        <p style={{ color: 'var(--slate-500)', marginBottom: '1.5rem' }}>
+      <div className="container" style={{ padding: '6rem 1.5rem', textAlign: 'center', minHeight: '60vh' }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.75rem' }}>Doctor Profile Not Found</h2>
+        <p style={{ color: 'rgba(255, 255, 255, 0.5)', marginBottom: '1.5rem' }}>
           The requested physician profile could not be located in our verified directory.
         </p>
         <PrimaryGlassButton to="/doctors" icon={<ArrowLeft size={16} />}>
@@ -99,8 +99,8 @@ const DoctorDetailPage = () => {
   const isPatient = isAuthenticated && role === 'PATIENT';
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 3rem' }}>
-      <div className="container" style={{ maxWidth: '1000px' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0 4rem', minHeight: '85vh' }}>
+      <div className="container" style={{ maxWidth: '1040px' }}>
         {/* Back Link */}
         <div style={{ marginBottom: '1.5rem' }}>
           <GlassButton
@@ -114,19 +114,29 @@ const DoctorDetailPage = () => {
         </div>
 
         {/* ── Doctor Header Card ─────────────────────────────────────────── */}
-        <div className="card" style={{ padding: '2rem', marginBottom: '1.75rem' }}>
+        <div
+          className="glass-card"
+          style={{
+            padding: '2.25rem',
+            marginBottom: '2rem',
+            borderRadius: '20px',
+            background: 'rgba(18, 20, 29, 0.75)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(59, 130, 246, 0.1)',
+          }}
+        >
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
             {/* Avatar */}
             <div
               style={{
                 width: 140,
                 height: 140,
-                borderRadius: 24,
-                backgroundColor: 'var(--primary-50)',
+                borderRadius: 20,
+                backgroundColor: 'rgba(15, 23, 42, 0.8)',
                 overflow: 'hidden',
                 flexShrink: 0,
-                border: '3px solid var(--primary-200)',
-                boxShadow: 'var(--shadow-md)',
+                border: '2px solid rgba(59, 130, 246, 0.4)',
+                boxShadow: '0 0 25px rgba(59, 130, 246, 0.25)',
               }}
             >
               <img
@@ -139,9 +149,28 @@ const DoctorDetailPage = () => {
 
             {/* Info */}
             <div style={{ flex: 1, minWidth: 260 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.4rem', flexWrap: 'wrap' }}>
-                <span className="badge badge-doctor">{specialization}</span>
-                <span className="badge badge-approved">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.65rem', flexWrap: 'wrap' }}>
+                <span style={{
+                  padding: '0.2rem 0.65rem',
+                  borderRadius: '9999px',
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  background: 'rgba(59, 130, 246, 0.15)',
+                  color: '#60a5fa',
+                  border: '1px solid rgba(59, 130, 246, 0.3)',
+                }}>{specialization}</span>
+                <span style={{
+                  padding: '0.2rem 0.65rem',
+                  borderRadius: '9999px',
+                  fontSize: '0.72rem',
+                  fontWeight: 600,
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  color: '#34d399',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                }}>
                   <CheckCircle2 size={12} /> Verified
                 </span>
                 {gender && (
@@ -150,12 +179,13 @@ const DoctorDetailPage = () => {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.25rem',
-                      padding: '0.15rem 0.5rem',
-                      borderRadius: 'var(--radius-full)',
+                      padding: '0.2rem 0.55rem',
+                      borderRadius: '9999px',
                       fontSize: '0.7rem',
                       fontWeight: 600,
-                      backgroundColor: 'var(--slate-100)',
-                      color: 'var(--slate-600)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
                     }}
                   >
                     <User size={11} />
@@ -164,13 +194,13 @@ const DoctorDetailPage = () => {
                 )}
               </div>
 
-              <h1 style={{ fontSize: 'var(--text-3xl)', color: 'var(--slate-900)', marginBottom: '0.4rem' }}>
+              <h1 style={{ fontSize: '2.2rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '0.5rem' }}>
                 {doctorName}
               </h1>
 
               {/* Star rating in header */}
               {ratingCount > 0 && (
-                <div style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{ marginBottom: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <StarRating value={avgRating} readOnly size={18} showValue count={ratingCount} />
                 </div>
               )}
@@ -180,22 +210,22 @@ const DoctorDetailPage = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '1.25rem',
-                  color: 'var(--slate-600)',
-                  fontSize: 'var(--text-sm)',
+                  color: 'rgba(255, 255, 255, 0.65)',
+                  fontSize: '0.875rem',
                   flexWrap: 'wrap',
-                  marginBottom: '1rem',
+                  marginBottom: '1.2rem',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <Building2 size={15} color="var(--slate-400)" />
+                  <Building2 size={15} color="#818cf8" />
                   <span>{hospital}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <MapPin size={15} color="var(--slate-400)" />
+                  <MapPin size={15} color="#818cf8" />
                   <span>{location}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <Award size={15} color="var(--primary-600)" />
+                  <Award size={15} color="#38bdf8" />
                   <span>{experienceYears} Yrs Experience</span>
                 </div>
               </div>
@@ -205,16 +235,16 @@ const DoctorDetailPage = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.5rem',
-                  backgroundColor: 'var(--primary-50)',
-                  border: '1px solid var(--primary-200)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '0.4rem 0.9rem',
-                  fontSize: 'var(--text-sm)',
+                  backgroundColor: 'rgba(59, 130, 246, 0.12)',
+                  border: '1px solid rgba(59, 130, 246, 0.25)',
+                  borderRadius: '10px',
+                  padding: '0.45rem 1rem',
+                  fontSize: '0.875rem',
                   fontWeight: 700,
-                  color: 'var(--primary-800)',
+                  color: '#60a5fa',
                 }}
               >
-                <IndianRupee size={14} />
+                <IndianRupee size={15} />
                 Consultation Fee: ₹{fee}
               </div>
             </div>
@@ -226,118 +256,126 @@ const DoctorDetailPage = () => {
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr minmax(280px, 340px)',
-            gap: '1.75rem',
+            gap: '2rem',
             alignItems: 'start',
-            marginBottom: '1.75rem',
+            marginBottom: '2rem',
           }}
           className="doctor-detail-layout"
         >
           {/* Left: Bio + Qualifications + Languages */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* About */}
-            <div className="card">
+            <div className="glass-card" style={{ padding: '1.75rem', borderRadius: '16px', background: 'rgba(18, 20, 29, 0.65)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <h3
                 style={{
-                  fontSize: 'var(--text-lg)',
-                  marginBottom: '0.875rem',
+                  fontSize: '1.15rem',
+                  fontWeight: 600,
+                  color: '#ffffff',
+                  marginBottom: '1rem',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.5rem',
                 }}
               >
-                <FileText size={18} color="var(--primary-600)" />
+                <FileText size={18} color="#60a5fa" />
                 About the Physician
               </h3>
-              <p style={{ color: 'var(--slate-700)', lineHeight: 1.75, fontSize: 'var(--text-sm)' }}>{bio}</p>
+              <p style={{ color: 'rgba(255, 255, 255, 0.75)', lineHeight: 1.75, fontSize: '0.9rem', margin: 0 }}>{bio}</p>
             </div>
 
             {/* Qualifications */}
-            <div className="card">
+            <div className="glass-card" style={{ padding: '1.75rem', borderRadius: '16px', background: 'rgba(18, 20, 29, 0.65)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <h3
                 style={{
-                  fontSize: 'var(--text-lg)',
-                  marginBottom: '0.875rem',
+                  fontSize: '1.15rem',
+                  fontWeight: 600,
+                  color: '#ffffff',
+                  marginBottom: '1rem',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.5rem',
                 }}
               >
-                <GraduationCap size={18} color="var(--primary-600)" />
+                <GraduationCap size={18} color="#60a5fa" />
                 Education & Credentials
               </h3>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {qualifications.map((q, idx) => (
                   <li
                     key={idx}
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: 'var(--text-sm)', color: 'var(--slate-700)' }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.9rem', color: 'rgba(255, 255, 255, 0.85)' }}
                   >
-                    <CheckCircle2 size={15} color="var(--primary-600)" />
+                    <CheckCircle2 size={16} color="#34d399" />
                     <span>{q}</span>
                   </li>
                 ))}
                 {doctor.licenseNumber && (
-                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: 'var(--text-sm)', color: 'var(--slate-700)' }}>
-                    <ShieldCheck size={15} color="var(--primary-600)" />
-                    <span>Medical License: <code style={{ background: 'var(--slate-100)', padding: '0.1rem 0.4rem', borderRadius: 4 }}>{doctor.licenseNumber}</code></span>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.9rem', color: 'rgba(255, 255, 255, 0.85)' }}>
+                    <ShieldCheck size={16} color="#60a5fa" />
+                    <span>Medical License: <code style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '0.2rem 0.5rem', borderRadius: 6, color: '#93c5fd' }}>{doctor.licenseNumber}</code></span>
                   </li>
                 )}
               </ul>
             </div>
 
             {/* Professional Information */}
-            <div className="card">
+            <div className="glass-card" style={{ padding: '1.75rem', borderRadius: '16px', background: 'rgba(18, 20, 29, 0.65)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <h3
                 style={{
-                  fontSize: 'var(--text-lg)',
-                  marginBottom: '0.875rem',
+                  fontSize: '1.15rem',
+                  fontWeight: 600,
+                  color: '#ffffff',
+                  marginBottom: '1.25rem',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.5rem',
                 }}
               >
-                <Stethoscope size={18} color="var(--primary-600)" />
+                <Stethoscope size={18} color="#60a5fa" />
                 Professional Information
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
                 <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
                     Specialization
                   </div>
-                  <div style={{ fontWeight: 600, color: 'var(--slate-800)', fontSize: 'var(--text-sm)' }}>{specialization}</div>
+                  <div style={{ fontWeight: 600, color: '#ffffff', fontSize: '0.9rem' }}>{specialization}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
                     Experience
                   </div>
-                  <div style={{ fontWeight: 600, color: 'var(--slate-800)', fontSize: 'var(--text-sm)' }}>{experienceYears} Years</div>
+                  <div style={{ fontWeight: 600, color: '#ffffff', fontSize: '0.9rem' }}>{experienceYears} Years</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
                     Hospital / Clinic
                   </div>
-                  <div style={{ fontWeight: 600, color: 'var(--slate-800)', fontSize: 'var(--text-sm)' }}>{hospital}</div>
+                  <div style={{ fontWeight: 600, color: '#ffffff', fontSize: '0.9rem' }}>{hospital}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.45)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
                     Consultation Fee
                   </div>
-                  <div style={{ fontWeight: 600, color: 'var(--primary-700)', fontSize: 'var(--text-sm)' }}>₹{fee} per visit</div>
+                  <div style={{ fontWeight: 600, color: '#60a5fa', fontSize: '0.9rem' }}>₹{fee} per visit</div>
                 </div>
               </div>
             </div>
 
             {/* Languages */}
-            <div className="card">
+            <div className="glass-card" style={{ padding: '1.75rem', borderRadius: '16px', background: 'rgba(18, 20, 29, 0.65)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <h3
                 style={{
-                  fontSize: 'var(--text-lg)',
-                  marginBottom: '0.875rem',
+                  fontSize: '1.15rem',
+                  fontWeight: 600,
+                  color: '#ffffff',
+                  marginBottom: '1rem',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.5rem',
                 }}
               >
-                <Globe size={18} color="var(--primary-600)" />
+                <Globe size={18} color="#60a5fa" />
                 Languages Spoken
               </h3>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -345,13 +383,13 @@ const DoctorDetailPage = () => {
                   <span
                     key={idx}
                     style={{
-                      padding: '0.3rem 0.75rem',
-                      backgroundColor: 'var(--primary-50)',
-                      borderRadius: 'var(--radius-full)',
+                      padding: '0.35rem 0.85rem',
+                      backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                      borderRadius: '9999px',
                       fontSize: '0.82rem',
                       fontWeight: 600,
-                      color: 'var(--primary-700)',
-                      border: '1px solid var(--primary-100)',
+                      color: '#93c5fd',
+                      border: '1px solid rgba(59, 130, 246, 0.2)',
                     }}
                   >
                     {lang}
@@ -362,38 +400,51 @@ const DoctorDetailPage = () => {
           </div>
 
           {/* Right: Availability + Book */}
-          <div className="card" style={{ position: 'sticky', top: 90 }}>
+          <div
+            className="glass-card"
+            style={{
+              position: 'sticky',
+              top: 100,
+              padding: '1.75rem',
+              borderRadius: '20px',
+              background: 'rgba(18, 20, 29, 0.75)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(59, 130, 246, 0.12)',
+            }}
+          >
             <h3
               style={{
-                fontSize: 'var(--text-lg)',
+                fontSize: '1.15rem',
+                fontWeight: 600,
+                color: '#ffffff',
                 marginBottom: '1.25rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                paddingBottom: '0.75rem',
-                borderBottom: '1px solid var(--border-subtle)',
+                paddingBottom: '0.85rem',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
               }}
             >
-              <Calendar size={18} color="var(--primary-600)" />
+              <Calendar size={18} color="#60a5fa" />
               Clinical Availability
             </h3>
 
-            <div style={{ marginBottom: '1rem' }}>
-              <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: 'var(--text-xs)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
+            <div style={{ marginBottom: '1.25rem' }}>
+              <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
                 Consultation Days
               </span>
-              <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
                 {availability.days?.map((day, i) => (
                   <span
                     key={i}
                     style={{
-                      padding: '0.2rem 0.5rem',
-                      backgroundColor: 'var(--primary-50)',
-                      borderRadius: 'var(--radius-sm)',
-                      fontSize: 'var(--text-xs)',
+                      padding: '0.25rem 0.55rem',
+                      backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                      borderRadius: '8px',
+                      fontSize: '0.75rem',
                       fontWeight: 700,
-                      color: 'var(--primary-700)',
-                      border: '1px solid var(--primary-100)',
+                      color: '#93c5fd',
+                      border: '1px solid rgba(59, 130, 246, 0.2)',
                     }}
                   >
                     {day.slice(0, 3)}
@@ -403,11 +454,11 @@ const DoctorDetailPage = () => {
             </div>
 
             <div style={{ marginBottom: '1.5rem' }}>
-              <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: 'var(--text-xs)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
+              <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
                 Operating Hours
               </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, color: 'var(--slate-800)', fontSize: 'var(--text-sm)' }}>
-                <Clock size={15} color="var(--primary-600)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: '#ffffff', fontSize: '0.875rem' }}>
+                <Clock size={15} color="#60a5fa" />
                 <span>{availability.hours || '09:00 AM – 05:00 PM'}</span>
               </div>
             </div>
@@ -415,17 +466,18 @@ const DoctorDetailPage = () => {
             {/* Fee Highlight */}
             <div
               style={{
-                backgroundColor: 'var(--primary-50)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1rem',
-                marginBottom: '1.25rem',
+                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                borderRadius: '12px',
+                padding: '1.25rem',
+                marginBottom: '1.5rem',
                 textAlign: 'center',
               }}
             >
-              <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-500)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
                 Consultation Fee
               </div>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary-700)' }}>
+              <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#ffffff' }}>
                 ₹{fee}
               </div>
             </div>
@@ -456,22 +508,40 @@ const DoctorDetailPage = () => {
         </div>
 
         {/* ── Patient Reviews Section ────────────────────────────────────── */}
-        <div className="card" style={{ padding: '1.75rem' }}>
+        <div
+          className="glass-card"
+          style={{
+            padding: '2rem',
+            borderRadius: '20px',
+            background: 'rgba(18, 20, 29, 0.65)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+          }}
+        >
           <h2
             style={{
-              fontSize: 'var(--text-xl)',
-              marginBottom: '1.25rem',
+              fontSize: '1.35rem',
+              fontWeight: 700,
+              color: '#ffffff',
+              marginBottom: '1.5rem',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
-              paddingBottom: '0.875rem',
-              borderBottom: '1px solid var(--border-subtle)',
+              paddingBottom: '1rem',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
             }}
           >
-            <MessageSquare size={20} color="var(--primary-600)" />
+            <MessageSquare size={20} color="#60a5fa" />
             Patient Reviews
             {ratingCount > 0 && (
-              <span className="badge badge-patient" style={{ fontSize: '0.65rem', marginLeft: '0.25rem' }}>
+              <span style={{
+                fontSize: '0.72rem',
+                marginLeft: '0.5rem',
+                padding: '0.2rem 0.6rem',
+                borderRadius: '9999px',
+                background: 'rgba(59, 130, 246, 0.15)',
+                color: '#60a5fa',
+                border: '1px solid rgba(59, 130, 246, 0.3)',
+              }}>
                 {ratingCount} review{ratingCount !== 1 ? 's' : ''}
               </span>
             )}

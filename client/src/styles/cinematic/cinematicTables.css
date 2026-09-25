@@ -1,0 +1,57 @@
+/* ==========================================================================
+   MEDICO — CINEMATIC GLASS TABLES
+   ========================================================================== */
+
+.glass-table-container,
+.table-container,
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--medico-radius, 24px);
+  background: var(--medico-surface, rgba(255, 255, 255, 0.035));
+  border: 1px solid var(--medico-glass-border, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.glass-table,
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--medico-text, #f8fafc);
+  font-size: 0.92rem;
+}
+
+.glass-table th,
+table th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--medico-text-muted, rgba(148, 163, 184, 0.7));
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-table td,
+table td {
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--medico-text-secondary, rgba(200, 205, 225, 0.85));
+  vertical-align: middle;
+  transition: background-color 0.15s ease;
+}
+
+.glass-table tr:last-child td,
+table tr:last-child td {
+  border-bottom: none;
+}
+
+.glass-table tbody tr:hover,
+table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.035);
+}

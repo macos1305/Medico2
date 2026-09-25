@@ -31,15 +31,65 @@ const AppointmentCard = ({
   const getStatusBadge = () => {
     switch (status) {
       case 'CONFIRMED':
-        return <span className="badge badge-approved">Confirmed</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(16, 185, 129, 0.15)',
+            color: '#34d399',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+          }}>Confirmed</span>
+        );
       case 'RESCHEDULED':
-        return <span className="badge badge-pending">Rescheduled</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(168, 85, 247, 0.15)',
+            color: '#c084fc',
+            border: '1px solid rgba(168, 85, 247, 0.3)',
+          }}>Rescheduled</span>
+        );
       case 'COMPLETED':
-        return <span className="badge badge-patient">Completed</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(59, 130, 246, 0.15)',
+            color: '#60a5fa',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
+          }}>Completed</span>
+        );
       case 'CANCELLED':
-        return <span className="badge badge-rejected">Cancelled</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(239, 68, 68, 0.15)',
+            color: '#f87171',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+          }}>Cancelled</span>
+        );
       default:
-        return <span className="badge badge-pending">{status}</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(255, 255, 255, 0.08)',
+            color: '#e2e8f0',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+          }}>{status}</span>
+        );
     }
   };
 
@@ -47,13 +97,15 @@ const AppointmentCard = ({
 
   return (
     <div
-      className="card card-interactive"
+      className="glass-card glass-card-interactive"
       style={{
         padding: '1.5rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        borderRadius: 'var(--radius-lg)',
+        borderRadius: '16px',
+        background: 'rgba(18, 20, 29, 0.65)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
       }}
     >
       <div>
@@ -63,26 +115,26 @@ const AppointmentCard = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: '0.85rem',
+            marginBottom: '1rem',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--slate-600)', fontSize: '0.85rem' }}>
-            <Calendar size={16} color="var(--primary-600)" />
-            <strong style={{ color: 'var(--slate-900)' }}>{appointment.date}</strong>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.85rem' }}>
+            <Calendar size={15} color="#60a5fa" />
+            <strong style={{ color: '#ffffff' }}>{appointment.date}</strong>
           </div>
           {getStatusBadge()}
         </div>
 
         {/* Doctor Info */}
-        <div style={{ marginBottom: '1rem' }}>
-          <h3 style={{ fontSize: '1.15rem', color: 'var(--slate-900)', marginBottom: '0.2rem' }}>
+        <div style={{ marginBottom: '1.2rem' }}>
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.35rem' }}>
             {doctorName}
           </h3>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--primary-700)', fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: '#818cf8', fontWeight: 600 }}>
             <Stethoscope size={14} />
             <span>{specialization}</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--slate-500)', marginTop: '2px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.5)', marginTop: '0.25rem' }}>
             <Building2 size={13} />
             <span>{hospital}</span>
           </div>
@@ -92,28 +144,29 @@ const AppointmentCard = ({
         <div
           style={{
             padding: '0.75rem 0.85rem',
-            backgroundColor: 'var(--slate-50)',
-            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            borderRadius: '10px',
             marginBottom: '1.25rem',
             fontSize: '0.85rem',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--slate-700)', marginBottom: '0.35rem' }}>
-            <Clock size={14} color="var(--primary-600)" />
-            <span style={{ fontWeight: 600 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#ffffff', marginBottom: '0.35rem', fontWeight: 600 }}>
+            <Clock size={14} color="#60a5fa" />
+            <span>
               {appointment.startTime} - {appointment.endTime}
             </span>
           </div>
           <div
             style={{
-              color: 'var(--slate-600)',
+              color: 'rgba(255, 255, 255, 0.65)',
               fontSize: '0.825rem',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
             }}
           >
-            <strong>Reason:</strong> {appointment.reason}
+            <strong style={{ color: 'rgba(255, 255, 255, 0.85)' }}>Reason:</strong> {appointment.reason}
           </div>
         </div>
       </div>
@@ -125,7 +178,7 @@ const AppointmentCard = ({
           alignItems: 'center',
           gap: '0.5rem',
           paddingTop: '0.85rem',
-          borderTop: '1px solid var(--border-subtle)',
+          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
           flexWrap: 'wrap',
         }}
       >
@@ -141,7 +194,7 @@ const AppointmentCard = ({
         {isActionable && (
           <>
             <GlassButton
-              variant="warning"
+              variant="secondary"
               size="small"
               onClick={() => onReschedule(appointment)}
               icon={<RotateCcw size={14} />}

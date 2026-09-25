@@ -97,14 +97,14 @@ const ReviewList = ({ doctorId, summary }) => {
   const RatingBar = ({ star, count: cnt, total: tot }) => {
     const pct = tot > 0 ? Math.round((cnt / tot) * 100) : 0;
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: 'var(--text-xs)' }}>
-        <span style={{ color: 'var(--slate-500)', width: 24, textAlign: 'right' }}>{star}★</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.78rem' }}>
+        <span style={{ color: 'rgba(255, 255, 255, 0.6)', width: 24, textAlign: 'right' }}>{star}★</span>
         <div
           style={{
             flex: 1,
-            height: 8,
-            borderRadius: 4,
-            background: 'var(--slate-100)',
+            height: 6,
+            borderRadius: 9999,
+            background: 'rgba(255, 255, 255, 0.08)',
             overflow: 'hidden',
           }}
         >
@@ -113,12 +113,13 @@ const ReviewList = ({ doctorId, summary }) => {
               height: '100%',
               width: `${pct}%`,
               background: 'linear-gradient(90deg, #fbbf24, #f59e0b)',
-              borderRadius: 4,
+              borderRadius: 9999,
+              boxShadow: pct > 0 ? '0 0 8px rgba(251, 191, 36, 0.4)' : 'none',
               transition: 'width 0.4s ease',
             }}
           />
         </div>
-        <span style={{ color: 'var(--slate-400)', width: 28, textAlign: 'right' }}>{pct}%</span>
+        <span style={{ color: 'rgba(255, 255, 255, 0.4)', width: 28, textAlign: 'right' }}>{pct}%</span>
       </div>
     );
   };
@@ -132,28 +133,32 @@ const ReviewList = ({ doctorId, summary }) => {
       {/* ── Summary banner ──────────────────────────────────────────────── */}
       {totalCount > 0 && (
         <div
-          className="card"
+          className="glass-card"
           style={{
-            padding: '1.25rem 1.5rem',
+            padding: '1.5rem',
+            borderRadius: '16px',
             display: 'flex',
-            gap: '1.5rem',
+            gap: '2rem',
             alignItems: 'center',
             flexWrap: 'wrap',
-            marginBottom: '1.25rem',
-            background: 'linear-gradient(135deg, #f0fdfa, #f8fafc)',
-            borderLeft: '4px solid #f59e0b',
+            marginBottom: '1.5rem',
+            background: 'rgba(18, 20, 29, 0.65)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderLeft: '4px solid #fbbf24',
           }}
         >
           <div style={{ textAlign: 'center', flexShrink: 0 }}>
-            <div style={{ fontSize: '3rem', fontWeight: 800, color: 'var(--slate-900)', lineHeight: 1 }}>
+            <div style={{ fontSize: '3rem', fontWeight: 800, color: '#ffffff', lineHeight: 1 }}>
               {avgRating.toFixed(1)}
             </div>
-            <StarRating value={avgRating} readOnly size={18} />
-            <div style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-400)', marginTop: '0.25rem' }}>
-              {totalCount} review{totalCount !== 1 ? 's' : ''}
+            <div style={{ margin: '0.4rem 0' }}>
+              <StarRating value={avgRating} readOnly size={18} />
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.5)' }}>
+              {totalCount} verified review{totalCount !== 1 ? 's' : ''}
             </div>
           </div>
-          <div style={{ flex: 1, minWidth: 160, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+          <div style={{ flex: 1, minWidth: 180, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             {[5, 4, 3, 2, 1].map((star) => {
               const cnt = reviews.filter((r) => Math.round(r.rating) === star).length;
               return <RatingBar key={star} star={star} count={cnt} total={reviews.length} />;
@@ -168,11 +173,13 @@ const ReviewList = ({ doctorId, summary }) => {
           {[1, 2, 3].map((i) => <SkeletonListItem key={i} />)}
         </div>
       ) : reviews.length === 0 ? (
-        <EmptyState
-          icon="inbox"
-          title="No Reviews Yet"
-          message="This doctor has not received any patient reviews. Be the first to share your experience after your consultation."
-        />
+        <div style={{ textAlign: 'center', padding: '2.5rem 1rem', color: 'rgba(255, 255, 255, 0.5)' }}>
+          <MessageSquare size={32} style={{ margin: '0 auto 0.75rem auto', color: 'rgba(255, 255, 255, 0.25)' }} />
+          <h4 style={{ fontSize: '1.1rem', color: '#ffffff', margin: '0 0 0.35rem 0' }}>No Reviews Yet</h4>
+          <p style={{ margin: 0, fontSize: '0.875rem' }}>
+            This doctor has not received any patient reviews yet. Be the first to share your experience after your consultation.
+          </p>
+        </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {reviews.map((review) => {
@@ -183,9 +190,12 @@ const ReviewList = ({ doctorId, summary }) => {
             return (
               <div
                 key={review._id}
-                className="card"
+                className="glass-card"
                 style={{
-                  padding: '1.25rem',
+                  padding: '1.35rem',
+                  borderRadius: '14px',
+                  background: 'rgba(18, 20, 29, 0.65)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   opacity: review.isVisible === false ? 0.55 : 1,
                   transition: 'opacity 0.2s',
                 }}
@@ -198,8 +208,8 @@ const ReviewList = ({ doctorId, summary }) => {
                         width: 40,
                         height: 40,
                         borderRadius: '50%',
-                        background: 'var(--primary-100)',
-                        color: 'var(--primary-700)',
+                        background: 'linear-gradient(135deg, #3b82f6, #6366f1)',
+                        color: '#ffffff',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -207,7 +217,8 @@ const ReviewList = ({ doctorId, summary }) => {
                         fontSize: '1rem',
                         flexShrink: 0,
                         overflow: 'hidden',
-                        border: '2px solid var(--primary-200)',
+                        border: '2px solid rgba(59, 130, 246, 0.3)',
+                        boxShadow: '0 0 10px rgba(59, 130, 246, 0.2)',
                       }}
                     >
                       {review.patient?.user?.profileImage ? (
@@ -221,10 +232,10 @@ const ReviewList = ({ doctorId, summary }) => {
                       )}
                     </div>
                     <div>
-                      <div style={{ fontWeight: 700, fontSize: 'var(--text-sm)', color: 'var(--slate-900)' }}>
+                      <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#ffffff' }}>
                         {patientName}
                       </div>
-                      <div style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-400)' }}>
+                      <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.45)' }}>
                         {formatDate(review.createdAt)}
                       </div>
                     </div>
@@ -241,7 +252,7 @@ const ReviewList = ({ doctorId, summary }) => {
                           size="sm"
                           disabled={isActing}
                           title={review.isVisible === false ? 'Restore review' : 'Hide review'}
-                          style={{ color: review.isVisible === false ? 'var(--primary-600)' : 'var(--slate-400)' }}
+                          style={{ color: review.isVisible === false ? '#60a5fa' : 'rgba(255, 255, 255, 0.5)' }}
                           icon={review.isVisible === false ? <Eye size={14} /> : <EyeOff size={14} />}
                         />
                         <IconGlassButton
@@ -250,7 +261,7 @@ const ReviewList = ({ doctorId, summary }) => {
                           size="sm"
                           disabled={isActing}
                           title="Delete review"
-                          style={{ color: 'var(--accent-rose)' }}
+                          style={{ color: '#f87171' }}
                           icon={<Trash2 size={14} />}
                         />
                       </>
@@ -262,19 +273,19 @@ const ReviewList = ({ doctorId, summary }) => {
                 {review.comment ? (
                   <p
                     style={{
-                      marginTop: '0.875rem',
-                      fontSize: 'var(--text-sm)',
-                      color: 'var(--slate-700)',
+                      margin: '0.85rem 0 0 0',
+                      fontSize: '0.875rem',
+                      color: 'rgba(255, 255, 255, 0.8)',
                       lineHeight: 1.65,
-                      borderLeft: '3px solid var(--primary-100)',
-                      paddingLeft: '0.875rem',
+                      borderLeft: '3px solid rgba(59, 130, 246, 0.4)',
+                      paddingLeft: '0.85rem',
                     }}
                   >
                     {review.comment}
                   </p>
                 ) : (
-                  <p style={{ marginTop: '0.6rem', fontSize: 'var(--text-xs)', color: 'var(--slate-400)', fontStyle: 'italic' }}>
-                    <MessageSquare size={12} style={{ marginRight: 4 }} />
+                  <p style={{ margin: '0.6rem 0 0 0', fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.35)', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                    <MessageSquare size={12} />
                     No written comment
                   </p>
                 )}
@@ -282,12 +293,14 @@ const ReviewList = ({ doctorId, summary }) => {
                 {review.isVisible === false && (
                   <div style={{ marginTop: '0.65rem' }}>
                     <span
-                      className="badge"
                       style={{
-                        background: '#fef3c7',
-                        color: '#92400e',
-                        border: '1px solid #fde68a',
-                        fontSize: '0.65rem',
+                        background: 'rgba(245, 158, 11, 0.15)',
+                        color: '#fbbf24',
+                        border: '1px solid rgba(245, 158, 11, 0.3)',
+                        fontSize: '0.7rem',
+                        fontWeight: 600,
+                        padding: '0.15rem 0.5rem',
+                        borderRadius: '9999px',
                       }}
                     >
                       Hidden by admin
@@ -312,7 +325,7 @@ const ReviewList = ({ doctorId, summary }) => {
             </div>
           )}
 
-          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-400)', textAlign: 'center' }}>
+          <p style={{ fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.4)', textAlign: 'center', margin: '0.5rem 0 0 0' }}>
             Showing {reviews.length} of {total} review{total !== 1 ? 's' : ''}
           </p>
         </div>

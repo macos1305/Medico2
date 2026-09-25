@@ -33,6 +33,18 @@ const allDays = [
 
 const slotDurationOptions = [15, 20, 30, 45, 60];
 
+const inputDarkStyle = {
+  width: '100%',
+  padding: '0.75rem 1rem',
+  backgroundColor: 'rgba(255, 255, 255, 0.04)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  borderRadius: '12px',
+  color: '#ffffff',
+  fontSize: '0.9rem',
+  outline: 'none',
+  colorScheme: 'dark',
+};
+
 const DoctorAvailabilityPage = () => {
   const { success, error: toastError } = useToast();
 
@@ -57,14 +69,10 @@ const DoctorAvailabilityPage = () => {
   const [blockedDates, setBlockedDates] = useState([]);
   const [newBlockDate, setNewBlockDate] = useState('');
 
-  // Interactive Preview State
   const getTodayStr = () => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   };
-  const [previewDate, setPreviewDate] = useState(getTodayStr());
-  const [previewSlotsData, setPreviewSlotsData] = useState(null);
-  const [previewLoading, setPreviewLoading] = useState(false);
 
   const fetchAvailability = async () => {
     setLoading(true);
@@ -108,7 +116,6 @@ const DoctorAvailabilityPage = () => {
   const handleSaveSchedule = async (e) => {
     e.preventDefault();
 
-    // Client-side validation: prevent conflicting availability
     if (startTime >= endTime) {
       toastError('Operating start time must be earlier than end time.', 'Conflict Detected');
       return;
@@ -198,7 +205,7 @@ const DoctorAvailabilityPage = () => {
   };
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 4rem' }}>
       <div className="container">
         <div
           style={{
@@ -221,25 +228,51 @@ const DoctorAvailabilityPage = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                gap: '1rem',
-                marginBottom: '1.75rem',
+                gap: '1.25rem',
+                marginBottom: '2rem',
               }}
             >
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                  <span className="badge badge-doctor">Practice Schedule</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.3rem 0.75rem',
+                      borderRadius: '9999px',
+                      background: 'rgba(139, 92, 246, 0.1)',
+                      border: '1px solid rgba(139, 92, 246, 0.25)',
+                      color: '#c084fc',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Practice Schedule
+                  </span>
                 </div>
-                <h1 style={{ fontSize: '2rem', color: 'var(--slate-900)' }}>
+                <h1
+                  style={{
+                    fontFamily: 'var(--font-heading, "Outfit", sans-serif)',
+                    fontSize: 'clamp(1.75rem, 2.5vw, 2.35rem)',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    letterSpacing: '-0.02em',
+                    margin: 0,
+                  }}
+                >
                   Clinical Availability & Slot Engine
                 </h1>
-                <p style={{ color: 'var(--slate-600)', fontSize: '0.95rem' }}>
+                <p style={{ color: 'rgba(200, 205, 225, 0.7)', fontSize: '0.92rem', marginTop: '0.35rem' }}>
                   Configure weekly operating days, hours, consultation intervals, and block off-duty dates.
                 </p>
               </div>
 
               <SecondaryGlassButton
                 onClick={() => setResetModalOpen(true)}
-                size="small"
+                size="sm"
                 icon={<RotateCcw size={15} />}
               >
                 Reset to Standard
@@ -251,29 +284,40 @@ const DoctorAvailabilityPage = () => {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 {/* 1. Working Schedule Card */}
-                <div className="card" style={{ padding: '2rem' }}>
+                <div
+                  className="glass-card"
+                  style={{
+                    padding: '2rem',
+                    background: 'rgba(18, 20, 29, 0.65)',
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '24px',
+                  }}
+                >
                   <h3
                     style={{
-                      fontSize: '1.25rem',
+                      fontSize: '1.2rem',
+                      fontWeight: 600,
+                      color: '#ffffff',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '0.5rem',
+                      gap: '0.6rem',
                       marginBottom: '1.5rem',
-                      paddingBottom: '0.75rem',
-                      borderBottom: '1px solid var(--border-subtle)',
+                      paddingBottom: '1rem',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
                     }}
                   >
-                    <Clock size={20} color="var(--primary-600)" />
+                    <Clock size={20} color="#38bdf8" />
                     <span>Operating Hours & Working Days</span>
                   </h3>
 
                   <form onSubmit={handleSaveSchedule}>
                     {/* Working Days Checkboxes */}
                     <div style={{ marginBottom: '1.75rem' }}>
-                      <label className="form-label" style={{ fontWeight: 700, marginBottom: '0.65rem', display: 'block' }}>
+                      <label style={{ fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.65rem', display: 'block' }}>
                         Weekly Consultation Days *
                       </label>
-                      <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                         {allDays.map((day) => {
                           const isSelected = workingDays.includes(day);
                           return (
@@ -282,17 +326,18 @@ const DoctorAvailabilityPage = () => {
                               type="button"
                               onClick={() => handleToggleDay(day)}
                               style={{
-                                padding: '0.55rem 1rem',
-                                borderRadius: 'var(--radius-md)',
+                                padding: '0.55rem 1.1rem',
+                                borderRadius: '9999px',
                                 border: isSelected
-                                  ? '2px solid var(--primary-600)'
-                                  : '1px solid var(--border-subtle)',
-                                backgroundColor: isSelected ? 'var(--primary-50)' : '#ffffff',
-                                color: isSelected ? 'var(--primary-700)' : 'var(--slate-700)',
+                                  ? '1px solid rgba(56, 189, 248, 0.4)'
+                                  : '1px solid rgba(255, 255, 255, 0.08)',
+                                backgroundColor: isSelected ? 'rgba(56, 189, 248, 0.15)' : 'rgba(255, 255, 255, 0.03)',
+                                color: isSelected ? '#38bdf8' : 'rgba(200, 205, 225, 0.75)',
                                 fontWeight: isSelected ? 700 : 500,
-                                fontSize: '0.9rem',
+                                fontSize: '0.85rem',
                                 cursor: 'pointer',
-                                transition: 'all 0.15s ease',
+                                transition: 'all 0.2s ease',
+                                boxShadow: isSelected ? '0 0 15px rgba(56, 189, 248, 0.15)' : 'none',
                               }}
                             >
                               {day}
@@ -313,7 +358,7 @@ const DoctorAvailabilityPage = () => {
                     >
                       {/* Start Time */}
                       <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label className="form-label" htmlFor="startTime">
+                        <label className="form-label" htmlFor="startTime" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}>
                           Day Start Time *
                         </label>
                         <input
@@ -322,13 +367,14 @@ const DoctorAvailabilityPage = () => {
                           className="form-input"
                           value={startTime}
                           onChange={(e) => setStartTime(e.target.value)}
+                          style={inputDarkStyle}
                           required
                         />
                       </div>
 
                       {/* End Time */}
                       <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label className="form-label" htmlFor="endTime">
+                        <label className="form-label" htmlFor="endTime" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}>
                           Day End Time *
                         </label>
                         <input
@@ -337,13 +383,14 @@ const DoctorAvailabilityPage = () => {
                           className="form-input"
                           value={endTime}
                           onChange={(e) => setEndTime(e.target.value)}
+                          style={inputDarkStyle}
                           required
                         />
                       </div>
 
                       {/* Slot Duration */}
                       <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label className="form-label" htmlFor="slotDuration">
+                        <label className="form-label" htmlFor="slotDuration" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}>
                           Slot Duration *
                         </label>
                         <select
@@ -351,6 +398,10 @@ const DoctorAvailabilityPage = () => {
                           className="form-select"
                           value={slotDuration}
                           onChange={(e) => setSlotDuration(Number(e.target.value))}
+                          style={{
+                            ...inputDarkStyle,
+                            backgroundColor: '#12141d',
+                          }}
                         >
                           {slotDurationOptions.map((opt) => (
                             <option key={opt} value={opt}>
@@ -368,13 +419,14 @@ const DoctorAvailabilityPage = () => {
                         gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
                         gap: '1.25rem',
                         padding: '1.25rem',
-                        backgroundColor: 'var(--slate-50)',
-                        borderRadius: 'var(--radius-md)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                        borderRadius: '16px',
                         marginBottom: '1.75rem',
                       }}
                     >
                       <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label className="form-label" htmlFor="breakStart">
+                        <label className="form-label" htmlFor="breakStart" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}>
                           Break Start Time (Optional)
                         </label>
                         <input
@@ -383,11 +435,12 @@ const DoctorAvailabilityPage = () => {
                           className="form-input"
                           value={breakStartTime}
                           onChange={(e) => setBreakStartTime(e.target.value)}
+                          style={inputDarkStyle}
                         />
                       </div>
 
                       <div className="form-group" style={{ marginBottom: 0 }}>
-                        <label className="form-label" htmlFor="breakEnd">
+                        <label className="form-label" htmlFor="breakEnd" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}>
                           Break End Time (Optional)
                         </label>
                         <input
@@ -396,6 +449,7 @@ const DoctorAvailabilityPage = () => {
                           className="form-input"
                           value={breakEndTime}
                           onChange={(e) => setBreakEndTime(e.target.value)}
+                          style={inputDarkStyle}
                         />
                       </div>
                     </div>
@@ -406,18 +460,18 @@ const DoctorAvailabilityPage = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        paddingTop: '1rem',
-                        borderTop: '1px solid var(--border-subtle)',
+                        paddingTop: '1.25rem',
+                        borderTop: '1px solid rgba(255, 255, 255, 0.08)',
                         flexWrap: 'wrap',
                         gap: '1rem',
                       }}
                     >
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', cursor: 'pointer', fontSize: '0.925rem' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', fontSize: '0.9rem', color: '#ffffff' }}>
                         <input
                           type="checkbox"
                           checked={isActive}
                           onChange={(e) => setIsActive(e.target.checked)}
-                          style={{ width: '18px', height: '18px', accentColor: 'var(--primary-600)' }}
+                          style={{ width: '18px', height: '18px', accentColor: '#38bdf8' }}
                         />
                         <span style={{ fontWeight: 600 }}>Enable Online Consultation Bookings</span>
                       </label>
@@ -435,22 +489,33 @@ const DoctorAvailabilityPage = () => {
                 </div>
 
                 {/* 2. Block Unavailable Dates Tool */}
-                <div className="card" style={{ padding: '2rem' }}>
+                <div
+                  className="glass-card"
+                  style={{
+                    padding: '2rem',
+                    background: 'rgba(18, 20, 29, 0.65)',
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '24px',
+                  }}
+                >
                   <h3
                     style={{
-                      fontSize: '1.25rem',
+                      fontSize: '1.2rem',
+                      fontWeight: 600,
+                      color: '#ffffff',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '0.5rem',
-                      marginBottom: '1rem',
-                      paddingBottom: '0.75rem',
-                      borderBottom: '1px solid var(--border-subtle)',
+                      gap: '0.6rem',
+                      marginBottom: '0.75rem',
+                      paddingBottom: '1rem',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
                     }}
                   >
-                    <Ban size={20} color="var(--accent-rose)" />
+                    <Ban size={20} color="#fb7185" />
                     <span>Block Unavailable Dates (Vacation / Leave)</span>
                   </h3>
-                  <p style={{ color: 'var(--slate-600)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+                  <p style={{ color: 'rgba(200, 205, 225, 0.7)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
                     Block specific calendar dates when you will be away or unavailable. No consultation slots will be generated or bookable for blocked dates.
                   </p>
 
@@ -463,6 +528,7 @@ const DoctorAvailabilityPage = () => {
                         value={newBlockDate}
                         onChange={(e) => setNewBlockDate(e.target.value)}
                         placeholder="Select date to block"
+                        style={inputDarkStyle}
                       />
                     </div>
                     <GlassButton
@@ -478,10 +544,10 @@ const DoctorAvailabilityPage = () => {
                   {/* Blocked Dates Chips */}
                   {blockedDates.length > 0 ? (
                     <div>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--slate-500)', fontWeight: 600, display: 'block', marginBottom: '0.5rem' }}>
+                      <span style={{ fontSize: '0.78rem', color: 'rgba(148, 163, 184, 0.7)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '0.65rem' }}>
                         Currently Blocked Dates ({blockedDates.length})
                       </span>
-                      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
                         {blockedDates.map((date) => (
                           <div
                             key={date}
@@ -489,31 +555,40 @@ const DoctorAvailabilityPage = () => {
                               display: 'flex',
                               alignItems: 'center',
                               gap: '0.5rem',
-                              padding: '0.4rem 0.75rem',
-                              backgroundColor: '#fff1f2',
-                              border: '1px solid #fecdd3',
-                              borderRadius: 'var(--radius-md)',
-                              color: 'var(--accent-rose)',
+                              padding: '0.45rem 0.85rem',
+                              backgroundColor: 'rgba(244, 63, 94, 0.12)',
+                              border: '1px solid rgba(244, 63, 94, 0.3)',
+                              borderRadius: '9999px',
+                              color: '#fb7185',
                               fontSize: '0.85rem',
                               fontWeight: 600,
                             }}
                           >
                             <Calendar size={14} />
                             <span>{date}</span>
-                            <DangerGlassButton
-                              size="small"
-                              iconOnly
+                            <button
+                              type="button"
                               onClick={() => handleRemoveBlockDate(date)}
-                              icon={<Trash2 size={13} />}
+                              style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#fb7185',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '2px',
+                                opacity: 0.8,
+                              }}
                               title="Unblock this date"
-                              style={{ width: '24px', height: '24px', minHeight: '24px', padding: 0 }}
-                            />
+                            >
+                              <Trash2 size={13} />
+                            </button>
                           </div>
                         ))}
                       </div>
                     </div>
                   ) : (
-                    <div style={{ padding: '1rem', backgroundColor: 'var(--slate-50)', borderRadius: 'var(--radius-md)', color: 'var(--slate-500)', fontSize: '0.85rem' }}>
+                    <div style={{ padding: '1rem', backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '14px', color: 'rgba(200, 205, 225, 0.65)', fontSize: '0.85rem' }}>
                       No calendar dates are currently blocked. You are operating on your standard weekly schedule.
                     </div>
                   )}
@@ -536,9 +611,6 @@ const DoctorAvailabilityPage = () => {
         onConfirm={handleResetSchedule}
         onCancel={() => setResetModalOpen(false)}
       />
-
-
-
     </div>
   );
 };

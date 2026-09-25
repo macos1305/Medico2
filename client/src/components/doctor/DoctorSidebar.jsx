@@ -10,6 +10,7 @@ import {
   LogOut,
   ShieldCheck,
   Activity,
+  AlertCircle,
 } from 'lucide-react';
 
 const navItems = [
@@ -48,33 +49,34 @@ const DoctorSidebar = () => {
                 alignItems: 'center',
                 gap: '0.2rem',
                 padding: '0.45rem 0.75rem',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '0.68rem',
+                borderRadius: '12px',
+                fontSize: '0.7rem',
                 fontWeight: 600,
-                color: isActive ? 'var(--primary-700)' : 'var(--slate-500)',
-                background: isActive ? 'var(--primary-50)' : 'transparent',
+                color: isActive ? '#38bdf8' : 'rgba(200, 205, 225, 0.65)',
+                background: isActive ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
                 textDecoration: 'none',
                 whiteSpace: 'nowrap',
                 minWidth: 52,
-                transition: 'all var(--transition-fast)',
+                transition: 'all 0.2s ease',
               }
             : {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.75rem',
-                padding: '0.7rem 0.9rem',
-                borderRadius: 'var(--radius-md)',
-                fontSize: 'var(--text-sm)',
+                padding: '0.75rem 1rem',
+                borderRadius: '14px',
+                fontSize: '0.88rem',
                 fontWeight: 600,
                 textDecoration: 'none',
-                transition: 'all var(--transition-fast)',
-                backgroundColor: isActive ? 'var(--primary-50)' : 'transparent',
-                color: isActive ? 'var(--primary-700)' : 'var(--slate-600)',
-                borderLeft: isActive ? '3px solid var(--primary-600)' : '3px solid transparent',
+                transition: 'all 0.2s ease',
+                backgroundColor: isActive ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
+                color: isActive ? '#38bdf8' : 'rgba(200, 205, 225, 0.75)',
+                borderLeft: isActive ? '3px solid #38bdf8' : '3px solid transparent',
+                boxShadow: isActive ? '0 0 20px rgba(56, 189, 248, 0.1)' : 'none',
               }
         }
       >
-        <Icon size={mobile ? 18 : 18} />
+        <Icon size={18} />
         {mobile ? <span>{item.shortLabel}</span> : <span>{item.label}</span>}
       </NavLink>
     );
@@ -84,7 +86,7 @@ const DoctorSidebar = () => {
     <>
       {/* ── Desktop Sidebar ─────────────────────────────────────────────── */}
       <aside
-        className="card desktop-sidebar"
+        className="glass-card desktop-sidebar"
         style={{
           padding: '1.5rem',
           display: 'flex',
@@ -93,6 +95,11 @@ const DoctorSidebar = () => {
           height: 'fit-content',
           position: 'sticky',
           top: '90px',
+          background: 'rgba(18, 20, 29, 0.7)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '24px',
         }}
       >
         {/* Doctor Avatar & Status */}
@@ -102,7 +109,7 @@ const DoctorSidebar = () => {
             alignItems: 'center',
             gap: '0.875rem',
             paddingBottom: '1.25rem',
-            borderBottom: '1px solid var(--border-subtle)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
           }}
         >
           <div
@@ -110,15 +117,15 @@ const DoctorSidebar = () => {
               width: 52,
               height: 52,
               borderRadius: '50%',
-              backgroundColor: 'var(--primary-100)',
-              color: 'var(--primary-700)',
+              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(56, 189, 248, 0.25))',
+              color: '#38bdf8',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 800,
               fontSize: '1.25rem',
               overflow: 'hidden',
-              border: '2px solid var(--primary-200)',
+              border: '2px solid rgba(56, 189, 248, 0.3)',
               flexShrink: 0,
             }}
           >
@@ -136,8 +143,8 @@ const DoctorSidebar = () => {
             <div
               style={{
                 fontWeight: 700,
-                fontSize: 'var(--text-sm)',
-                color: 'var(--slate-900)',
+                fontSize: '0.92rem',
+                color: '#ffffff',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -145,22 +152,67 @@ const DoctorSidebar = () => {
             >
               {user?.name || 'Dr. Practitioner'}
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--primary-700)', fontWeight: 600, marginTop: '0.1rem' }}>
+            <div style={{ fontSize: '0.78rem', color: '#38bdf8', fontWeight: 600, marginTop: '0.15rem' }}>
               {profile?.specialization || 'Medical Specialist'}
             </div>
-            <div style={{ marginTop: '0.3rem' }}>
+            <div style={{ marginTop: '0.35rem' }}>
               {approvalStatus === 'APPROVED' && (
-                <span className="badge badge-approved" style={{ fontSize: '0.62rem' }}>
-                  <ShieldCheck size={10} /> Verified
+                <span
+                  style={{
+                    fontSize: '0.65rem',
+                    fontWeight: 700,
+                    padding: '0.15rem 0.5rem',
+                    borderRadius: '999px',
+                    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                    color: '#34d399',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  <ShieldCheck size={11} /> Verified
                 </span>
               )}
               {approvalStatus === 'PENDING' && (
-                <span className="badge badge-pending" style={{ fontSize: '0.62rem' }}>
+                <span
+                  style={{
+                    fontSize: '0.65rem',
+                    fontWeight: 700,
+                    padding: '0.15rem 0.5rem',
+                    borderRadius: '999px',
+                    backgroundColor: 'rgba(245, 158, 11, 0.15)',
+                    color: '#fbbf24',
+                    border: '1px solid rgba(245, 158, 11, 0.3)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
+                  }}
+                >
                   Pending Review
                 </span>
               )}
               {approvalStatus === 'REJECTED' && (
-                <span className="badge badge-rejected" style={{ fontSize: '0.62rem' }}>
+                <span
+                  style={{
+                    fontSize: '0.65rem',
+                    fontWeight: 700,
+                    padding: '0.15rem 0.5rem',
+                    borderRadius: '999px',
+                    backgroundColor: 'rgba(244, 63, 94, 0.15)',
+                    color: '#fb7185',
+                    border: '1px solid rgba(244, 63, 94, 0.3)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.04em',
+                  }}
+                >
                   Credentials Rejected
                 </span>
               )}
@@ -169,33 +221,32 @@ const DoctorSidebar = () => {
         </div>
 
         {/* Nav Menu */}
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
           {navItems.map((item) => (
             <NavItem key={item.to} item={item} mobile={false} />
           ))}
         </nav>
 
         {/* Logout */}
-        <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--border-subtle)', marginTop: 'auto' }}>
+        <div style={{ paddingTop: '0.75rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: 'auto' }}>
           <button
             onClick={handleLogout}
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '0.65rem',
-              color: 'var(--accent-rose)',
-              padding: '0.6rem 0.8rem',
+              color: '#fb7185',
+              padding: '0.65rem 0.85rem',
               width: '100%',
               background: 'transparent',
               border: 'none',
-              borderRadius: 'var(--radius-md)',
+              borderRadius: '12px',
               cursor: 'pointer',
               fontWeight: 600,
-              fontSize: 'var(--text-sm)',
-              fontFamily: 'var(--font-body)',
-              transition: 'background var(--transition-fast)',
+              fontSize: '0.85rem',
+              transition: 'background 0.2s',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = '#fff1f2')}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(244, 63, 94, 0.1)')}
             onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
           >
             <LogOut size={16} />
@@ -205,7 +256,17 @@ const DoctorSidebar = () => {
       </aside>
 
       {/* ── Mobile / Tablet Horizontal Pill Nav ─────────────────────────── */}
-      <div className="mobile-nav-pill" style={{ marginBottom: '0.5rem' }}>
+      <div
+        className="mobile-nav-pill"
+        style={{
+          marginBottom: '0.5rem',
+          backgroundColor: 'rgba(18, 20, 29, 0.85)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '18px',
+          padding: '0.35rem',
+        }}
+      >
         {/* Branding */}
         <div
           style={{
@@ -214,7 +275,7 @@ const DoctorSidebar = () => {
             gap: '0.4rem',
             padding: '0.35rem 0.65rem',
             flexShrink: 0,
-            borderRight: '1px solid var(--border-subtle)',
+            borderRight: '1px solid rgba(255, 255, 255, 0.08)',
             marginRight: '0.25rem',
           }}
         >
@@ -223,7 +284,7 @@ const DoctorSidebar = () => {
               width: 28,
               height: 28,
               borderRadius: 8,
-              background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
+              background: 'linear-gradient(135deg, #0ea5e9, #6366f1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -248,10 +309,10 @@ const DoctorSidebar = () => {
             alignItems: 'center',
             gap: '0.2rem',
             padding: '0.45rem 0.75rem',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '0.68rem',
+            borderRadius: '12px',
+            fontSize: '0.7rem',
             fontWeight: 600,
-            color: 'var(--accent-rose)',
+            color: '#fb7185',
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',

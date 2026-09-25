@@ -1,0 +1,60 @@
+/* ==========================================================================
+   MEDICO — CINEMATIC GLASS INPUTS & CONTROLS
+   ========================================================================== */
+
+/* Input wrapper and standard inputs */
+.glass-input-wrapper,
+.input-group,
+.form-group input,
+.form-group select,
+.form-group textarea,
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='tel'],
+input[type='date'],
+input[type='time'],
+select,
+textarea {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border-radius: 14px !important;
+  color: #ffffff !important;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(200, 205, 225, 0.45) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.glass-input-wrapper:focus-within {
+  border-color: rgba(56, 189, 248, 0.4) !important;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.2) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+select option {
+  background-color: #0b0f19 !important;
+  color: #ffffff !important;
+  padding: 0.5rem;
+}
+
+/* Form labels */
+.form-label,
+label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--medico-text-secondary, rgba(200, 205, 225, 0.75));
+  margin-bottom: 0.45rem;
+}

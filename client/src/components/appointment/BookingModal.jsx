@@ -98,9 +98,9 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.7)',
-        backdropFilter: 'blur(6px)',
-        WebkitBackdropFilter: 'blur(6px)',
+        backgroundColor: 'rgba(5, 6, 10, 0.8)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -111,17 +111,19 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
       onClick={onClose}
     >
       <div
-        className="card"
+        className="glass-card glass-modal"
         style={{
           width: '100%',
           maxWidth: '620px',
           maxHeight: '90vh',
           overflowY: 'auto',
           padding: '2rem',
-          borderRadius: 'var(--radius-xl)',
-          boxShadow: 'var(--shadow-xl)',
-          backgroundColor: '#ffffff',
+          borderRadius: '20px',
+          background: 'rgba(18, 20, 29, 0.95)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 130, 246, 0.15)',
           position: 'relative',
+          color: '#ffffff',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -132,32 +134,47 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
             position: 'absolute',
             top: '1.25rem',
             right: '1.25rem',
-            background: 'transparent',
-            border: 'none',
-            color: 'var(--slate-400)',
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '50%',
+            color: 'rgba(255, 255, 255, 0.7)',
             cursor: 'pointer',
-            padding: '4px',
+            padding: '6px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.2s ease',
           }}
           aria-label="Close modal"
         >
-          <X size={22} />
+          <X size={18} />
         </button>
 
         {/* Modal Header */}
-        <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-subtle)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.25rem' }}>
-            <span className="badge badge-patient">Booking Flow</span>
-            <span style={{ fontSize: '0.8rem', color: 'var(--slate-500)' }}>Step 1 of 1</span>
+        <div style={{ marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '0.2rem 0.65rem',
+              borderRadius: '9999px',
+              fontSize: '0.72rem',
+              fontWeight: 600,
+              background: 'rgba(59, 130, 246, 0.15)',
+              color: '#60a5fa',
+              border: '1px solid rgba(59, 130, 246, 0.3)',
+            }}>Booking Flow</span>
+            <span style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.45)' }}>Step 1 of 1</span>
           </div>
-          <h2 style={{ fontSize: '1.45rem', color: 'var(--slate-900)' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.35rem 0' }}>
             Schedule Consultation
           </h2>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.35rem', fontSize: '0.9rem', color: 'var(--slate-600)' }}>
-            <span style={{ fontWeight: 700, color: 'var(--slate-900)' }}>{doctorName}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.9rem', color: 'rgba(255, 255, 255, 0.65)', flexWrap: 'wrap' }}>
+            <span style={{ fontWeight: 700, color: '#ffffff' }}>{doctorName}</span>
             <span>•</span>
-            <span style={{ color: 'var(--primary-700)', fontWeight: 600 }}>{specialization}</span>
+            <span style={{ color: '#818cf8', fontWeight: 600 }}>{specialization}</span>
             <span>•</span>
-            <span style={{ fontWeight: 700, color: 'var(--slate-900)' }}>₹{fee}</span>
+            <span style={{ fontWeight: 700, color: '#60a5fa' }}>₹{fee}</span>
           </div>
         </div>
 
@@ -165,17 +182,17 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
         {!isAuthenticated ? (
           <div
             style={{
-              padding: '2rem 1.5rem',
+              padding: '2.5rem 1.5rem',
               textAlign: 'center',
-              backgroundColor: 'var(--slate-50)',
-              borderRadius: 'var(--radius-lg)',
-              border: '1px dashed var(--slate-300)',
+              backgroundColor: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '16px',
+              border: '1px dashed rgba(255, 255, 255, 0.1)',
             }}
           >
-            <LogIn size={32} color="var(--primary-600)" style={{ margin: '0 auto 0.75rem auto' }} />
-            <h3 style={{ fontSize: '1.15rem', marginBottom: '0.4rem' }}>Patient Sign In Required</h3>
-            <p style={{ color: 'var(--slate-600)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-              You must be logged in as a patient to schedule verified medical consultations.
+            <LogIn size={32} color="#60a5fa" style={{ margin: '0 auto 0.75rem auto' }} />
+            <h3 style={{ fontSize: '1.2rem', color: '#ffffff', marginBottom: '0.5rem' }}>Patient Sign In Required</h3>
+            <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.9rem', marginBottom: '1.5rem', maxWidth: '400px', margin: '0 auto 1.5rem auto' }}>
+              You must be logged in as a verified patient to schedule medical consultations.
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
               <PrimaryGlassButton to="/login" onClick={onClose}>
@@ -190,10 +207,10 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
           <div
             style={{
               padding: '1.5rem',
-              backgroundColor: '#fffbeb',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid #fde68a',
-              color: '#92400e',
+              backgroundColor: 'rgba(245, 158, 11, 0.1)',
+              borderRadius: '12px',
+              border: '1px solid rgba(245, 158, 11, 0.25)',
+              color: '#fbbf24',
               fontSize: '0.9rem',
             }}
           >
@@ -204,11 +221,11 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
             {errorMsg && (
               <div
                 style={{
-                  backgroundColor: '#ffe4e6',
-                  border: '1px solid #fecdd3',
-                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                  border: '1px solid rgba(239, 68, 68, 0.25)',
+                  borderRadius: '10px',
                   padding: '0.75rem 1rem',
-                  color: 'var(--accent-rose)',
+                  color: '#fca5a5',
                   fontSize: '0.875rem',
                   display: 'flex',
                   alignItems: 'center',
@@ -236,57 +253,76 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
                 style={{
                   marginTop: '1.25rem',
                   padding: '0.75rem 1rem',
-                  backgroundColor: 'var(--primary-50)',
-                  border: '1px solid var(--primary-200)',
-                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: 'rgba(59, 130, 246, 0.12)',
+                  border: '1px solid rgba(59, 130, 246, 0.25)',
+                  borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   fontSize: '0.875rem',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary-900)' }}>
-                  <CheckCircle2 size={16} color="var(--primary-600)" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#93c5fd' }}>
+                  <CheckCircle2 size={16} color="#60a5fa" />
                   <span>
                     Selected: <strong>{selectedDate}</strong> at{' '}
                     <strong>{selectedSlot.startTime} - {selectedSlot.endTime}</strong>
                   </span>
                 </div>
-                <span style={{ fontWeight: 700, color: 'var(--primary-800)' }}>₹{fee}</span>
+                <span style={{ fontWeight: 700, color: '#ffffff' }}>₹{fee}</span>
               </div>
             )}
 
             {/* 2. Reason for Visit */}
-            <div className="form-group" style={{ marginTop: '1.5rem' }}>
-              <label className="form-label" htmlFor="reason" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <FileText size={15} color="var(--primary-600)" />
+            <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <label htmlFor="reason" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.85)' }}>
+                <FileText size={15} color="#60a5fa" />
                 Reason for Consultation *
               </label>
               <input
                 id="reason"
                 type="text"
-                className="form-input"
+                className="glass-input"
                 placeholder="e.g. Routine checkup, chest tightness, second opinion"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 disabled={loading}
+                style={{
+                  width: '100%',
+                  padding: '0.65rem 0.85rem',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '10px',
+                  color: '#ffffff',
+                  fontSize: '0.875rem',
+                }}
               />
             </div>
 
             {/* 3. Symptoms Details (Optional) */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="symptoms" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Activity size={15} color="var(--primary-600)" />
+            <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <label htmlFor="symptoms" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.85)' }}>
+                <Activity size={15} color="#60a5fa" />
                 Specific Symptoms or Medical History (Optional)
               </label>
               <textarea
                 id="symptoms"
                 rows="2"
-                className="form-textarea"
+                className="glass-input"
                 placeholder="Describe any symptoms, duration, current medications, or notes for the doctor..."
                 value={symptoms}
                 onChange={(e) => setSymptoms(e.target.value)}
                 disabled={loading}
+                style={{
+                  width: '100%',
+                  padding: '0.65rem 0.85rem',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '10px',
+                  color: '#ffffff',
+                  fontSize: '0.875rem',
+                  resize: 'vertical',
+                }}
               />
             </div>
 
@@ -297,9 +333,9 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
                 alignItems: 'center',
                 justifyContent: 'flex-end',
                 gap: '0.75rem',
-                marginTop: '1.5rem',
-                paddingTop: '1rem',
-                borderTop: '1px solid var(--border-subtle)',
+                marginTop: '1.75rem',
+                paddingTop: '1.25rem',
+                borderTop: '1px solid rgba(255, 255, 255, 0.08)',
               }}
             >
               <SecondaryGlassButton
@@ -309,7 +345,7 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
                 Cancel
               </SecondaryGlassButton>
               <GlassButton
-                variant="success"
+                variant="primary"
                 type="submit"
                 loading={loading}
                 disabled={!selectedSlot}

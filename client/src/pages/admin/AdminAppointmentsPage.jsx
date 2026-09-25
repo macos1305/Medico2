@@ -85,22 +85,82 @@ const AdminAppointmentsPage = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'CONFIRMED':
-        return <span className="badge badge-approved">Confirmed</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(16, 185, 129, 0.15)',
+            color: '#34d399',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+          }}>Confirmed</span>
+        );
       case 'PENDING':
-        return <span className="badge badge-pending">Pending</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(245, 158, 11, 0.15)',
+            color: '#fbbf24',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+          }}>Pending</span>
+        );
       case 'RESCHEDULED':
-        return <span className="badge badge-warning" style={{ backgroundColor: '#fef3c7', color: '#b45309' }}>Rescheduled</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(168, 85, 247, 0.15)',
+            color: '#c084fc',
+            border: '1px solid rgba(168, 85, 247, 0.3)',
+          }}>Rescheduled</span>
+        );
       case 'COMPLETED':
-        return <span className="badge badge-patient">Completed</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(59, 130, 246, 0.15)',
+            color: '#60a5fa',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
+          }}>Completed</span>
+        );
       case 'CANCELLED':
-        return <span className="badge badge-rejected">Cancelled</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(239, 68, 68, 0.15)',
+            color: '#f87171',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+          }}>Cancelled</span>
+        );
       default:
-        return <span className="badge badge-pending">{status}</span>;
+        return (
+          <span style={{
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            background: 'rgba(255, 255, 255, 0.08)',
+            color: '#e2e8f0',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+          }}>{status}</span>
+        );
     }
   };
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0', minHeight: '80vh' }}>
       <div className="container">
         <div
           style={{
@@ -123,18 +183,28 @@ const AdminAppointmentsPage = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                gap: '1rem',
-                marginBottom: '1.75rem',
+                gap: '1.25rem',
+                marginBottom: '2rem',
               }}
             >
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                  <span className="badge badge-admin">Master Schedule</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                  <span style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '0.2rem 0.65rem',
+                    borderRadius: '9999px',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    background: 'rgba(168, 85, 247, 0.15)',
+                    color: '#c084fc',
+                    border: '1px solid rgba(168, 85, 247, 0.3)',
+                  }}>Master Schedule</span>
                 </div>
-                <h1 style={{ fontSize: '2rem', color: 'var(--slate-900)' }}>
+                <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', margin: '0 0 0.4rem 0' }}>
                   Platform Consultations Tracker
                 </h1>
-                <p style={{ color: 'var(--slate-600)', fontSize: '0.95rem' }}>
+                <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '0.95rem', margin: 0, maxWidth: '600px' }}>
                   Monitor all consultations across the network, inspect booking reasons, and intervene where required.
                 </p>
               </div>
@@ -148,7 +218,7 @@ const AdminAppointmentsPage = () => {
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: '1rem',
-                marginBottom: '1.75rem',
+                marginBottom: '2rem',
               }}
             >
               {/* Status Tabs */}
@@ -156,45 +226,71 @@ const AdminAppointmentsPage = () => {
                 style={{
                   display: 'flex',
                   gap: '0.4rem',
-                  backgroundColor: 'var(--slate-100)',
+                  backgroundColor: 'rgba(255, 255, 255, 0.03)',
                   padding: '0.35rem',
-                  borderRadius: 'var(--radius-lg)',
-                  border: '1px solid var(--border-subtle)',
+                  borderRadius: '14px',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                   flexWrap: 'wrap',
                 }}
               >
-                {['All', 'CONFIRMED', 'PENDING', 'COMPLETED', 'CANCELLED'].map((st) => (
-                  <button
-                    key={st}
-                    type="button"
-                    onClick={() => setActiveStatus(st)}
-                    className={`btn btn-sm ${activeStatus === st ? 'btn-primary' : 'btn-ghost'}`}
-                    style={{ borderRadius: 'var(--radius-md)' }}
-                  >
-                    {st === 'All' ? 'All Visits' : st}
-                  </button>
-                ))}
+                {['All', 'CONFIRMED', 'PENDING', 'COMPLETED', 'CANCELLED'].map((st) => {
+                  const isActive = activeStatus === st;
+                  return (
+                    <button
+                      key={st}
+                      type="button"
+                      onClick={() => setActiveStatus(st)}
+                      style={{
+                        padding: '0.45rem 0.95rem',
+                        borderRadius: '10px',
+                        border: 'none',
+                        fontSize: '0.825rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        background: isActive ? 'linear-gradient(135deg, #3b82f6, #6366f1)' : 'transparent',
+                        color: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
+                        boxShadow: isActive ? '0 0 15px rgba(59, 130, 246, 0.4)' : 'none',
+                      }}
+                    >
+                      {st === 'All' ? 'All Visits' : st}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Search Bar */}
-              <div style={{ position: 'relative', width: '280px' }}>
+              <div style={{ position: 'relative', width: '300px' }}>
                 <Search
                   size={16}
                   style={{
                     position: 'absolute',
-                    left: '12px',
+                    left: '14px',
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    color: 'var(--slate-400)',
+                    color: 'rgba(255, 255, 255, 0.4)',
+                    pointerEvents: 'none',
                   }}
                 />
                 <input
                   type="text"
-                  className="form-input"
+                  className="glass-input"
                   placeholder="Search doctor, patient, reason..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{ paddingLeft: '2.4rem' }}
+                  style={{
+                    width: '100%',
+                    paddingLeft: '2.5rem',
+                    paddingRight: '1rem',
+                    paddingTop: '0.65rem',
+                    paddingBottom: '0.65rem',
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.875rem',
+                    outline: 'none',
+                  }}
                 />
               </div>
             </div>
@@ -218,47 +314,49 @@ const AdminAppointmentsPage = () => {
                   return (
                     <div
                       key={appt._id}
-                      className="card card-interactive"
+                      className="glass-card glass-card-interactive"
                       style={{
                         padding: '1.5rem',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        borderRadius: 'var(--radius-lg)',
+                        borderRadius: '16px',
+                        background: 'rgba(18, 20, 29, 0.65)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
                       }}
                     >
                       <div>
                         {/* Date & Status */}
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--slate-600)' }}>
-                            <Calendar size={15} color="var(--primary-600)" />
-                            <strong style={{ color: 'var(--slate-900)' }}>{appt.date}</strong>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.7)' }}>
+                            <Calendar size={15} color="#60a5fa" />
+                            <strong style={{ color: '#ffffff' }}>{appt.date}</strong>
                           </div>
                           {getStatusBadge(appt.status)}
                         </div>
 
                         {/* Parties Involved */}
-                        <div style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div style={{ marginBottom: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                           <div>
-                            <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700 }}>
+                            <span style={{ fontSize: '0.72rem', color: 'rgba(255, 255, 255, 0.4)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>
                               Doctor
                             </span>
-                            <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--slate-900)' }}>
+                            <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', margin: '0.1rem 0' }}>
                               {doctorUser?.name || 'Doctor'}
                             </div>
-                            <div style={{ fontSize: '0.8rem', color: 'var(--primary-700)', fontWeight: 600 }}>
+                            <div style={{ fontSize: '0.8rem', color: '#818cf8', fontWeight: 600 }}>
                               {appt.doctor?.specialization}
                             </div>
                           </div>
 
-                          <div style={{ paddingTop: '0.35rem', borderTop: '1px dashed var(--slate-200)' }}>
-                            <span style={{ fontSize: '0.72rem', color: 'var(--slate-400)', textTransform: 'uppercase', fontWeight: 700 }}>
+                          <div style={{ paddingTop: '0.6rem', borderTop: '1px dashed rgba(255, 255, 255, 0.08)' }}>
+                            <span style={{ fontSize: '0.72rem', color: 'rgba(255, 255, 255, 0.4)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>
                               Patient
                             </span>
-                            <div style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--slate-800)' }}>
+                            <div style={{ fontSize: '0.95rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.9)', margin: '0.1rem 0' }}>
                               {patientUser?.name || 'Patient'}
                             </div>
-                            <div style={{ fontSize: '0.78rem', color: 'var(--slate-500)' }}>
+                            <div style={{ fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.5)' }}>
                               {patientUser?.email}
                             </div>
                           </div>
@@ -267,19 +365,20 @@ const AdminAppointmentsPage = () => {
                         {/* Time & Reason */}
                         <div
                           style={{
-                            padding: '0.65rem 0.85rem',
-                            backgroundColor: 'var(--slate-50)',
-                            borderRadius: 'var(--radius-md)',
+                            padding: '0.75rem 0.85rem',
+                            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                            borderRadius: '10px',
                             fontSize: '0.825rem',
                             marginBottom: '1.25rem',
                           }}
                         >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--slate-800)', fontWeight: 600, marginBottom: '0.2rem' }}>
-                            <Clock size={13} color="var(--primary-600)" />
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#ffffff', fontWeight: 600, marginBottom: '0.3rem' }}>
+                            <Clock size={13} color="#60a5fa" />
                             <span>{appt.startTime} - {appt.endTime}</span>
                           </div>
-                          <div style={{ color: 'var(--slate-600)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            <strong>Reason:</strong> {appt.reason}
+                          <div style={{ color: 'rgba(255, 255, 255, 0.65)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            <strong style={{ color: 'rgba(255, 255, 255, 0.85)' }}>Reason:</strong> {appt.reason}
                           </div>
                         </div>
                       </div>
@@ -291,7 +390,7 @@ const AdminAppointmentsPage = () => {
                           alignItems: 'center',
                           gap: '0.5rem',
                           paddingTop: '0.85rem',
-                          borderTop: '1px solid var(--border-subtle)',
+                          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                         }}
                       >
                         <SecondaryGlassButton
@@ -322,18 +421,20 @@ const AdminAppointmentsPage = () => {
               </div>
             ) : (
               <div
-                className="card"
+                className="glass-card"
                 style={{
                   padding: '3.5rem 2rem',
                   textAlign: 'center',
-                  borderRadius: 'var(--radius-lg)',
+                  borderRadius: '16px',
+                  background: 'rgba(18, 20, 29, 0.65)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                 }}
               >
-                <Calendar size={36} color="var(--slate-300)" style={{ margin: '0 auto 0.75rem auto' }} />
-                <h3 style={{ fontSize: '1.25rem', color: 'var(--slate-900)', marginBottom: '0.35rem' }}>
+                <Calendar size={36} style={{ margin: '0 auto 0.75rem auto', color: 'rgba(255, 255, 255, 0.3)' }} />
+                <h3 style={{ fontSize: '1.25rem', color: '#ffffff', marginBottom: '0.35rem' }}>
                   No Appointments Found
                 </h3>
-                <p style={{ color: 'var(--slate-500)', fontSize: '0.9rem' }}>
+                <p style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>
                   No consultation records match the specified filters.
                 </p>
               </div>
@@ -351,9 +452,9 @@ const AdminAppointmentsPage = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(15, 23, 42, 0.7)',
-            backdropFilter: 'blur(6px)',
-            WebkitBackdropFilter: 'blur(6px)',
+            backgroundColor: 'rgba(5, 6, 10, 0.8)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -367,56 +468,69 @@ const AdminAppointmentsPage = () => {
           }}
         >
           <div
-            className="card"
+            className="glass-card glass-modal"
             style={{
               width: '100%',
               maxWidth: '560px',
               padding: '2rem',
-              borderRadius: 'var(--radius-xl)',
-              backgroundColor: '#ffffff',
+              borderRadius: '20px',
+              background: 'rgba(18, 20, 29, 0.95)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 130, 246, 0.15)',
+              color: '#ffffff',
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-subtle)' }}>
-              <span className="badge badge-admin">Master Consultation Record</span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '0.2rem 0.65rem',
+                borderRadius: '9999px',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                background: 'rgba(168, 85, 247, 0.15)',
+                color: '#c084fc',
+                border: '1px solid rgba(168, 85, 247, 0.3)',
+              }}>Master Consultation Record</span>
               {getStatusBadge(selectedAppt.status)}
             </div>
 
-            <h3 style={{ fontSize: '1.3rem', color: 'var(--slate-900)', marginBottom: '1rem' }}>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#ffffff', marginBottom: '1.25rem' }}>
               Consultation #{selectedAppt._id?.slice(-6).toUpperCase()}
             </h3>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-              <div>
-                <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Doctor</span>
-                <strong>{selectedAppt.doctor?.user?.name}</strong> ({selectedAppt.doctor?.specialization})
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', marginBottom: '0.2rem' }}>Doctor</span>
+                <strong style={{ color: '#ffffff' }}>{selectedAppt.doctor?.user?.name}</strong> <span style={{ color: '#818cf8' }}>({selectedAppt.doctor?.specialization})</span>
               </div>
-              <div>
-                <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Patient</span>
-                <strong>{selectedAppt.patient?.user?.name}</strong> ({selectedAppt.patient?.user?.email})
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', marginBottom: '0.2rem' }}>Patient</span>
+                <strong style={{ color: '#ffffff' }}>{selectedAppt.patient?.user?.name}</strong> <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>({selectedAppt.patient?.user?.email})</span>
               </div>
-              <div>
-                <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Date & Time</span>
-                <span>{selectedAppt.date} at {selectedAppt.startTime} - {selectedAppt.endTime}</span>
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', marginBottom: '0.2rem' }}>Date & Time</span>
+                <span style={{ color: '#ffffff', fontWeight: 500 }}>{selectedAppt.date} at {selectedAppt.startTime} - {selectedAppt.endTime}</span>
               </div>
-              <div>
-                <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Chief Reason</span>
-                <span>{selectedAppt.reason}</span>
+              <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', marginBottom: '0.2rem' }}>Chief Reason</span>
+                <span style={{ color: '#ffffff' }}>{selectedAppt.reason}</span>
               </div>
               {selectedAppt.symptoms && (
-                <div>
-                  <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Symptoms</span>
-                  <span>{selectedAppt.symptoms}</span>
+                <div style={{ background: 'rgba(255, 255, 255, 0.03)', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                  <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', marginBottom: '0.2rem' }}>Symptoms</span>
+                  <span style={{ color: '#ffffff' }}>{selectedAppt.symptoms}</span>
                 </div>
               )}
               {selectedAppt.cancellationReason && (
-                <div style={{ padding: '0.5rem', backgroundColor: '#ffe4e6', borderRadius: 'var(--radius-sm)', color: 'var(--accent-rose)' }}>
-                  <strong>Cancellation Note:</strong> {selectedAppt.cancellationReason}
+                <div style={{ padding: '0.85rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.25)', borderRadius: '10px', color: '#fca5a5' }}>
+                  <strong style={{ color: '#ef4444' }}>Cancellation Note:</strong> {selectedAppt.cancellationReason}
                 </div>
               )}
             </div>
 
-            <div style={{ textAlign: 'right', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
+            <div style={{ textAlign: 'right', paddingTop: '1.25rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
               <SecondaryGlassButton
                 size="small"
                 onClick={() => {
@@ -446,9 +560,6 @@ const AdminAppointmentsPage = () => {
           setSelectedAppt(null);
         }}
       />
-
-
-
     </div>
   );
 };

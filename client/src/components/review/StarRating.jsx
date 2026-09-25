@@ -41,8 +41,9 @@ const StarRating = ({
               cursor: readOnly ? 'default' : 'pointer',
               fontSize: size,
               lineHeight: 1,
-              color: filled ? '#f59e0b' : '#d1d5db',
-              transition: 'color 0.12s ease',
+              color: filled ? '#fbbf24' : 'rgba(255, 255, 255, 0.2)',
+              textShadow: filled ? '0 0 10px rgba(251, 191, 36, 0.4)' : 'none',
+              transition: 'color 0.12s ease, text-shadow 0.12s ease',
               userSelect: 'none',
               display: 'inline-block',
             }}
@@ -57,10 +58,10 @@ const StarRating = ({
       {showValue && value > 0 && (
         <span
           style={{
-            marginLeft: '0.35rem',
+            marginLeft: '0.45rem',
             fontWeight: 700,
             fontSize: size * 0.75,
-            color: 'var(--slate-700)',
+            color: '#ffffff',
           }}
         >
           {typeof value === 'number' ? value.toFixed(1) : value}
@@ -70,9 +71,9 @@ const StarRating = ({
       {count !== undefined && (
         <span
           style={{
-            marginLeft: '0.2rem',
+            marginLeft: '0.25rem',
             fontSize: size * 0.65,
-            color: 'var(--slate-400)',
+            color: 'rgba(255, 255, 255, 0.45)',
             fontWeight: 500,
           }}
         >

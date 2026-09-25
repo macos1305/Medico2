@@ -107,7 +107,7 @@ const DoctorDashboard = () => {
   const status = profile?.approvalStatus || 'PENDING';
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 3rem' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 4rem' }}>
       <div className="container">
         <div className="dashboard-layout">
           {/* Left Doctor Sidebar */}
@@ -122,37 +122,91 @@ const DoctorDashboard = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                gap: '1rem',
-                marginBottom: '1.75rem',
+                gap: '1.25rem',
+                marginBottom: '2rem',
               }}
             >
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.35rem' }}>
-                  <span className="badge badge-doctor">Doctor Portal</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.5rem' }}>
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.3rem 0.75rem',
+                      borderRadius: '9999px',
+                      background: 'rgba(139, 92, 246, 0.1)',
+                      border: '1px solid rgba(139, 92, 246, 0.25)',
+                      color: '#c084fc',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Physician Portal
+                  </span>
                   {status === 'APPROVED' && (
-                    <span className="badge badge-approved">
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        padding: '0.3rem 0.75rem',
+                        borderRadius: '9999px',
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        border: '1px solid rgba(16, 185, 129, 0.25)',
+                        color: '#34d399',
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                      }}
+                    >
                       <ShieldCheck size={12} /> Board Verified
                     </span>
                   )}
                   {status === 'PENDING' && (
-                    <span className="badge badge-pending">
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        padding: '0.3rem 0.75rem',
+                        borderRadius: '9999px',
+                        background: 'rgba(245, 158, 11, 0.1)',
+                        border: '1px solid rgba(245, 158, 11, 0.25)',
+                        color: '#fbbf24',
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                      }}
+                    >
                       Verification Pending
                     </span>
                   )}
                 </div>
-                <h1 style={{ fontSize: 'var(--text-3xl)', color: 'var(--slate-900)', marginBottom: '0.25rem' }}>
+                <h1
+                  style={{
+                    fontFamily: 'var(--font-heading, "Outfit", sans-serif)',
+                    fontSize: 'clamp(1.75rem, 2.5vw, 2.35rem)',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    marginBottom: '0.35rem',
+                    letterSpacing: '-0.02em',
+                  }}
+                >
                   {user?.name || 'Doctor Practice'}
                 </h1>
-                <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-sm)' }}>
+                <p style={{ color: 'rgba(200, 205, 225, 0.7)', fontSize: '0.92rem' }}>
                   {profile?.specialization}{profile?.hospitalAffiliation ? ` • ${profile.hospitalAffiliation}` : ''}
                 </p>
               </div>
 
               <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
-                <SecondaryGlassButton to="/doctor/appointments" size="small" icon={<Calendar size={15} />}>
+                <SecondaryGlassButton to="/doctor/appointments" size="sm" icon={<Calendar size={15} />}>
                   Appointments
                 </SecondaryGlassButton>
-                <PrimaryGlassButton to="/doctor/availability" size="small" icon={<Clock size={15} />}>
+                <PrimaryGlassButton to="/doctor/availability" size="sm" icon={<Clock size={15} />}>
                   Manage Availability
                 </PrimaryGlassButton>
               </div>
@@ -162,22 +216,23 @@ const DoctorDashboard = () => {
             {status === 'PENDING' && (
               <div
                 style={{
-                  backgroundColor: '#fffbeb',
-                  border: '1.5px solid #fde68a',
-                  borderRadius: 'var(--radius-lg)',
+                  backgroundColor: 'rgba(245, 158, 11, 0.08)',
+                  border: '1px solid rgba(245, 158, 11, 0.25)',
+                  borderRadius: '16px',
                   padding: '1.25rem 1.5rem',
                   display: 'flex',
                   alignItems: 'flex-start',
                   gap: '1rem',
                   marginBottom: '2rem',
+                  backdropFilter: 'blur(16px)',
                 }}
               >
-                <AlertTriangle size={24} color="#b45309" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <AlertTriangle size={24} color="#fbbf24" style={{ flexShrink: 0, marginTop: '2px' }} />
                 <div>
-                  <h3 style={{ fontSize: '1rem', color: '#92400e', marginBottom: '0.25rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fbbf24', marginBottom: '0.25rem' }}>
                     Credentialing Verification Under Review
                   </h3>
-                  <p style={{ fontSize: '0.875rem', color: '#b45309', lineHeight: 1.5 }}>
+                  <p style={{ fontSize: '0.85rem', color: 'rgba(253, 230, 138, 0.85)', lineHeight: 1.5, margin: 0 }}>
                     Your medical license <strong>{profile?.licenseNumber}</strong> is currently being verified by Medico administrators. You can configure your availability and practice profile in the meantime.
                   </p>
                 </div>
@@ -188,9 +243,9 @@ const DoctorDashboard = () => {
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
                 gap: '1rem',
-                marginBottom: '1.75rem',
+                marginBottom: '2rem',
               }}
             >
               {loading ? (
@@ -199,41 +254,41 @@ const DoctorDashboard = () => {
                 </>
               ) : (
                 <>
-                  <DashboardCard title="Today's Schedule" value={stats.today} icon={Calendar} variant="primary" subtitle="Visits scheduled today" />
+                  <DashboardCard title="Today's Schedule" value={stats.today} icon={Calendar} variant="primary" subtitle="Visits today" />
                   <DashboardCard title="Upcoming" value={stats.upcoming} icon={Clock} variant="secondary" subtitle="Future appointments" />
                   <DashboardCard title="Completed" value={stats.completed} icon={CheckCircle2} variant="success" subtitle="Concluded consultations" />
                   <DashboardCard title="Cancelled" value={stats.cancelled} icon={XCircle} variant="danger" subtitle="Voided slots" />
-                  <DashboardCard title="Total Patients" value={stats.totalPatients} icon={Users} variant="primary" subtitle="Unique patients treated" />
+                  <DashboardCard title="Total Patients" value={stats.totalPatients} icon={Users} variant="primary" subtitle="Unique patients" />
                 </>
               )}
             </div>
 
             {/* Today's Consultations Feed */}
-            <div className="card" style={{ marginBottom: '2rem', padding: '1.75rem' }}>
+            <div className="glass-card" style={{ marginBottom: '2rem', padding: '1.75rem' }}>
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  paddingBottom: '1rem',
-                  borderBottom: '1px solid var(--border-subtle)',
-                  marginBottom: '1.25rem',
+                  paddingBottom: '1.25rem',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                  marginBottom: '1.5rem',
                   flexWrap: 'wrap',
                   gap: '0.5rem',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Calendar size={20} color="var(--primary-600)" />
-                  <h3 style={{ fontSize: '1.2rem', color: 'var(--slate-900)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                  <Calendar size={20} color="#38bdf8" />
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 600, color: '#ffffff', margin: 0 }}>
                     Today's Consultations ({todayAppointments.length})
                   </h3>
                 </div>
                 <Link
                   to="/doctor/appointments"
                   style={{
-                    fontSize: '0.875rem',
+                    fontSize: '0.85rem',
                     fontWeight: 600,
-                    color: 'var(--primary-600)',
+                    color: '#38bdf8',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.3rem',
@@ -257,57 +312,86 @@ const DoctorDashboard = () => {
                     return (
                       <div
                         key={appt._id}
+                        className="glass-card"
                         style={{
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          padding: '1rem 1.25rem',
-                          backgroundColor: 'var(--slate-50)',
-                          borderRadius: 'var(--radius-lg)',
-                          border: '1px solid var(--border-subtle)',
+                          padding: '1.15rem 1.35rem',
+                          backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                          borderRadius: '16px',
+                          border: '1px solid rgba(255, 255, 255, 0.06)',
                           flexWrap: 'wrap',
                           gap: '1rem',
                         }}
                       >
                         {/* Left: Time & Patient Name */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.15rem' }}>
                           <div
                             style={{
-                              padding: '0.5rem 0.75rem',
-                              backgroundColor: '#ffffff',
-                              borderRadius: 'var(--radius-md)',
-                              border: '1px solid var(--slate-200)',
+                              padding: '0.55rem 0.85rem',
+                              backgroundColor: 'rgba(56, 189, 248, 0.08)',
+                              borderRadius: '12px',
+                              border: '1px solid rgba(56, 189, 248, 0.2)',
                               textAlign: 'center',
-                              minWidth: '90px',
+                              minWidth: '95px',
                             }}
                           >
-                            <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary-700)', display: 'block' }}>
+                            <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#38bdf8', display: 'block' }}>
                               {appt.startTime}
                             </span>
-                            <span style={{ fontSize: '0.7rem', color: 'var(--slate-400)' }}>
+                            <span style={{ fontSize: '0.72rem', color: 'rgba(200, 205, 225, 0.65)' }}>
                               to {appt.endTime}
                             </span>
                           </div>
 
                           <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <h4 style={{ fontSize: '1.05rem', color: 'var(--slate-900)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                              <h4 style={{ fontSize: '1.05rem', fontWeight: 600, color: '#ffffff', margin: 0 }}>
                                 {patientUser?.name || 'Patient'}
                               </h4>
-                              <span className={`badge ${appt.status === 'COMPLETED' ? 'badge-patient' : appt.status === 'CONFIRMED' ? 'badge-approved' : 'badge-pending'}`}>
+                              <span
+                                style={{
+                                  fontSize: '0.68rem',
+                                  fontWeight: 700,
+                                  padding: '0.2rem 0.6rem',
+                                  borderRadius: '999px',
+                                  backgroundColor:
+                                    appt.status === 'COMPLETED'
+                                      ? 'rgba(56, 189, 248, 0.15)'
+                                      : appt.status === 'CONFIRMED'
+                                      ? 'rgba(16, 185, 129, 0.15)'
+                                      : 'rgba(245, 158, 11, 0.15)',
+                                  color:
+                                    appt.status === 'COMPLETED'
+                                      ? '#38bdf8'
+                                      : appt.status === 'CONFIRMED'
+                                      ? '#34d399'
+                                      : '#fbbf24',
+                                  border: `1px solid ${
+                                    appt.status === 'COMPLETED'
+                                      ? 'rgba(56, 189, 248, 0.3)'
+                                      : appt.status === 'CONFIRMED'
+                                      ? 'rgba(16, 185, 129, 0.3)'
+                                      : 'rgba(245, 158, 11, 0.3)'
+                                  }`,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.04em',
+                                }}
+                              >
                                 {appt.status}
                               </span>
                             </div>
-                            <p style={{ fontSize: '0.85rem', color: 'var(--slate-600)', marginTop: '2px' }}>
-                              <strong>Reason:</strong> {appt.reason}
+                            <p style={{ fontSize: '0.82rem', color: 'rgba(200, 205, 225, 0.7)', marginTop: '0.25rem', margin: 0 }}>
+                              <strong style={{ color: 'rgba(200, 205, 225, 0.9)' }}>Reason:</strong> {appt.reason || 'General Consultation'}
                             </p>
                           </div>
                         </div>
 
                         {/* Right: Actions */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                           <SecondaryGlassButton
-                            size="small"
+                            size="sm"
                             onClick={() => {
                               setSelectedAppt(appt);
                               setDetailsModalOpen(true);
@@ -320,7 +404,7 @@ const DoctorDashboard = () => {
                           {isActionable && (
                             <>
                               <PrimaryGlassButton
-                                size="small"
+                                size="sm"
                                 disabled={actionLoading}
                                 onClick={() => handleMarkComplete(appt)}
                                 icon={<Check size={14} />}
@@ -330,7 +414,7 @@ const DoctorDashboard = () => {
                               </PrimaryGlassButton>
 
                               <DangerGlassButton
-                                size="small"
+                                size="sm"
                                 disabled={actionLoading}
                                 onClick={() => handleOpenReject(appt)}
                                 icon={<Ban size={14} />}
@@ -356,42 +440,42 @@ const DoctorDashboard = () => {
             </div>
 
             {/* Quick Practice Info Card */}
-            <div className="card">
+            <div className="glass-card" style={{ padding: '1.75rem' }}>
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  paddingBottom: '1rem',
-                  borderBottom: '1px solid var(--border-subtle)',
-                  marginBottom: '1rem',
+                  paddingBottom: '1.25rem',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                  marginBottom: '1.25rem',
                 }}
               >
-                <h3 style={{ fontSize: '1.15rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Stethoscope size={18} color="var(--primary-600)" />
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 600, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '0.6rem', margin: 0 }}>
+                  <Stethoscope size={18} color="#38bdf8" />
                   <span>Clinical Snapshot</span>
                 </h3>
-                <Link to="/doctor/profile" style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--primary-600)' }}>
+                <Link to="/doctor/profile" style={{ fontSize: '0.85rem', fontWeight: 600, color: '#38bdf8' }}>
                   Edit Profile →
                 </Link>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', fontSize: '0.9rem' }}>
-                <div>
-                  <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>License Number</span>
-                  <span style={{ fontWeight: 600 }}>{profile?.licenseNumber}</span>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '14px' }}>
+                  <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.25rem' }}>License Number</span>
+                  <span style={{ fontWeight: 600, color: '#ffffff', fontSize: '0.92rem' }}>{profile?.licenseNumber}</span>
                 </div>
-                <div>
-                  <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Consultation Fee</span>
-                  <span style={{ fontWeight: 700, color: 'var(--primary-700)' }}>₹{profile?.consultationFee || 0}</span>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '14px' }}>
+                  <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.25rem' }}>Consultation Fee</span>
+                  <span style={{ fontWeight: 700, color: '#38bdf8', fontSize: '0.92rem' }}>₹{profile?.consultationFee || 0}</span>
                 </div>
-                <div>
-                  <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Hospital Affiliation</span>
-                  <span style={{ fontWeight: 600 }}>{profile?.hospitalAffiliation || 'Independent Practice'}</span>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '14px' }}>
+                  <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.25rem' }}>Hospital Affiliation</span>
+                  <span style={{ fontWeight: 600, color: '#ffffff', fontSize: '0.92rem' }}>{profile?.hospitalAffiliation || 'Independent Practice'}</span>
                 </div>
-                <div>
-                  <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Practice Location</span>
-                  <span style={{ fontWeight: 600 }}>{profile?.location || 'Main Medical Center'}</span>
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: '14px' }}>
+                  <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.25rem' }}>Practice Location</span>
+                  <span style={{ fontWeight: 600, color: '#ffffff', fontSize: '0.92rem' }}>{profile?.location || 'Main Medical Center'}</span>
                 </div>
               </div>
             </div>
@@ -413,7 +497,7 @@ const DoctorDashboard = () => {
       <ConfirmationModal
         isOpen={rejectModalOpen}
         title="Cancel Patient Appointment"
-        message={`Are you sure you want to cancel the appointment with ${selectedAppt?.patient?.user?.name || 'this patient'} on ${selectedAppt?.date} at ${selectedAppt?.startTime}? The reserved time slot will become available for booking.`}
+        message={`Are you sure you want to cancel the appointment with ${selectedAppt?.patient?.user?.name || 'this patient'} on ${selectedAppt?.date ? new Date(selectedAppt.date).toLocaleDateString() : ''} at ${selectedAppt?.startTime}? The reserved time slot will become available for booking.`}
         confirmText="Yes, Cancel Appointment"
         cancelText="Keep Appointment"
         isDangerous={true}
@@ -424,8 +508,6 @@ const DoctorDashboard = () => {
           setSelectedAppt(null);
         }}
       />
-
-
     </div>
   );
 };

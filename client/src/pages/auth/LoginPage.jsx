@@ -101,26 +101,30 @@ const LoginPage = () => {
             style={{
               width: 56,
               height: 56,
-              borderRadius: 16,
-              background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
+              borderRadius: 18,
+              background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.9), rgba(139, 92, 246, 0.7))',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
               margin: '0 auto 1rem auto',
-              boxShadow: '0 6px 20px rgba(13, 148, 136, 0.32)',
+              boxShadow: '0 6px 25px rgba(56, 189, 248, 0.35)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
             }}
           >
             <Activity size={28} strokeWidth={2.5} />
           </div>
-          <h1 style={{ fontSize: 'var(--text-2xl)', marginBottom: '0.4rem' }}>Sign In to Medico</h1>
-          <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-sm)' }}>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 1.75rem)', marginBottom: '0.4rem', color: '#ffffff' }}>Sign In to Medico</h1>
+          <p style={{ color: 'rgba(200, 205, 225, 0.55)', fontSize: '0.95rem' }}>
             Access your health dashboard, appointments, and medical network.
           </p>
         </div>
 
-        {/* Card */}
-        <div className="card" style={{ padding: '2rem' }}>
+        {/* Glass Card */}
+        <div
+          className="glass-card"
+          style={{ padding: '2rem' }}
+        >
           {/* Form-level error */}
           {errors.form && (
             <div className="alert alert-error" style={{ marginBottom: '1.25rem' }}>
@@ -133,10 +137,10 @@ const LoginPage = () => {
             {/* Email */}
             <div className="form-group">
               <label className="form-label" htmlFor="login-email">
-                Email Address <span className="required">*</span>
+                Email Address <span style={{ color: '#fb7185' }}>*</span>
               </label>
               <div className="form-input-wrapper">
-                <span className="form-input-icon">
+                <span className="form-input-icon" style={{ color: 'rgba(200, 205, 225, 0.45)' }}>
                   <Mail size={17} />
                 </span>
                 <input
@@ -157,10 +161,10 @@ const LoginPage = () => {
             {/* Password */}
             <div className="form-group">
               <label className="form-label" htmlFor="login-password">
-                Password <span className="required">*</span>
+                Password <span style={{ color: '#fb7185' }}>*</span>
               </label>
               <div className="form-input-wrapper" style={{ position: 'relative' }}>
-                <span className="form-input-icon">
+                <span className="form-input-icon" style={{ color: 'rgba(200, 205, 225, 0.45)' }}>
                   <Lock size={17} />
                 </span>
                 <input
@@ -184,7 +188,7 @@ const LoginPage = () => {
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
-                    color: 'var(--slate-400)',
+                    color: 'rgba(200, 205, 225, 0.45)',
                     display: 'flex',
                     alignItems: 'center',
                     padding: '0.25rem',
@@ -219,16 +223,16 @@ const LoginPage = () => {
             style={{
               marginTop: '1.75rem',
               paddingTop: '1.25rem',
-              borderTop: '1px solid var(--border-subtle)',
+              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
             }}
           >
             <p
               style={{
-                fontSize: 'var(--text-xs)',
+                fontSize: '0.72rem',
                 fontWeight: 700,
                 textTransform: 'uppercase',
                 letterSpacing: '0.06em',
-                color: 'var(--slate-400)',
+                color: 'rgba(200, 205, 225, 0.4)',
                 marginBottom: '0.65rem',
                 textAlign: 'center',
               }}
@@ -265,13 +269,13 @@ const LoginPage = () => {
         </div>
 
         {/* Footer Links */}
-        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: 'var(--text-sm)', color: 'var(--slate-500)' }}>
+        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.92rem', color: 'rgba(200, 205, 225, 0.55)' }}>
           Don't have an account?{' '}
-          <Link to="/register/patient" style={{ fontWeight: 700, color: 'var(--primary-600)' }}>
+          <Link to="/register/patient" style={{ fontWeight: 700, color: '#38bdf8' }}>
             Register as Patient
           </Link>{' '}
           or{' '}
-          <Link to="/register/doctor" style={{ fontWeight: 700, color: 'var(--primary-600)' }}>
+          <Link to="/register/doctor" style={{ fontWeight: 700, color: '#38bdf8' }}>
             Doctor
           </Link>
         </div>

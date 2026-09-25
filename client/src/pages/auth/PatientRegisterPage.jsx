@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import { User, Mail, Lock, Phone, Heart, Calendar, ArrowRight, Activity } from 'lucide-react';
-import { GlassButton } from '../../components/common/buttons';
+import { User, Mail, Lock, Phone, Heart, Calendar, ArrowRight, Activity, AlertCircle } from 'lucide-react';
+import { PrimaryGlassButton } from '../../components/common/buttons';
 
 const PatientRegisterPage = () => {
   const { registerPatient } = useAuth();
@@ -73,7 +73,7 @@ const PatientRegisterPage = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '3rem 1.5rem',
+        padding: '1rem 0 3rem',
       }}
     >
       <div style={{ width: '100%', maxWidth: '520px' }}>
@@ -81,51 +81,98 @@ const PatientRegisterPage = () => {
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div
             style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '14px',
-              background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
+              width: '54px',
+              height: '54px',
+              borderRadius: '16px',
+              background: 'linear-gradient(135deg, #0ea5e9, #6366f1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
-              margin: '0 auto 1rem auto',
-              boxShadow: '0 4px 14px rgba(13, 148, 136, 0.3)',
+              margin: '0 auto 1.25rem auto',
+              boxShadow: '0 8px 24px rgba(14, 165, 233, 0.35)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
             }}
           >
-            <Activity size={28} strokeWidth={2.5} />
+            <Activity size={30} strokeWidth={2.5} />
           </div>
-          <span className="badge badge-patient" style={{ marginBottom: '0.5rem' }}>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              padding: '0.35rem 0.85rem',
+              borderRadius: '9999px',
+              background: 'rgba(56, 189, 248, 0.1)',
+              border: '1px solid rgba(56, 189, 248, 0.25)',
+              color: '#38bdf8',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              marginBottom: '0.75rem',
+            }}
+          >
             Patient Portal
           </span>
-          <h1 style={{ fontSize: '1.75rem', marginBottom: '0.4rem' }}>Create Patient Account</h1>
-          <p style={{ color: 'var(--slate-500)', fontSize: '0.9rem' }}>
+          <h1
+            style={{
+              fontFamily: 'var(--font-heading, "Outfit", sans-serif)',
+              fontSize: 'clamp(1.75rem, 2.5vw, 2.25rem)',
+              fontWeight: 700,
+              color: '#ffffff',
+              marginBottom: '0.5rem',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Create Patient Account
+          </h1>
+          <p style={{ color: 'rgba(200, 205, 225, 0.7)', fontSize: '0.92rem', lineHeight: 1.5 }}>
             Register to book certified doctors, schedule slots, and track your health records.
           </p>
         </div>
 
-        {/* Card */}
-        <div className="card glass-card" style={{ padding: '2rem' }}>
+        {/* Glass Card */}
+        <div
+          className="glass-card"
+          style={{
+            padding: '2.25rem',
+            background: 'rgba(18, 20, 29, 0.65)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '24px',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.45)',
+          }}
+        >
           {errors.form && (
             <div
               style={{
-                backgroundColor: '#ffe4e6',
-                border: '1px solid #fecdd3',
-                color: 'var(--accent-rose)',
-                padding: '0.75rem 1rem',
-                borderRadius: 'var(--radius-md)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.65rem',
+                backgroundColor: 'rgba(244, 63, 94, 0.12)',
+                border: '1px solid rgba(244, 63, 94, 0.3)',
+                color: '#fb7185',
+                padding: '0.85rem 1rem',
+                borderRadius: '12px',
                 fontSize: '0.875rem',
-                marginBottom: '1.25rem',
+                marginBottom: '1.5rem',
               }}
             >
-              {errors.form}
+              <AlertCircle size={18} style={{ flexShrink: 0 }} />
+              <span>{errors.form}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit} noValidate>
             {/* Full Name */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="name">
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label
+                className="form-label"
+                htmlFor="name"
+                style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+              >
                 Full Name *
               </label>
               <div style={{ position: 'relative' }}>
@@ -137,21 +184,34 @@ const PatientRegisterPage = () => {
                   placeholder="e.g. Jane Doe"
                   value={formData.name}
                   onChange={handleChange}
-                  style={{ paddingLeft: '2.5rem' }}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.6rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    border: errors.name ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                  }}
                   disabled={loading}
                 />
                 <User
                   size={18}
-                  color="var(--slate-400)"
-                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                 />
               </div>
-              {errors.name && <div className="form-error">{errors.name}</div>}
+              {errors.name && <div style={{ color: '#fb7185', fontSize: '0.8rem', marginTop: '0.35rem' }}>{errors.name}</div>}
             </div>
 
             {/* Email */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="email">
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label
+                className="form-label"
+                htmlFor="email"
+                style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+              >
                 Email Address *
               </label>
               <div style={{ position: 'relative' }}>
@@ -163,21 +223,34 @@ const PatientRegisterPage = () => {
                   placeholder="patient@example.com"
                   value={formData.email}
                   onChange={handleChange}
-                  style={{ paddingLeft: '2.5rem' }}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.6rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    border: errors.email ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                  }}
                   disabled={loading}
                 />
                 <Mail
                   size={18}
-                  color="var(--slate-400)"
-                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                 />
               </div>
-              {errors.email && <div className="form-error">{errors.email}</div>}
+              {errors.email && <div style={{ color: '#fb7185', fontSize: '0.8rem', marginTop: '0.35rem' }}>{errors.email}</div>}
             </div>
 
             {/* Password */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="password">
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label
+                className="form-label"
+                htmlFor="password"
+                style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+              >
                 Password * (min. 6 characters)
               </label>
               <div style={{ position: 'relative' }}>
@@ -189,21 +262,34 @@ const PatientRegisterPage = () => {
                   placeholder="Create a strong password"
                   value={formData.password}
                   onChange={handleChange}
-                  style={{ paddingLeft: '2.5rem' }}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.6rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    border: errors.password ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                  }}
                   disabled={loading}
                 />
                 <Lock
                   size={18}
-                  color="var(--slate-400)"
-                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                 />
               </div>
-              {errors.password && <div className="form-error">{errors.password}</div>}
+              {errors.password && <div style={{ color: '#fb7185', fontSize: '0.8rem', marginTop: '0.35rem' }}>{errors.password}</div>}
             </div>
 
             {/* Phone Number */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="phone">
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label
+                className="form-label"
+                htmlFor="phone"
+                style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+              >
                 Phone Number
               </label>
               <div style={{ position: 'relative' }}>
@@ -215,21 +301,33 @@ const PatientRegisterPage = () => {
                   placeholder="+1 (555) 000-0000"
                   value={formData.phone}
                   onChange={handleChange}
-                  style={{ paddingLeft: '2.5rem' }}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.6rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                  }}
                   disabled={loading}
                 />
                 <Phone
                   size={18}
-                  color="var(--slate-400)"
-                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                 />
               </div>
             </div>
 
             {/* 2-col layout: Gender & Blood Group */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
               <div className="form-group">
-                <label className="form-label" htmlFor="gender">
+                <label
+                  className="form-label"
+                  htmlFor="gender"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
                   Gender
                 </label>
                 <select
@@ -239,6 +337,16 @@ const PatientRegisterPage = () => {
                   value={formData.gender}
                   onChange={handleChange}
                   disabled={loading}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    backgroundColor: '#12141d',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                  }}
                 >
                   <option value="PREFER_NOT_TO_SAY">Prefer not to say</option>
                   <option value="MALE">Male</option>
@@ -248,7 +356,11 @@ const PatientRegisterPage = () => {
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="bloodGroup">
+                <label
+                  className="form-label"
+                  htmlFor="bloodGroup"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
                   Blood Group
                 </label>
                 <select
@@ -258,6 +370,16 @@ const PatientRegisterPage = () => {
                   value={formData.bloodGroup}
                   onChange={handleChange}
                   disabled={loading}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    backgroundColor: '#12141d',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                  }}
                 >
                   <option value="UNKNOWN">Unknown</option>
                   <option value="A+">A+</option>
@@ -273,8 +395,12 @@ const PatientRegisterPage = () => {
             </div>
 
             {/* Date of Birth */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="dateOfBirth">
+            <div className="form-group" style={{ marginBottom: '1.75rem' }}>
+              <label
+                className="form-label"
+                htmlFor="dateOfBirth"
+                style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+              >
                 Date of Birth
               </label>
               <div style={{ position: 'relative' }}>
@@ -285,43 +411,48 @@ const PatientRegisterPage = () => {
                   className="form-input"
                   value={formData.dateOfBirth}
                   onChange={handleChange}
-                  style={{ paddingLeft: '2.5rem' }}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.6rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    colorScheme: 'dark',
+                  }}
                   disabled={loading}
                 />
                 <Calendar
                   size={18}
-                  color="var(--slate-400)"
-                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                 />
               </div>
             </div>
 
             {/* Submit */}
-            <div style={{ marginTop: '1.5rem' }}>
-              <GlassButton
-                type="submit"
-                variant="primary"
-                size="large"
-                fullWidth
-                loading={loading}
-                icon={<ArrowRight size={18} />}
-                iconPosition="right"
-              >
-                Complete Patient Registration
-              </GlassButton>
-            </div>
+            <PrimaryGlassButton
+              type="submit"
+              size="lg"
+              fullWidth
+              loading={loading}
+              icon={<ArrowRight size={18} />}
+            >
+              Complete Patient Registration
+            </PrimaryGlassButton>
           </form>
         </div>
 
         {/* Footer Links */}
-        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--slate-500)' }}>
+        <div style={{ textAlign: 'center', marginTop: '1.75rem', fontSize: '0.9rem', color: 'rgba(200, 205, 225, 0.65)' }}>
           Already have an account?{' '}
-          <Link to="/login" style={{ fontWeight: 600, color: 'var(--primary-600)' }}>
+          <Link to="/login" style={{ fontWeight: 600, color: '#38bdf8' }}>
             Sign In
           </Link>
-          <span style={{ margin: '0 0.5rem' }}>•</span>
+          <span style={{ margin: '0 0.65rem', opacity: 0.4 }}>•</span>
           Are you a physician?{' '}
-          <Link to="/register/doctor" style={{ fontWeight: 600, color: 'var(--primary-600)' }}>
+          <Link to="/register/doctor" style={{ fontWeight: 600, color: '#c084fc' }}>
             Join as Doctor
           </Link>
         </div>

@@ -12,6 +12,47 @@ import {
 } from 'lucide-react';
 import { PrimaryGlassButton } from '../common/buttons';
 
+const inputStyle = {
+  width: '100%',
+  padding: '0.75rem 1rem',
+  backgroundColor: 'rgba(255, 255, 255, 0.04)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  borderRadius: '12px',
+  color: '#ffffff',
+  fontSize: '0.9rem',
+  outline: 'none',
+  transition: 'border-color 0.2s',
+};
+
+const selectStyle = {
+  width: '100%',
+  padding: '0.75rem 1rem',
+  backgroundColor: '#12141d',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  borderRadius: '12px',
+  color: '#ffffff',
+  fontSize: '0.9rem',
+  outline: 'none',
+};
+
+const labelStyle = {
+  display: 'block',
+  fontSize: '0.82rem',
+  fontWeight: 600,
+  color: 'rgba(200, 205, 225, 0.8)',
+  marginBottom: '0.4rem',
+};
+
+const cardStyle = {
+  padding: '1.75rem',
+  background: 'rgba(18, 20, 29, 0.65)',
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  border: '1px solid rgba(255, 255, 255, 0.08)',
+  borderRadius: '20px',
+  marginBottom: '1.5rem',
+};
+
 const ProfileForm = ({ initialData, onSave, loading }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -118,17 +159,19 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
   return (
     <form onSubmit={handleSubmit} noValidate>
       {/* 1. Basic / Identity Details */}
-      <div className="card" style={{ marginBottom: '1.75rem' }}>
+      <div className="glass-card" style={cardStyle}>
         <h3
           style={{
             fontSize: '1.15rem',
+            fontWeight: 600,
+            color: '#ffffff',
             marginBottom: '1.25rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
+            gap: '0.6rem',
           }}
         >
-          <User size={20} color="var(--primary-600)" />
+          <User size={19} color="#38bdf8" />
           Personal Information
         </h3>
 
@@ -137,10 +180,11 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
             gap: '1.25rem',
+            marginBottom: '1.25rem',
           }}
         >
           <div className="form-group">
-            <label className="form-label" htmlFor="name">
+            <label className="form-label" htmlFor="name" style={labelStyle}>
               Full Name *
             </label>
             <input
@@ -152,12 +196,16 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               onChange={handleChange}
               disabled={loading}
               placeholder="e.g. Jane Doe"
+              style={{
+                ...inputStyle,
+                border: errors.name ? '1px solid #f43f5e' : inputStyle.border,
+              }}
             />
-            {errors.name && <div className="form-error">{errors.name}</div>}
+            {errors.name && <div style={{ color: '#fb7185', fontSize: '0.8rem', marginTop: '0.35rem' }}>{errors.name}</div>}
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="phone">
+            <label className="form-label" htmlFor="phone" style={labelStyle}>
               Phone Number
             </label>
             <input
@@ -169,12 +217,13 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               onChange={handleChange}
               disabled={loading}
               placeholder="+1 (555) 000-0000"
+              style={inputStyle}
             />
           </div>
         </div>
 
         <div className="form-group" style={{ marginBottom: 0 }}>
-          <label className="form-label" htmlFor="profileImage">
+          <label className="form-label" htmlFor="profileImage" style={labelStyle}>
             Profile Image URL
           </label>
           <input
@@ -186,25 +235,28 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
             onChange={handleChange}
             disabled={loading}
             placeholder="https://example.com/avatar.jpg"
+            style={inputStyle}
           />
-          <span style={{ fontSize: '0.75rem', color: 'var(--slate-400)', marginTop: '0.25rem', display: 'block' }}>
+          <span style={{ fontSize: '0.75rem', color: 'rgba(148, 163, 184, 0.65)', marginTop: '0.35rem', display: 'block' }}>
             Provide a direct public image link to display your avatar.
           </span>
         </div>
       </div>
 
       {/* 2. Medical Details */}
-      <div className="card" style={{ marginBottom: '1.75rem' }}>
+      <div className="glass-card" style={cardStyle}>
         <h3
           style={{
             fontSize: '1.15rem',
+            fontWeight: 600,
+            color: '#ffffff',
             marginBottom: '1.25rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
+            gap: '0.6rem',
           }}
         >
-          <Heart size={20} color="var(--accent-rose)" />
+          <Heart size={19} color="#f43f5e" />
           Medical & Clinical Specifics
         </h3>
 
@@ -217,7 +269,7 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
           }}
         >
           <div className="form-group">
-            <label className="form-label" htmlFor="bloodGroup">
+            <label className="form-label" htmlFor="bloodGroup" style={labelStyle}>
               Blood Group
             </label>
             <select
@@ -227,6 +279,7 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               value={formData.bloodGroup}
               onChange={handleChange}
               disabled={loading}
+              style={selectStyle}
             >
               <option value="UNKNOWN">Unknown</option>
               <option value="A+">A+</option>
@@ -241,7 +294,7 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="gender">
+            <label className="form-label" htmlFor="gender" style={labelStyle}>
               Gender
             </label>
             <select
@@ -251,6 +304,7 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               value={formData.gender}
               onChange={handleChange}
               disabled={loading}
+              style={selectStyle}
             >
               <option value="PREFER_NOT_TO_SAY">Prefer not to say</option>
               <option value="MALE">Male</option>
@@ -260,7 +314,7 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="dateOfBirth">
+            <label className="form-label" htmlFor="dateOfBirth" style={labelStyle}>
               Date of Birth
             </label>
             <input
@@ -271,12 +325,13 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               value={formData.dateOfBirth}
               onChange={handleChange}
               disabled={loading}
+              style={{ ...inputStyle, colorScheme: 'dark' }}
             />
           </div>
         </div>
 
         <div className="form-group" style={{ marginBottom: 0 }}>
-          <label className="form-label" htmlFor="allergies">
+          <label className="form-label" htmlFor="allergies" style={labelStyle}>
             Known Allergies (Comma-separated)
           </label>
           <input
@@ -288,27 +343,30 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
             onChange={handleChange}
             disabled={loading}
             placeholder="e.g. Penicillin, Peanuts, Latex"
+            style={inputStyle}
           />
         </div>
       </div>
 
       {/* 3. Address Information */}
-      <div className="card" style={{ marginBottom: '1.75rem' }}>
+      <div className="glass-card" style={cardStyle}>
         <h3
           style={{
             fontSize: '1.15rem',
+            fontWeight: 600,
+            color: '#ffffff',
             marginBottom: '1.25rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
+            gap: '0.6rem',
           }}
         >
-          <MapPin size={20} color="var(--primary-600)" />
+          <MapPin size={19} color="#38bdf8" />
           Residential Address
         </h3>
 
-        <div className="form-group">
-          <label className="form-label" htmlFor="street">
+        <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+          <label className="form-label" htmlFor="street" style={labelStyle}>
             Street Address
           </label>
           <input
@@ -320,6 +378,7 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
             onChange={handleChange}
             disabled={loading}
             placeholder="123 Health Ave, Apt 4B"
+            style={inputStyle}
           />
         </div>
 
@@ -331,7 +390,7 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
           }}
         >
           <div className="form-group">
-            <label className="form-label" htmlFor="city">
+            <label className="form-label" htmlFor="city" style={labelStyle}>
               City
             </label>
             <input
@@ -343,11 +402,12 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               onChange={handleChange}
               disabled={loading}
               placeholder="New York"
+              style={inputStyle}
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="state">
+            <label className="form-label" htmlFor="state" style={labelStyle}>
               State / Province
             </label>
             <input
@@ -359,11 +419,12 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               onChange={handleChange}
               disabled={loading}
               placeholder="NY"
+              style={inputStyle}
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="zipCode">
+            <label className="form-label" htmlFor="zipCode" style={labelStyle}>
               Zip / Postal Code
             </label>
             <input
@@ -375,23 +436,26 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               onChange={handleChange}
               disabled={loading}
               placeholder="10001"
+              style={inputStyle}
             />
           </div>
         </div>
       </div>
 
       {/* 4. Emergency Contact */}
-      <div className="card" style={{ marginBottom: '2rem' }}>
+      <div className="glass-card" style={cardStyle}>
         <h3
           style={{
             fontSize: '1.15rem',
+            fontWeight: 600,
+            color: '#ffffff',
             marginBottom: '1.25rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
+            gap: '0.6rem',
           }}
         >
-          <ShieldAlert size={20} color="var(--accent-amber)" />
+          <ShieldAlert size={19} color="#f59e0b" />
           Emergency Contact Details
         </h3>
 
@@ -403,7 +467,7 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
           }}
         >
           <div className="form-group">
-            <label className="form-label" htmlFor="emName">
+            <label className="form-label" htmlFor="emName" style={labelStyle}>
               Contact Name
             </label>
             <input
@@ -415,11 +479,12 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               onChange={handleChange}
               disabled={loading}
               placeholder="e.g. Robert Doe"
+              style={inputStyle}
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="emRel">
+            <label className="form-label" htmlFor="emRel" style={labelStyle}>
               Relationship
             </label>
             <input
@@ -431,11 +496,12 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               onChange={handleChange}
               disabled={loading}
               placeholder="Spouse, Parent, Sibling"
+              style={inputStyle}
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="emPhone">
+            <label className="form-label" htmlFor="emPhone" style={labelStyle}>
               Emergency Phone
             </label>
             <input
@@ -447,20 +513,21 @@ const ProfileForm = ({ initialData, onSave, loading }) => {
               onChange={handleChange}
               disabled={loading}
               placeholder="+1 (555) 999-8888"
+              style={inputStyle}
             />
           </div>
         </div>
       </div>
 
       {/* Submit Button */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}>
         <PrimaryGlassButton
           type="submit"
           size="lg"
           loading={loading}
           disabled={loading}
           icon={<Save size={18} />}
-          style={{ minWidth: '180px' }}
+          style={{ minWidth: '200px' }}
         >
           Save Profile Changes
         </PrimaryGlassButton>

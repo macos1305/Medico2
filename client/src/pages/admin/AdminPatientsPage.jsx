@@ -77,7 +77,7 @@ const AdminPatientsPage = () => {
   };
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 0', minHeight: '80vh' }}>
       <div className="container">
         <div
           style={{
@@ -100,41 +100,64 @@ const AdminPatientsPage = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                gap: '1rem',
-                marginBottom: '1.75rem',
+                gap: '1.25rem',
+                marginBottom: '2rem',
               }}
             >
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                  <span className="badge badge-admin">User Registry</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                  <span style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '0.2rem 0.65rem',
+                    borderRadius: '9999px',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    background: 'rgba(168, 85, 247, 0.15)',
+                    color: '#c084fc',
+                    border: '1px solid rgba(168, 85, 247, 0.3)',
+                  }}>User Registry</span>
                 </div>
-                <h1 style={{ fontSize: '2rem', color: 'var(--slate-900)' }}>
+                <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', margin: '0 0 0.4rem 0' }}>
                   Patient Governance
                 </h1>
-                <p style={{ color: 'var(--slate-600)', fontSize: '0.95rem' }}>
+                <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '0.95rem', margin: 0, maxWidth: '600px' }}>
                   Inspect registered patient accounts, emergency records, consultation records, and manage access privileges.
                 </p>
               </div>
 
               {/* Keyword Search */}
-              <div style={{ position: 'relative', width: '280px' }}>
+              <div style={{ position: 'relative', width: '300px' }}>
                 <Search
                   size={16}
                   style={{
                     position: 'absolute',
-                    left: '12px',
+                    left: '14px',
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    color: 'var(--slate-400)',
+                    color: 'rgba(255, 255, 255, 0.4)',
+                    pointerEvents: 'none',
                   }}
                 />
                 <input
                   type="text"
-                  className="form-input"
+                  className="glass-input"
                   placeholder="Search patient name, email, phone..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{ paddingLeft: '2.4rem' }}
+                  style={{
+                    width: '100%',
+                    paddingLeft: '2.5rem',
+                    paddingRight: '1rem',
+                    paddingTop: '0.65rem',
+                    paddingBottom: '0.65rem',
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.875rem',
+                    outline: 'none',
+                  }}
                 />
               </div>
             </div>
@@ -157,36 +180,54 @@ const AdminPatientsPage = () => {
                   return (
                     <div
                       key={pat._id}
-                      className="card card-interactive"
+                      className="glass-card glass-card-interactive"
                       style={{
                         padding: '1.5rem',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        borderRadius: 'var(--radius-lg)',
+                        borderRadius: '16px',
+                        background: 'rgba(18, 20, 29, 0.65)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
                       }}
                     >
                       <div>
                         {/* Top: Status Badge */}
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-                          <span className="badge badge-patient">Patient</span>
-                          <span className={`badge ${isActive ? 'badge-approved' : 'badge-rejected'}`} style={{ fontSize: '0.65rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+                          <span style={{
+                            padding: '0.2rem 0.65rem',
+                            borderRadius: '9999px',
+                            fontSize: '0.72rem',
+                            fontWeight: 600,
+                            background: 'rgba(59, 130, 246, 0.15)',
+                            color: '#60a5fa',
+                            border: '1px solid rgba(59, 130, 246, 0.25)',
+                          }}>Patient</span>
+                          <span style={{
+                            padding: '0.2rem 0.6rem',
+                            borderRadius: '9999px',
+                            fontSize: '0.7rem',
+                            fontWeight: 600,
+                            background: isActive ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                            color: isActive ? '#34d399' : '#f87171',
+                            border: `1px solid ${isActive ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+                          }}>
                             {isActive ? 'Active' : 'Deactivated'}
                           </span>
                         </div>
 
                         {/* Patient Name & Contacts */}
-                        <div style={{ marginBottom: '1rem' }}>
-                          <h3 style={{ fontSize: '1.15rem', color: 'var(--slate-900)', marginBottom: '0.2rem' }}>
+                        <div style={{ marginBottom: '1.2rem' }}>
+                          <h3 style={{ fontSize: '1.15rem', fontWeight: 600, color: '#ffffff', marginBottom: '0.35rem' }}>
                             {user?.name || 'Patient'}
                           </h3>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', fontSize: '0.825rem', color: 'var(--slate-500)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                              <Mail size={13} />
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.6)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <Mail size={13} style={{ color: 'rgba(255, 255, 255, 0.4)' }} />
                               <span>{user?.email}</span>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                              <Phone size={13} />
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <Phone size={13} style={{ color: 'rgba(255, 255, 255, 0.4)' }} />
                               <span>{user?.phone || 'No phone'}</span>
                             </div>
                           </div>
@@ -195,9 +236,10 @@ const AdminPatientsPage = () => {
                         {/* Medical Demographics Pill */}
                         <div
                           style={{
-                            padding: '0.65rem 0.85rem',
-                            backgroundColor: 'var(--slate-50)',
-                            borderRadius: 'var(--radius-md)',
+                            padding: '0.75rem 0.85rem',
+                            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                            border: '1px solid rgba(255, 255, 255, 0.06)',
+                            borderRadius: '10px',
                             fontSize: '0.8rem',
                             marginBottom: '1.25rem',
                             display: 'flex',
@@ -206,12 +248,12 @@ const AdminPatientsPage = () => {
                           }}
                         >
                           <div>
-                            <span style={{ color: 'var(--slate-400)' }}>Blood Group: </span>
-                            <strong style={{ color: 'var(--accent-rose)' }}>{pat.bloodGroup || 'UNKNOWN'}</strong>
+                            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Blood Group: </span>
+                            <strong style={{ color: '#f43f5e' }}>{pat.bloodGroup || 'UNKNOWN'}</strong>
                           </div>
                           <div>
-                            <span style={{ color: 'var(--slate-400)' }}>Gender: </span>
-                            <span style={{ textTransform: 'capitalize' }}>{pat.gender?.toLowerCase() || 'N/A'}</span>
+                            <span style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Gender: </span>
+                            <span style={{ textTransform: 'capitalize', color: '#ffffff' }}>{pat.gender?.toLowerCase() || 'N/A'}</span>
                           </div>
                         </div>
                       </div>
@@ -223,7 +265,7 @@ const AdminPatientsPage = () => {
                           alignItems: 'center',
                           gap: '0.5rem',
                           paddingTop: '0.85rem',
-                          borderTop: '1px solid var(--border-subtle)',
+                          borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                         }}
                       >
                         <SecondaryGlassButton
@@ -240,7 +282,7 @@ const AdminPatientsPage = () => {
                           size="small"
                           disabled={actionLoading}
                           onClick={() => handleToggleStatus(pat._id, !isActive)}
-                          icon={isActive ? <UserX size={15} color="var(--accent-rose)" /> : <UserCheck size={15} color="var(--medico-primary)" />}
+                          icon={isActive ? <UserX size={15} color="#f43f5e" /> : <UserCheck size={15} color="#34d399" />}
                           title={isActive ? 'Deactivate Patient Account' : 'Activate Patient Account'}
                         />
                       </div>
@@ -250,18 +292,20 @@ const AdminPatientsPage = () => {
               </div>
             ) : (
               <div
-                className="card"
+                className="glass-card"
                 style={{
                   padding: '3.5rem 2rem',
                   textAlign: 'center',
-                  borderRadius: 'var(--radius-lg)',
+                  borderRadius: '16px',
+                  background: 'rgba(18, 20, 29, 0.65)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                 }}
               >
-                <Users size={36} color="var(--slate-300)" style={{ margin: '0 auto 0.75rem auto' }} />
-                <h3 style={{ fontSize: '1.25rem', color: 'var(--slate-900)', marginBottom: '0.35rem' }}>
+                <Users size={36} style={{ margin: '0 auto 0.75rem auto', color: 'rgba(255, 255, 255, 0.3)' }} />
+                <h3 style={{ fontSize: '1.25rem', color: '#ffffff', marginBottom: '0.35rem' }}>
                   No Patients Found
                 </h3>
-                <p style={{ color: 'var(--slate-500)', fontSize: '0.9rem' }}>
+                <p style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem' }}>
                   There are no patient records matching your search query.
                 </p>
               </div>
@@ -281,9 +325,6 @@ const AdminPatientsPage = () => {
         onToggleStatus={handleToggleStatus}
         actionLoading={actionLoading}
       />
-
-
-
     </div>
   );
 };

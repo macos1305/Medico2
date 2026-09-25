@@ -98,14 +98,13 @@ const RecommendDoctorPage = () => {
     navigate('/patient/appointments');
   };
 
-  // Filter doctors if user selects a specific specialty from the recommended list
   const displayedDoctors = (result?.doctors || []).filter((doc) => {
     if (filterSpecialty === 'ALL') return true;
     return doc.specialization === filterSpecialty;
   });
 
   return (
-    <div style={{ padding: '2.5rem 0', minHeight: '85vh', backgroundColor: 'var(--slate-50)' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 4rem' }}>
       <div className="container">
         <div
           style={{
@@ -123,63 +122,77 @@ const RecommendDoctorPage = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', minWidth: 0 }}>
             {/* Page Header */}
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.35rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.4rem' }}>
                 <div
                   style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '10px',
-                    background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     color: '#ffffff',
-                    boxShadow: '0 4px 10px rgba(13, 148, 136, 0.25)',
+                    boxShadow: '0 4px 16px rgba(139, 92, 246, 0.35)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
                   }}
                 >
-                  <Sparkles size={20} />
+                  <Sparkles size={22} />
                 </div>
-                <h1 style={{ fontSize: '1.75rem', fontWeight: 800, margin: 0, color: 'var(--slate-900)' }}>
-                  AI Doctor Recommendation
+                <h1
+                  style={{
+                    fontFamily: 'var(--font-heading, "Outfit", sans-serif)',
+                    fontSize: 'clamp(1.75rem, 2.5vw, 2.35rem)',
+                    fontWeight: 700,
+                    margin: 0,
+                    color: '#ffffff',
+                    letterSpacing: '-0.02em',
+                  }}
+                >
+                  AI Clinical Matcher
                 </h1>
               </div>
-              <p style={{ margin: 0, color: 'var(--slate-500)', fontSize: '0.95rem' }}>
-                Describe your symptoms in your own words to discover relevant medical specialties and top-rated verified practitioners.
+              <p style={{ margin: 0, color: 'rgba(200, 205, 225, 0.7)', fontSize: '0.95rem' }}>
+                Describe your symptoms in natural language to discover relevant medical specialties and top-rated verified practitioners.
               </p>
             </div>
 
             {/* Medical Disclaimer Banner */}
             <div
               style={{
-                backgroundColor: '#fffbeb',
-                border: '1px solid #fef3c7',
+                backgroundColor: 'rgba(245, 158, 11, 0.08)',
+                border: '1px solid rgba(245, 158, 11, 0.25)',
                 borderLeft: '4px solid #f59e0b',
-                borderRadius: 'var(--radius-md)',
+                borderRadius: '16px',
                 padding: '1rem 1.25rem',
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: '0.85rem',
+                backdropFilter: 'blur(16px)',
               }}
             >
-              <AlertTriangle size={20} color="#d97706" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <AlertTriangle size={20} color="#fbbf24" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <h4 style={{ margin: '0 0 0.25rem 0', fontSize: '0.88rem', fontWeight: 700, color: '#92400e' }}>
+                <h4 style={{ margin: '0 0 0.25rem 0', fontSize: '0.88rem', fontWeight: 700, color: '#fbbf24' }}>
                   Doctor Discovery Tool Only — Not a Medical Diagnosis
                 </h4>
-                <p style={{ margin: 0, fontSize: '0.82rem', color: '#78350f', lineHeight: 1.45 }}>
-                  This tool uses natural language pattern matching to identify relevant medical specializations and assist you in selecting an appropriate healthcare provider. It does not provide clinical diagnoses, medical assessments, or treatment plans. If you are experiencing a medical emergency, call 911 or visit your nearest emergency room immediately.
+                <p style={{ margin: 0, fontSize: '0.82rem', color: 'rgba(253, 230, 138, 0.85)', lineHeight: 1.5 }}>
+                  This tool uses natural language clinical pattern recognition to match relevant specialties and assist you in selecting a certified provider. It does not provide medical assessments or treatment plans. If you are experiencing a life-threatening emergency, call emergency services immediately.
                 </p>
               </div>
             </div>
 
             {/* Input Card */}
             <div
+              className="glass-card"
               style={{
-                backgroundColor: '#ffffff',
-                borderRadius: 'var(--radius-lg)',
-                padding: '1.75rem',
-                boxShadow: 'var(--shadow-sm)',
-                border: '1px solid var(--border-subtle)',
+                padding: '2rem',
+                background: 'rgba(18, 20, 29, 0.65)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '24px',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
               }}
             >
               <form onSubmit={handleAnalyze}>
@@ -188,9 +201,9 @@ const RecommendDoctorPage = () => {
                   style={{
                     display: 'block',
                     fontSize: '0.95rem',
-                    fontWeight: 700,
-                    color: 'var(--slate-800)',
-                    marginBottom: '0.5rem',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    marginBottom: '0.65rem',
                   }}
                 >
                   What symptoms or health concerns are you experiencing?
@@ -204,52 +217,53 @@ const RecommendDoctorPage = () => {
                   placeholder="e.g. I have been having frequent headaches, mild dizziness, and trouble focusing on my screen for the past few days..."
                   style={{
                     width: '100%',
-                    padding: '0.85rem 1rem',
+                    padding: '1rem',
                     fontSize: '0.95rem',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--border-subtle)',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    color: '#ffffff',
                     fontFamily: 'inherit',
                     outline: 'none',
-                    lineHeight: 1.5,
+                    lineHeight: 1.55,
                     resize: 'vertical',
-                    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.04)',
                     transition: 'border-color 0.2s',
                   }}
-                  onFocus={(e) => (e.target.style.borderColor = 'var(--primary-500)')}
-                  onBlur={(e) => (e.target.style.borderColor = 'var(--border-subtle)')}
+                  onFocus={(e) => (e.target.style.borderColor = 'rgba(56, 189, 248, 0.5)')}
+                  onBlur={(e) => (e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)')}
                 />
 
                 {/* Sample Prompt Pills */}
-                <div style={{ marginTop: '0.85rem' }}>
-                  <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--slate-500)', display: 'block', marginBottom: '0.4rem' }}>
+                <div style={{ marginTop: '1rem' }}>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'rgba(148, 163, 184, 0.7)', display: 'block', marginBottom: '0.5rem' }}>
                     Try common examples:
                   </span>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                     {SAMPLE_PROMPTS.map((prompt, idx) => (
                       <button
                         key={idx}
                         type="button"
                         onClick={() => handlePromptClick(prompt)}
                         style={{
-                          background: 'var(--slate-100)',
-                          border: '1px solid var(--slate-200)',
+                          background: 'rgba(255, 255, 255, 0.04)',
+                          border: '1px solid rgba(255, 255, 255, 0.08)',
                           borderRadius: '999px',
-                          padding: '0.3rem 0.75rem',
+                          padding: '0.35rem 0.85rem',
                           fontSize: '0.78rem',
-                          color: 'var(--slate-700)',
+                          color: 'rgba(200, 205, 225, 0.8)',
                           cursor: 'pointer',
-                          transition: 'all 0.15s ease',
+                          transition: 'all 0.2s ease',
                           textAlign: 'left',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = 'var(--primary-50)';
-                          e.currentTarget.style.borderColor = 'var(--primary-200)';
-                          e.currentTarget.style.color = 'var(--primary-700)';
+                          e.currentTarget.style.backgroundColor = 'rgba(56, 189, 248, 0.12)';
+                          e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.3)';
+                          e.currentTarget.style.color = '#38bdf8';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = 'var(--slate-100)';
-                          e.currentTarget.style.borderColor = 'var(--slate-200)';
-                          e.currentTarget.style.color = 'var(--slate-700)';
+                          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.04)';
+                          e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                          e.currentTarget.style.color = 'rgba(200, 205, 225, 0.8)';
                         }}
                       >
                         {prompt}
@@ -259,23 +273,22 @@ const RecommendDoctorPage = () => {
                 </div>
 
                 {/* Submit Action */}
-                <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', alignItems: 'center' }}>
+                <div style={{ marginTop: '1.75rem', display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', alignItems: 'center' }}>
                   {result && (
-                    <GlassButton
-                      variant="outline"
-                      size="medium"
+                    <SecondaryGlassButton
+                      size="sm"
                       onClick={() => {
                         setSymptoms('');
                         setResult(null);
                       }}
                     >
                       Clear
-                    </GlassButton>
+                    </SecondaryGlassButton>
                   )}
                   <GlassButton
                     variant="ai"
                     type="submit"
-                    size="medium"
+                    size="large"
                     loading={loading}
                     disabled={!symptoms.trim()}
                     icon={<Sparkles size={17} />}
@@ -289,35 +302,35 @@ const RecommendDoctorPage = () => {
             {/* Loading Indicator */}
             {loading && (
               <div
+                className="glass-card"
                 style={{
-                  backgroundColor: '#ffffff',
-                  borderRadius: 'var(--radius-lg)',
                   padding: '3rem 2rem',
                   textAlign: 'center',
-                  boxShadow: 'var(--shadow-sm)',
-                  border: '1px solid var(--border-subtle)',
+                  background: 'rgba(18, 20, 29, 0.65)',
                 }}
               >
                 <div
                   style={{
-                    width: '60px',
-                    height: '60px',
+                    width: '64px',
+                    height: '64px',
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg, rgba(13, 148, 136, 0.15), rgba(20, 184, 166, 0.25))',
+                    background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(56, 189, 248, 0.3))',
+                    border: '2px solid rgba(56, 189, 248, 0.4)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 1.25rem auto',
-                    color: 'var(--primary-600)',
+                    color: '#38bdf8',
                     animation: 'pulse 1.8s infinite',
+                    boxShadow: '0 0 30px rgba(56, 189, 248, 0.25)',
                   }}
                 >
-                  <Activity size={30} />
+                  <Activity size={32} />
                 </div>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--slate-800)', margin: '0 0 0.4rem 0' }}>
-                  Analyzing Your Health Description
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.4rem 0' }}>
+                  Analyzing Health Description
                 </h3>
-                <p style={{ color: 'var(--slate-500)', fontSize: '0.88rem', margin: 0 }}>
+                <p style={{ color: 'rgba(200, 205, 225, 0.7)', fontSize: '0.9rem', margin: 0 }}>
                   Extracting clinical patterns, matching medical specialties, and scoring verified practitioners...
                 </p>
               </div>
@@ -330,22 +343,23 @@ const RecommendDoctorPage = () => {
                 {result.analysis?.isEmergency && (
                   <div
                     style={{
-                      backgroundColor: '#fef2f2',
-                      border: '1px solid #fee2e2',
-                      borderLeft: '4px solid #ef4444',
-                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'rgba(244, 63, 94, 0.12)',
+                      border: '1px solid rgba(244, 63, 94, 0.3)',
+                      borderLeft: '4px solid #f43f5e',
+                      borderRadius: '16px',
                       padding: '1.25rem',
                       display: 'flex',
                       alignItems: 'flex-start',
                       gap: '0.85rem',
+                      backdropFilter: 'blur(16px)',
                     }}
                   >
-                    <AlertTriangle size={24} color="#dc2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <AlertTriangle size={24} color="#fb7185" style={{ flexShrink: 0, marginTop: '2px' }} />
                     <div>
-                      <h4 style={{ margin: '0 0 0.35rem 0', fontSize: '0.95rem', fontWeight: 800, color: '#991b1b' }}>
+                      <h4 style={{ margin: '0 0 0.35rem 0', fontSize: '0.95rem', fontWeight: 800, color: '#fb7185' }}>
                         Urgent Medical Notice
                       </h4>
-                      <p style={{ margin: 0, fontSize: '0.85rem', color: '#7f1d1d', lineHeight: 1.5 }}>
+                      <p style={{ margin: 0, fontSize: '0.85rem', color: '#ffffff', lineHeight: 1.5 }}>
                         {result.analysis.emergencyAdvisory}
                       </p>
                     </div>
@@ -354,12 +368,13 @@ const RecommendDoctorPage = () => {
 
                 {/* Analysis Overview Card */}
                 <div
+                  className="glass-card"
                   style={{
-                    backgroundColor: '#ffffff',
-                    borderRadius: 'var(--radius-lg)',
-                    padding: '1.75rem',
-                    boxShadow: 'var(--shadow-sm)',
-                    border: '1px solid var(--border-subtle)',
+                    padding: '2rem',
+                    background: 'rgba(18, 20, 29, 0.65)',
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '24px',
                   }}
                 >
                   <div
@@ -367,49 +382,51 @@ const RecommendDoctorPage = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      marginBottom: '1.25rem',
-                      borderBottom: '1px solid var(--border-subtle)',
-                      paddingBottom: '1rem',
+                      marginBottom: '1.5rem',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                      paddingBottom: '1.25rem',
                       flexWrap: 'wrap',
                       gap: '0.75rem',
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <Brain size={20} color="var(--primary-600)" />
-                      <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: 'var(--slate-900)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                      <Brain size={22} color="#38bdf8" />
+                      <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700, color: '#ffffff' }}>
                         Symptom Analysis Summary
                       </h3>
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontSize: '0.78rem', color: 'var(--slate-500)', fontWeight: 600 }}>
+                      <span style={{ fontSize: '0.8rem', color: 'rgba(200, 205, 225, 0.65)', fontWeight: 600 }}>
                         Urgency Level:
                       </span>
                       <span
                         style={{
                           backgroundColor:
                             result.analysis?.urgencyLevel === 'HIGH'
-                              ? 'var(--danger-50)'
+                              ? 'rgba(244, 63, 94, 0.15)'
                               : result.analysis?.urgencyLevel === 'MEDIUM'
-                              ? 'var(--warning-50)'
-                              : 'var(--success-50)',
+                              ? 'rgba(245, 158, 11, 0.15)'
+                              : 'rgba(16, 185, 129, 0.15)',
                           color:
                             result.analysis?.urgencyLevel === 'HIGH'
-                              ? 'var(--danger-700)'
+                              ? '#fb7185'
                               : result.analysis?.urgencyLevel === 'MEDIUM'
-                              ? 'var(--warning-700)'
-                              : 'var(--success-700)',
+                              ? '#fbbf24'
+                              : '#34d399',
                           border: `1px solid ${
                             result.analysis?.urgencyLevel === 'HIGH'
-                              ? 'var(--danger-200)'
+                              ? 'rgba(244, 63, 94, 0.3)'
                               : result.analysis?.urgencyLevel === 'MEDIUM'
-                              ? 'var(--warning-200)'
-                              : 'var(--success-200)'
+                              ? 'rgba(245, 158, 11, 0.3)'
+                              : 'rgba(16, 185, 129, 0.3)'
                           }`,
                           fontSize: '0.72rem',
-                          fontWeight: 800,
-                          padding: '0.2rem 0.6rem',
+                          fontWeight: 700,
+                          padding: '0.25rem 0.65rem',
                           borderRadius: '999px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.04em',
                         }}
                       >
                         {result.analysis?.urgencyLevel}
@@ -418,22 +435,22 @@ const RecommendDoctorPage = () => {
                   </div>
 
                   {/* Identified Symptoms */}
-                  <div style={{ marginBottom: '1.25rem' }}>
-                    <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-500)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.45rem' }}>
+                  <div style={{ marginBottom: '1.5rem' }}>
+                    <span style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'rgba(148, 163, 184, 0.7)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>
                       Identified Symptoms & Key Patterns
                     </span>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                       {result.analysis?.identifiedSymptoms?.map((sym, idx) => (
                         <span
                           key={idx}
                           style={{
-                            backgroundColor: 'var(--slate-100)',
-                            color: 'var(--slate-800)',
-                            fontSize: '0.82rem',
-                            fontWeight: 600,
-                            padding: '0.25rem 0.65rem',
-                            borderRadius: '6px',
-                            border: '1px solid var(--slate-200)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            color: '#f8fafc',
+                            fontSize: '0.85rem',
+                            fontWeight: 500,
+                            padding: '0.35rem 0.85rem',
+                            borderRadius: '10px',
+                            border: '1px solid rgba(255, 255, 255, 0.08)',
                           }}
                         >
                           {sym}
@@ -444,41 +461,42 @@ const RecommendDoctorPage = () => {
 
                   {/* Recommended Specialties */}
                   <div>
-                    <span style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-500)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    <span style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: 'rgba(148, 163, 184, 0.7)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>
                       Recommended Medical Specialties
                     </span>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.85rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
                       {result.analysis?.recommendedSpecialties?.map((spec, idx) => {
                         const isPrimary = idx === 0;
                         return (
                           <div
                             key={idx}
                             style={{
-                              padding: '1rem',
-                              borderRadius: 'var(--radius-md)',
-                              backgroundColor: isPrimary ? 'rgba(13, 148, 136, 0.05)' : 'var(--slate-50)',
-                              border: isPrimary ? '1.5px solid var(--primary-300)' : '1px solid var(--border-subtle)',
-                              position: 'relative',
+                              padding: '1.15rem',
+                              borderRadius: '16px',
+                              backgroundColor: isPrimary ? 'rgba(56, 189, 248, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                              border: isPrimary ? '1px solid rgba(56, 189, 248, 0.35)' : '1px solid rgba(255, 255, 255, 0.06)',
+                              boxShadow: isPrimary ? '0 0 25px rgba(56, 189, 248, 0.1)' : 'none',
                             }}
                           >
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                              <span style={{ fontWeight: 800, fontSize: '0.92rem', color: isPrimary ? 'var(--primary-800)' : 'var(--slate-800)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                              <span style={{ fontWeight: 700, fontSize: '0.95rem', color: isPrimary ? '#38bdf8' : '#ffffff' }}>
                                 {spec.specialization}
                               </span>
                               <span
                                 style={{
                                   fontSize: '0.72rem',
-                                  fontWeight: 800,
-                                  backgroundColor: isPrimary ? 'var(--primary-600)' : 'var(--slate-200)',
-                                  color: isPrimary ? '#ffffff' : 'var(--slate-700)',
-                                  padding: '0.15rem 0.5rem',
+                                  fontWeight: 700,
+                                  backgroundColor: isPrimary ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.08)',
+                                  color: isPrimary ? '#38bdf8' : 'rgba(200, 205, 225, 0.8)',
+                                  padding: '0.2rem 0.55rem',
                                   borderRadius: '999px',
+                                  border: isPrimary ? '1px solid rgba(56, 189, 248, 0.3)' : 'none',
                                 }}
                               >
                                 {isPrimary ? `${spec.confidence}% Primary Match` : `${spec.confidence}% Related`}
                               </span>
                             </div>
-                            <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--slate-600)', lineHeight: 1.4 }}>
+                            <p style={{ margin: 0, fontSize: '0.8rem', color: 'rgba(200, 205, 225, 0.7)', lineHeight: 1.45 }}>
                               {spec.description}
                             </p>
                           </div>
@@ -499,29 +517,38 @@ const RecommendDoctorPage = () => {
                   }}
                 >
                   <div>
-                    <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 800, color: 'var(--slate-900)' }}>
+                    <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>
                       Top Recommended Practitioners ({displayedDoctors.length})
                     </h3>
-                    <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.85rem', color: 'var(--slate-500)' }}>
-                      Ranked by specialization relevance, verified reviews, clinical experience, and schedule availability.
+                    <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: 'rgba(200, 205, 225, 0.65)' }}>
+                      Ranked by specialization relevance, patient reviews, and schedule availability.
                     </p>
                   </div>
 
                   {/* Specialty Filter Buttons */}
                   {result.analysis?.recommendedSpecialties?.length > 1 && (
-                    <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                        padding: '0.25rem',
+                        borderRadius: '9999px',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                        gap: '0.25rem',
+                      }}
+                    >
                       <button
                         onClick={() => setFilterSpecialty('ALL')}
                         style={{
-                          border: 'none',
-                          padding: '0.35rem 0.75rem',
-                          borderRadius: 'var(--radius-md)',
+                          border: filterSpecialty === 'ALL' ? '1px solid rgba(56, 189, 248, 0.35)' : '1px solid transparent',
+                          padding: '0.35rem 0.85rem',
+                          borderRadius: '9999px',
                           fontSize: '0.8rem',
-                          fontWeight: 700,
+                          fontWeight: 600,
                           cursor: 'pointer',
-                          background: filterSpecialty === 'ALL' ? 'var(--primary-600)' : '#ffffff',
-                          color: filterSpecialty === 'ALL' ? '#ffffff' : 'var(--slate-600)',
-                          border: '1px solid var(--border-subtle)',
+                          background: filterSpecialty === 'ALL' ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
+                          color: filterSpecialty === 'ALL' ? '#38bdf8' : 'rgba(200, 205, 225, 0.7)',
+                          transition: 'all 0.2s ease',
                         }}
                       >
                         All
@@ -531,15 +558,15 @@ const RecommendDoctorPage = () => {
                           key={idx}
                           onClick={() => setFilterSpecialty(spec.specialization)}
                           style={{
-                            border: 'none',
-                            padding: '0.35rem 0.75rem',
-                            borderRadius: 'var(--radius-md)',
+                            border: filterSpecialty === spec.specialization ? '1px solid rgba(56, 189, 248, 0.35)' : '1px solid transparent',
+                            padding: '0.35rem 0.85rem',
+                            borderRadius: '9999px',
                             fontSize: '0.8rem',
-                            fontWeight: 700,
+                            fontWeight: 600,
                             cursor: 'pointer',
-                            background: filterSpecialty === spec.specialization ? 'var(--primary-600)' : '#ffffff',
-                            color: filterSpecialty === spec.specialization ? '#ffffff' : 'var(--slate-600)',
-                            border: '1px solid var(--border-subtle)',
+                            background: filterSpecialty === spec.specialization ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
+                            color: filterSpecialty === spec.specialization ? '#38bdf8' : 'rgba(200, 205, 225, 0.7)',
+                            transition: 'all 0.2s ease',
                           }}
                         >
                           {spec.specialization}
@@ -552,19 +579,17 @@ const RecommendDoctorPage = () => {
                 {/* Doctor Cards List */}
                 {displayedDoctors.length === 0 ? (
                   <div
+                    className="glass-card"
                     style={{
-                      backgroundColor: '#ffffff',
-                      borderRadius: 'var(--radius-lg)',
                       padding: '3rem 2rem',
                       textAlign: 'center',
-                      border: '1px solid var(--border-subtle)',
                     }}
                   >
-                    <Stethoscope size={36} color="var(--slate-400)" style={{ margin: '0 auto 0.75rem auto' }} />
-                    <h4 style={{ margin: 0, fontWeight: 700, color: 'var(--slate-800)' }}>
+                    <Stethoscope size={36} color="rgba(148, 163, 184, 0.5)" style={{ margin: '0 auto 0.75rem auto' }} />
+                    <h4 style={{ margin: 0, fontWeight: 700, color: '#ffffff' }}>
                       No doctors currently listed under this filter
                     </h4>
-                    <p style={{ margin: '0.35rem 0 1rem 0', fontSize: '0.85rem', color: 'var(--slate-500)' }}>
+                    <p style={{ margin: '0.35rem 0 1.25rem 0', fontSize: '0.85rem', color: 'rgba(200, 205, 225, 0.65)' }}>
                       Try selecting "All" to view all practitioners matching your symptoms.
                     </p>
                     <SecondaryGlassButton onClick={() => setFilterSpecialty('ALL')} size="sm">
@@ -572,7 +597,7 @@ const RecommendDoctorPage = () => {
                     </SecondaryGlassButton>
                   </div>
                 ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                     {displayedDoctors.map((doc) => {
                       const docName = doc.user?.name || doc.name || 'Medical Specialist';
                       const isExpanded = !!expandedFactors[doc._id];
@@ -580,16 +605,17 @@ const RecommendDoctorPage = () => {
                       return (
                         <div
                           key={doc._id}
+                          className="glass-card"
                           style={{
-                            backgroundColor: '#ffffff',
-                            borderRadius: 'var(--radius-lg)',
-                            padding: '1.5rem',
-                            boxShadow: 'var(--shadow-sm)',
-                            border: doc.isPrimarySpecialty ? '1.5px solid var(--primary-300)' : '1px solid var(--border-subtle)',
+                            padding: '1.75rem',
+                            background: 'rgba(18, 20, 29, 0.65)',
+                            backdropFilter: 'blur(20px)',
+                            border: doc.isPrimarySpecialty ? '1px solid rgba(56, 189, 248, 0.35)' : '1px solid rgba(255, 255, 255, 0.08)',
+                            boxShadow: doc.isPrimarySpecialty ? '0 10px 40px rgba(56, 189, 248, 0.1)' : '0 10px 30px rgba(0, 0, 0, 0.3)',
+                            borderRadius: '24px',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: '1rem',
-                            transition: 'all 0.2s ease',
+                            gap: '1.25rem',
                           }}
                         >
                           {/* Top Row: Doctor Info + Match Score */}
@@ -606,19 +632,19 @@ const RecommendDoctorPage = () => {
                               {/* Avatar */}
                               <div
                                 style={{
-                                  width: '64px',
-                                  height: '64px',
-                                  borderRadius: 'var(--radius-md)',
-                                  backgroundColor: 'var(--primary-100)',
-                                  color: 'var(--primary-700)',
+                                  width: '68px',
+                                  height: '68px',
+                                  borderRadius: '20px',
+                                  backgroundColor: 'rgba(56, 189, 248, 0.12)',
+                                  color: '#38bdf8',
                                   display: 'flex',
                                   alignItems: 'center',
                                   justifyContent: 'center',
                                   fontWeight: 800,
-                                  fontSize: '1.4rem',
+                                  fontSize: '1.5rem',
                                   flexShrink: 0,
                                   overflow: 'hidden',
-                                  border: '2px solid var(--primary-200)',
+                                  border: '2px solid rgba(56, 189, 248, 0.3)',
                                 }}
                               >
                                 {doc.user?.profileImage || doc.user?.avatar ? (
@@ -634,22 +660,32 @@ const RecommendDoctorPage = () => {
 
                               {/* Details */}
                               <div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                                  <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 800, color: 'var(--slate-900)' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                                  <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: '#ffffff' }}>
                                     {docName}
                                   </h3>
-                                  <span className="badge badge-doctor" style={{ fontSize: '0.72rem' }}>
+                                  <span
+                                    style={{
+                                      fontSize: '0.72rem',
+                                      fontWeight: 700,
+                                      padding: '0.2rem 0.6rem',
+                                      borderRadius: '999px',
+                                      backgroundColor: 'rgba(139, 92, 246, 0.15)',
+                                      color: '#c084fc',
+                                      border: '1px solid rgba(139, 92, 246, 0.3)',
+                                    }}
+                                  >
                                     {doc.specialization}
                                   </span>
                                   {doc.isPrimarySpecialty && (
                                     <span
                                       style={{
-                                        backgroundColor: 'var(--primary-50)',
-                                        color: 'var(--primary-700)',
-                                        border: '1px solid var(--primary-200)',
-                                        fontSize: '0.68rem',
-                                        fontWeight: 800,
-                                        padding: '0.12rem 0.45rem',
+                                        backgroundColor: 'rgba(56, 189, 248, 0.15)',
+                                        color: '#38bdf8',
+                                        border: '1px solid rgba(56, 189, 248, 0.3)',
+                                        fontSize: '0.7rem',
+                                        fontWeight: 700,
+                                        padding: '0.15rem 0.55rem',
                                         borderRadius: '999px',
                                       }}
                                     >
@@ -666,17 +702,17 @@ const RecommendDoctorPage = () => {
                                     marginTop: '0.5rem',
                                     flexWrap: 'wrap',
                                     fontSize: '0.85rem',
-                                    color: 'var(--slate-600)',
+                                    color: 'rgba(200, 205, 225, 0.7)',
                                   }}
                                 >
                                   {/* Star Rating */}
                                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                                     <StarRating rating={doc.rating?.average || 0} size={15} />
-                                    <span style={{ fontWeight: 700, color: 'var(--slate-800)' }}>
+                                    <span style={{ fontWeight: 700, color: '#ffffff' }}>
                                       {doc.rating?.average ? doc.rating.average.toFixed(1) : 'New'}
                                     </span>
                                     {doc.rating?.count > 0 && (
-                                      <span style={{ color: 'var(--slate-400)', fontSize: '0.78rem' }}>
+                                      <span style={{ color: 'rgba(148, 163, 184, 0.6)', fontSize: '0.78rem' }}>
                                         ({doc.rating.count})
                                       </span>
                                     )}
@@ -684,14 +720,14 @@ const RecommendDoctorPage = () => {
 
                                   {/* Experience */}
                                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                    <Award size={15} color="var(--primary-600)" />
+                                    <Award size={15} color="#38bdf8" />
                                     <span>{doc.experienceYears || 0} yrs experience</span>
                                   </div>
 
                                   {/* Hospital */}
                                   {doc.hospitalAffiliation && (
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                      <Building2 size={15} color="var(--slate-400)" />
+                                      <Building2 size={15} color="rgba(148, 163, 184, 0.6)" />
                                       <span>{doc.hospitalAffiliation}</span>
                                     </div>
                                   )}
@@ -699,7 +735,7 @@ const RecommendDoctorPage = () => {
                                   {/* Location */}
                                   {doc.location && (
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                      <MapPin size={15} color="var(--slate-400)" />
+                                      <MapPin size={15} color="rgba(148, 163, 184, 0.6)" />
                                       <span>{doc.location}</span>
                                     </div>
                                   )}
@@ -718,22 +754,23 @@ const RecommendDoctorPage = () => {
                             >
                               <div
                                 style={{
-                                  background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
+                                  background: 'linear-gradient(135deg, #0ea5e9, #8b5cf6)',
                                   color: '#ffffff',
-                                  padding: '0.35rem 0.85rem',
+                                  padding: '0.4rem 0.95rem',
                                   borderRadius: '999px',
                                   fontSize: '0.85rem',
-                                  fontWeight: 800,
-                                  boxShadow: '0 2px 6px rgba(13, 148, 136, 0.3)',
+                                  fontWeight: 700,
+                                  boxShadow: '0 4px 16px rgba(14, 165, 233, 0.35)',
                                   display: 'inline-flex',
                                   alignItems: 'center',
-                                  gap: '0.35rem',
+                                  gap: '0.4rem',
+                                  border: '1px solid rgba(255, 255, 255, 0.2)',
                                 }}
                               >
                                 <Sparkles size={14} />
                                 <span>{doc.matchScore}% Match</span>
                               </div>
-                              <span style={{ fontSize: '0.75rem', color: 'var(--slate-400)', marginTop: '0.25rem' }}>
+                              <span style={{ fontSize: '0.78rem', color: 'rgba(200, 205, 225, 0.65)', marginTop: '0.35rem' }}>
                                 Fee: ₹{doc.consultationFee || 500}
                               </span>
                             </div>
@@ -741,7 +778,7 @@ const RecommendDoctorPage = () => {
 
                           {/* Bio preview if available */}
                           {doc.bio && (
-                            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--slate-600)', lineHeight: 1.45 }}>
+                            <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(200, 205, 225, 0.8)', lineHeight: 1.5 }}>
                               {doc.bio}
                             </p>
                           )}
@@ -749,9 +786,9 @@ const RecommendDoctorPage = () => {
                           {/* Transparent Match Factors Accordion */}
                           <div
                             style={{
-                              backgroundColor: 'var(--slate-50)',
-                              borderRadius: 'var(--radius-md)',
-                              border: '1px solid var(--border-subtle)',
+                              backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                              borderRadius: '16px',
+                              border: '1px solid rgba(255, 255, 255, 0.06)',
                               overflow: 'hidden',
                             }}
                           >
@@ -762,26 +799,26 @@ const RecommendDoctorPage = () => {
                                 width: '100%',
                                 background: 'transparent',
                                 border: 'none',
-                                padding: '0.65rem 0.85rem',
+                                padding: '0.75rem 1rem',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                                 cursor: 'pointer',
                                 fontSize: '0.82rem',
-                                fontWeight: 700,
-                                color: 'var(--primary-700)',
+                                fontWeight: 600,
+                                color: '#38bdf8',
                               }}
                             >
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                <Info size={14} />
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                                <Info size={15} />
                                 <span>Why this match? (View transparent matching factors)</span>
                               </div>
                               {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                             </button>
 
                             {isExpanded && (
-                              <div style={{ padding: '0.5rem 1rem 0.85rem 1rem', borderTop: '1px solid var(--border-subtle)' }}>
-                                <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.8rem', color: 'var(--slate-700)', lineHeight: 1.55 }}>
+                              <div style={{ padding: '0.5rem 1.25rem 1rem 1.25rem', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
+                                <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.82rem', color: 'rgba(200, 205, 225, 0.75)', lineHeight: 1.6 }}>
                                   {doc.matchingFactors?.map((factor, fIdx) => (
                                     <li key={fIdx} style={{ marginBottom: '0.25rem' }}>
                                       {factor}
@@ -799,20 +836,20 @@ const RecommendDoctorPage = () => {
                               alignItems: 'center',
                               justifyContent: 'flex-end',
                               gap: '0.75rem',
-                              borderTop: '1px solid var(--border-subtle)',
-                              paddingTop: '0.85rem',
+                              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                              paddingTop: '1rem',
                               flexWrap: 'wrap',
                             }}
                           >
                             <SecondaryGlassButton
-                              size="small"
+                              size="sm"
                               to={`/doctors/${doc._id}`}
                             >
                               View Full Profile
                             </SecondaryGlassButton>
 
                             <PrimaryGlassButton
-                              size="small"
+                              size="sm"
                               onClick={() => handleBookDoctor(doc)}
                               icon={<Calendar size={15} />}
                             >

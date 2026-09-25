@@ -5,6 +5,7 @@ import PatientSidebar from '../../components/patient/PatientSidebar';
 import { SkeletonStatCard, SkeletonText } from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import appointmentService from '../../services/appointmentService';
+import DashboardCard from '../../components/dashboard/DashboardCard';
 import { PrimaryGlassButton, SecondaryGlassButton, GlassButton, GlassAiButtonWrapper } from '../../components/common/buttons';
 import {
   Calendar,
@@ -34,44 +35,30 @@ const formatDate = (dateStr) => {
   }
 };
 
-/* ── Stat Card ──────────────────────────────────────────────────────────────── */
-const StatCard = ({ title, value, icon: Icon, color, bg, subtitle }) => (
-  <div
-    className="stat-card"
-    style={{ '--card-color': color }}
-  >
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.875rem' }}>
-      <p style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--slate-500)', lineHeight: 1.3 }}>{title}</p>
-      <div
-        style={{
-          width: 38,
-          height: 38,
-          borderRadius: 'var(--radius-md)',
-          backgroundColor: bg,
-          color: color,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}
-      >
-        <Icon size={19} />
-      </div>
-    </div>
-    <p style={{ fontSize: 'var(--text-3xl)', fontWeight: 800, color: 'var(--slate-900)', lineHeight: 1 }}>{value}</p>
-    {subtitle && (
-      <p style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-400)', marginTop: '0.35rem', lineHeight: 1.4 }}>{subtitle}</p>
-    )}
-  </div>
-);
-
 /* ── Profile Field ──────────────────────────────────────────────────────────── */
 const ProfileField = ({ label, value }) => (
-  <div>
-    <span style={{ display: 'block', fontSize: 'var(--text-xs)', color: 'var(--slate-400)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>
+  <div
+    style={{
+      padding: '0.85rem 1rem',
+      backgroundColor: 'rgba(255, 255, 255, 0.03)',
+      border: '1px solid rgba(255, 255, 255, 0.06)',
+      borderRadius: '14px',
+    }}
+  >
+    <span
+      style={{
+        display: 'block',
+        fontSize: '0.72rem',
+        color: 'rgba(148, 163, 184, 0.7)',
+        fontWeight: 600,
+        textTransform: 'uppercase',
+        letterSpacing: '0.06em',
+        marginBottom: '0.3rem',
+      }}
+    >
       {label}
     </span>
-    <span style={{ fontWeight: 600, color: 'var(--slate-800)', fontSize: 'var(--text-sm)' }}>
+    <span style={{ fontWeight: 600, color: '#f8fafc', fontSize: '0.92rem' }}>
       {value || '—'}
     </span>
   </div>
@@ -125,14 +112,14 @@ const PatientDashboard = () => {
   };
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 3rem' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 0 4rem' }}>
       <div className="container">
         {/* Dashboard Grid */}
         <div className="dashboard-layout">
           {/* Sidebar */}
           <PatientSidebar />
 
-          {/* Main */}
+          {/* Main Content */}
           <main>
             {/* ── Page Header ───────────────────────────────────────────── */}
             <div
@@ -141,23 +128,51 @@ const PatientDashboard = () => {
                 alignItems: 'flex-start',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                gap: '1rem',
-                marginBottom: '1.75rem',
+                gap: '1.25rem',
+                marginBottom: '2rem',
               }}
             >
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
-                  <span className="badge badge-patient">Patient Overview</span>
-                  <span style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-400)' }}>Portal Active</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.5rem' }}>
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.3rem 0.75rem',
+                      borderRadius: '9999px',
+                      background: 'rgba(56, 189, 248, 0.1)',
+                      border: '1px solid rgba(56, 189, 248, 0.25)',
+                      color: '#38bdf8',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Patient Overview
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: 'rgba(148, 163, 184, 0.6)' }}>• Portal Active</span>
                 </div>
-                <h1 style={{ fontSize: 'var(--text-3xl)', marginBottom: '0.3rem' }}>
-                  {greeting()}, {user?.name?.split(' ')[0] || 'there'}! 👋
+                <h1
+                  style={{
+                    fontFamily: 'var(--font-heading, "Outfit", sans-serif)',
+                    fontSize: 'clamp(1.75rem, 2.5vw, 2.35rem)',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    marginBottom: '0.35rem',
+                    letterSpacing: '-0.02em',
+                  }}
+                >
+                  {greeting()}, <span style={{ background: 'linear-gradient(135deg, #38bdf8, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{user?.name?.split(' ')[0] || 'there'}</span>! 👋
                 </h1>
-                <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-sm)' }}>
-                  Here's a summary of your health journey.
+                <p style={{ color: 'rgba(200, 205, 225, 0.7)', fontSize: '0.92rem' }}>
+                  Here is an overview of your health appointments and medical consultations.
                 </p>
               </div>
-              <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
+
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap', alignItems: 'center' }}>
                 <GlassAiButtonWrapper
                   to="/patient/recommend-doctor"
                   size="sm"
@@ -184,7 +199,7 @@ const PatientDashboard = () => {
             </div>
 
             {/* ── Stat Cards ────────────────────────────────────────────── */}
-            <div className="metrics-grid" style={{ marginBottom: '1.75rem' }}>
+            <div className="metrics-grid" style={{ marginBottom: '2rem' }}>
               {loading ? (
                 <>
                   <SkeletonStatCard />
@@ -193,28 +208,25 @@ const PatientDashboard = () => {
                 </>
               ) : (
                 <>
-                  <StatCard
-                    title="Upcoming Appointments"
+                  <DashboardCard
+                    title="Upcoming Consultations"
                     value={upcomingCount}
                     icon={Calendar}
-                    color="var(--primary-700)"
-                    bg="var(--primary-100)"
-                    subtitle="Scheduled consultations"
+                    variant="primary"
+                    subtitle="Scheduled appointments"
                   />
-                  <StatCard
+                  <DashboardCard
                     title="Completed Visits"
                     value={completedCount}
                     icon={CheckCircle2}
-                    color="#059669"
-                    bg="#d1fae5"
+                    variant="success"
                     subtitle="Concluded sessions"
                   />
-                  <StatCard
+                  <DashboardCard
                     title="Cancelled Visits"
                     value={cancelledCount}
                     icon={XCircle}
-                    color="#e11d48"
-                    bg="#ffe4e6"
+                    variant="danger"
                     subtitle="Voided appointments"
                   />
                 </>
@@ -223,7 +235,7 @@ const PatientDashboard = () => {
 
             {/* ── Next Appointment Card ─────────────────────────────────── */}
             {loading ? (
-              <div className="card" style={{ marginBottom: '1.75rem', padding: '1.5rem' }}>
+              <div className="glass-card" style={{ marginBottom: '2rem', padding: '1.75rem' }}>
                 <SkeletonText width="45%" />
                 <div style={{ height: '0.75rem' }} />
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -237,11 +249,13 @@ const PatientDashboard = () => {
               </div>
             ) : nextAppointment ? (
               <div
-                className="card"
+                className="glass-card"
                 style={{
-                  marginBottom: '1.75rem',
-                  padding: '1.5rem',
-                  borderLeft: '4px solid var(--primary-500)',
+                  marginBottom: '2rem',
+                  padding: '1.75rem',
+                  borderLeft: '4px solid #38bdf8',
+                  background: 'rgba(18, 20, 29, 0.75)',
+                  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(56, 189, 248, 0.1)',
                 }}
               >
                 <div
@@ -249,23 +263,45 @@ const PatientDashboard = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: '1rem',
+                    marginBottom: '1.25rem',
                     flexWrap: 'wrap',
-                    gap: '0.5rem',
+                    gap: '0.75rem',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <TrendingUp size={16} color="var(--primary-600)" />
-                    <span style={{ fontWeight: 700, fontSize: 'var(--text-sm)', color: 'var(--slate-700)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                    <TrendingUp size={16} color="#38bdf8" />
+                    <span style={{ fontWeight: 700, fontSize: '0.88rem', color: '#f8fafc', letterSpacing: '0.02em' }}>
                       Next Upcoming Consultation
                     </span>
-                    <span className="badge badge-confirmed" style={{ fontSize: '0.62rem' }}>Confirmed</span>
+                    <span
+                      style={{
+                        fontSize: '0.68rem',
+                        fontWeight: 700,
+                        padding: '0.2rem 0.6rem',
+                        borderRadius: '9999px',
+                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        border: '1px solid rgba(16, 185, 129, 0.3)',
+                        color: '#34d399',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                      }}
+                    >
+                      Confirmed
+                    </span>
                   </div>
                   <Link
                     to="/patient/appointments"
-                    style={{ fontSize: 'var(--text-xs)', fontWeight: 700, color: 'var(--primary-600)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                    style={{
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      color: '#38bdf8',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      transition: 'color 0.2s',
+                    }}
                   >
-                    View all ({upcomingCount}) <ArrowRight size={12} />
+                    View all ({upcomingCount}) <ArrowRight size={13} />
                   </Link>
                 </div>
 
@@ -273,25 +309,26 @@ const PatientDashboard = () => {
                   style={{
                     display: 'grid',
                     gridTemplateColumns: 'auto 1fr auto',
-                    gap: '1rem',
+                    gap: '1.25rem',
                     alignItems: 'center',
                   }}
                 >
-                  {/* Avatar */}
+                  {/* Doctor Avatar */}
                   <div
                     style={{
-                      width: 52,
-                      height: 52,
+                      width: 56,
+                      height: 56,
                       borderRadius: '50%',
-                      background: 'var(--primary-100)',
-                      color: 'var(--primary-700)',
+                      background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(139, 92, 246, 0.2))',
+                      color: '#38bdf8',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontWeight: 800,
-                      fontSize: '1.25rem',
+                      fontSize: '1.35rem',
                       flexShrink: 0,
-                      border: '2px solid var(--primary-200)',
+                      border: '2px solid rgba(56, 189, 248, 0.35)',
+                      boxShadow: '0 0 15px rgba(56, 189, 248, 0.2)',
                     }}
                   >
                     {(nextAppointment.doctor?.user?.name || nextAppointment.doctor?.name || 'D').charAt(0)}
@@ -301,10 +338,11 @@ const PatientDashboard = () => {
                   <div style={{ minWidth: 0 }}>
                     <h3
                       style={{
-                        fontFamily: 'var(--font-heading)',
-                        fontSize: 'var(--text-lg)',
-                        color: 'var(--slate-900)',
-                        marginBottom: '0.2rem',
+                        fontFamily: 'var(--font-heading, "Outfit", sans-serif)',
+                        fontSize: '1.2rem',
+                        fontWeight: 600,
+                        color: '#ffffff',
+                        marginBottom: '0.25rem',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
@@ -312,42 +350,42 @@ const PatientDashboard = () => {
                     >
                       {nextAppointment.doctor?.user?.name || nextAppointment.doctor?.name || 'Doctor'}
                     </h3>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--primary-700)', fontWeight: 600, fontSize: 'var(--text-sm)', marginBottom: '0.3rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#38bdf8', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.3rem' }}>
                       <Stethoscope size={14} />
                       <span>{nextAppointment.doctor?.specialization || 'Specialist'}</span>
                     </div>
-                    <p style={{ color: 'var(--slate-500)', fontSize: 'var(--text-xs)' }}>
-                      <strong>Reason:</strong> {nextAppointment.reason || '—'}
+                    <p style={{ color: 'rgba(200, 205, 225, 0.65)', fontSize: '0.8rem' }}>
+                      <strong style={{ color: 'rgba(200, 205, 225, 0.9)' }}>Reason:</strong> {nextAppointment.reason || 'General Health Consultation'}
                     </p>
                   </div>
 
                   {/* Date/Time pill */}
                   <div
                     style={{
-                      padding: '0.75rem 1rem',
-                      background: 'var(--primary-50)',
-                      borderRadius: 'var(--radius-md)',
-                      border: '1px solid var(--primary-100)',
+                      padding: '0.85rem 1.15rem',
+                      background: 'rgba(56, 189, 248, 0.08)',
+                      borderRadius: '16px',
+                      border: '1px solid rgba(56, 189, 248, 0.2)',
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: '0.35rem',
+                      gap: '0.4rem',
                       flexShrink: 0,
-                      minWidth: 130,
+                      minWidth: 140,
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, fontSize: 'var(--text-xs)', color: 'var(--primary-800)' }}>
-                      <Calendar size={13} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontWeight: 700, fontSize: '0.82rem', color: '#ffffff' }}>
+                      <Calendar size={14} color="#38bdf8" />
                       {formatDate(nextAppointment.date)}
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: 'var(--text-xs)', color: 'var(--primary-600)' }}>
-                      <Clock size={13} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', color: 'rgba(200, 205, 225, 0.8)' }}>
+                      <Clock size={14} color="#38bdf8" />
                       {nextAppointment.startTime} – {nextAppointment.endTime}
                     </div>
                   </div>
                 </div>
               </div>
             ) : !error ? (
-              <div className="card" style={{ marginBottom: '1.75rem' }}>
+              <div className="glass-card" style={{ marginBottom: '2rem' }}>
                 <EmptyState
                   icon="calendar"
                   title="No Appointments Scheduled"
@@ -358,24 +396,27 @@ const PatientDashboard = () => {
             ) : null}
 
             {/* ── Profile Snapshot ──────────────────────────────────────── */}
-            <div className="card">
+            <div className="glass-card" style={{ padding: '1.75rem' }}>
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  paddingBottom: '1rem',
-                  borderBottom: '1px solid var(--border-subtle)',
-                  marginBottom: '1.25rem',
+                  paddingBottom: '1.25rem',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                  marginBottom: '1.5rem',
                   flexWrap: 'wrap',
                   gap: '0.5rem',
                 }}
               >
-                <h3 style={{ fontSize: 'var(--text-lg)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <User size={18} color="var(--primary-600)" />
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 600, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                  <User size={18} color="#38bdf8" />
                   Your Profile Snapshot
                 </h3>
-                <Link to="/patient/profile" style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--primary-600)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <Link
+                  to="/patient/profile"
+                  style={{ fontSize: '0.85rem', fontWeight: 600, color: '#38bdf8', display: 'flex', alignItems: 'center', gap: '0.3rem' }}
+                >
                   Edit Profile <ArrowRight size={14} />
                 </Link>
               </div>
@@ -383,8 +424,8 @@ const PatientDashboard = () => {
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
-                  gap: '1.25rem',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                  gap: '1rem',
                 }}
               >
                 {loading ? (

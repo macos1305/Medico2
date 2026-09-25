@@ -38,29 +38,30 @@ const AdminSidebar = () => {
                 alignItems: 'center',
                 gap: '0.2rem',
                 padding: '0.45rem 0.75rem',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '0.68rem',
+                borderRadius: '12px',
+                fontSize: '0.7rem',
                 fontWeight: 600,
-                color: isActive ? 'var(--primary-700)' : 'var(--slate-500)',
-                background: isActive ? 'var(--primary-50)' : 'transparent',
+                color: isActive ? '#38bdf8' : 'rgba(200, 205, 225, 0.65)',
+                background: isActive ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
                 textDecoration: 'none',
                 whiteSpace: 'nowrap',
                 minWidth: 52,
-                transition: 'all var(--transition-fast)',
+                transition: 'all 0.2s ease',
               }
             : {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.75rem',
-                padding: '0.7rem 0.9rem',
-                borderRadius: 'var(--radius-md)',
-                fontSize: 'var(--text-sm)',
+                padding: '0.75rem 1rem',
+                borderRadius: '14px',
+                fontSize: '0.88rem',
                 fontWeight: 600,
                 textDecoration: 'none',
-                transition: 'all var(--transition-fast)',
-                backgroundColor: isActive ? 'var(--primary-50)' : 'transparent',
-                color: isActive ? 'var(--primary-700)' : 'var(--slate-600)',
-                borderLeft: isActive ? '3px solid var(--primary-600)' : '3px solid transparent',
+                transition: 'all 0.2s ease',
+                backgroundColor: isActive ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
+                color: isActive ? '#38bdf8' : 'rgba(200, 205, 225, 0.75)',
+                borderLeft: isActive ? '3px solid #38bdf8' : '3px solid transparent',
+                boxShadow: isActive ? '0 0 20px rgba(56, 189, 248, 0.1)' : 'none',
               }
         }
       >
@@ -74,7 +75,7 @@ const AdminSidebar = () => {
     <>
       {/* ── Desktop Sidebar ─────────────────────────────────────────────── */}
       <aside
-        className="card desktop-sidebar"
+        className="glass-card desktop-sidebar"
         style={{
           padding: '1.5rem',
           display: 'flex',
@@ -83,6 +84,11 @@ const AdminSidebar = () => {
           height: 'fit-content',
           position: 'sticky',
           top: '90px',
+          background: 'rgba(18, 20, 29, 0.7)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '24px',
         }}
       >
         {/* Avatar + Role */}
@@ -92,7 +98,7 @@ const AdminSidebar = () => {
             alignItems: 'center',
             gap: '0.875rem',
             paddingBottom: '1.25rem',
-            borderBottom: '1px solid var(--border-subtle)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
           }}
         >
           <div
@@ -100,7 +106,7 @@ const AdminSidebar = () => {
               width: 52,
               height: 52,
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #7c3aed, #a78bfa)',
+              background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
               color: '#ffffff',
               display: 'flex',
               alignItems: 'center',
@@ -108,7 +114,8 @@ const AdminSidebar = () => {
               fontWeight: 800,
               fontSize: '1.25rem',
               flexShrink: 0,
-              border: '2px solid #ddd6fe',
+              border: '2px solid rgba(139, 92, 246, 0.4)',
+              boxShadow: '0 0 15px rgba(139, 92, 246, 0.25)',
             }}
           >
             {user?.name?.charAt(0).toUpperCase() || 'A'}
@@ -117,8 +124,8 @@ const AdminSidebar = () => {
             <div
               style={{
                 fontWeight: 700,
-                fontSize: 'var(--text-sm)',
-                color: 'var(--slate-900)',
+                fontSize: '0.92rem',
+                color: '#ffffff',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -126,11 +133,22 @@ const AdminSidebar = () => {
             >
               {user?.name || 'Administrator'}
             </div>
-            <div style={{ fontSize: '0.72rem', color: '#7c3aed', fontWeight: 700, marginTop: '0.1rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <div style={{ fontSize: '0.72rem', color: '#c084fc', fontWeight: 700, marginTop: '0.15rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Platform Admin
             </div>
-            <div style={{ marginTop: '0.3rem' }}>
-              <span className="badge badge-admin" style={{ fontSize: '0.62rem' }}>
+            <div style={{ marginTop: '0.35rem' }}>
+              <span
+                style={{
+                  fontSize: '0.62rem',
+                  fontWeight: 700,
+                  padding: '0.15rem 0.5rem',
+                  borderRadius: '999px',
+                  backgroundColor: 'rgba(139, 92, 246, 0.15)',
+                  color: '#c084fc',
+                  border: '1px solid rgba(139, 92, 246, 0.3)',
+                  letterSpacing: '0.05em',
+                }}
+              >
                 ADMIN
               </span>
             </div>
@@ -138,33 +156,32 @@ const AdminSidebar = () => {
         </div>
 
         {/* Nav */}
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
           {navItems.map((item) => (
             <NavItem key={item.to} item={item} mobile={false} />
           ))}
         </nav>
 
         {/* Logout */}
-        <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--border-subtle)', marginTop: 'auto' }}>
+        <div style={{ paddingTop: '0.75rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', marginTop: 'auto' }}>
           <button
             onClick={handleLogout}
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '0.65rem',
-              color: 'var(--accent-rose)',
-              padding: '0.6rem 0.8rem',
+              color: '#fb7185',
+              padding: '0.65rem 0.85rem',
               width: '100%',
               background: 'transparent',
               border: 'none',
-              borderRadius: 'var(--radius-md)',
+              borderRadius: '12px',
               cursor: 'pointer',
               fontWeight: 600,
-              fontSize: 'var(--text-sm)',
-              fontFamily: 'var(--font-body)',
-              transition: 'background var(--transition-fast)',
+              fontSize: '0.85rem',
+              transition: 'background 0.2s',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = '#fff1f2')}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(244, 63, 94, 0.1)')}
             onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
           >
             <LogOut size={16} />
@@ -174,7 +191,17 @@ const AdminSidebar = () => {
       </aside>
 
       {/* ── Mobile Pill Nav ──────────────────────────────────────────────── */}
-      <div className="mobile-nav-pill" style={{ marginBottom: '0.5rem' }}>
+      <div
+        className="mobile-nav-pill"
+        style={{
+          marginBottom: '0.5rem',
+          backgroundColor: 'rgba(18, 20, 29, 0.85)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRadius: '18px',
+          padding: '0.35rem',
+        }}
+      >
         {/* Brand */}
         <div
           style={{
@@ -183,7 +210,7 @@ const AdminSidebar = () => {
             gap: '0.4rem',
             padding: '0.35rem 0.65rem',
             flexShrink: 0,
-            borderRight: '1px solid var(--border-subtle)',
+            borderRight: '1px solid rgba(255, 255, 255, 0.08)',
             marginRight: '0.25rem',
           }}
         >
@@ -192,7 +219,7 @@ const AdminSidebar = () => {
               width: 28,
               height: 28,
               borderRadius: 8,
-              background: 'linear-gradient(135deg, #7c3aed, #a78bfa)',
+              background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -215,10 +242,10 @@ const AdminSidebar = () => {
             alignItems: 'center',
             gap: '0.2rem',
             padding: '0.45rem 0.75rem',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '0.68rem',
+            borderRadius: '12px',
+            fontSize: '0.7rem',
             fontWeight: 600,
-            color: 'var(--accent-rose)',
+            color: '#fb7185',
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',

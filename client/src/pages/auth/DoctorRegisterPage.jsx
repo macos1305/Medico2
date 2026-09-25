@@ -17,7 +17,7 @@ import {
   AlertCircle,
   Activity,
 } from 'lucide-react';
-import { GlassButton } from '../../components/common/buttons';
+import { PrimaryGlassButton } from '../../components/common/buttons';
 
 const DoctorRegisterPage = () => {
   const { registerDoctor } = useAuth();
@@ -35,7 +35,7 @@ const DoctorRegisterPage = () => {
     specialization: '',
     licenseNumber: '',
     experienceYears: 5,
-    consultationFee: 100,
+    consultationFee: 500,
     hospitalAffiliation: '',
     bio: '',
   });
@@ -52,7 +52,6 @@ const DoctorRegisterPage = () => {
           setSpecializations(res.data);
           setFormData((prev) => ({ ...prev, specialization: res.data[0].name }));
         } else {
-          // Fallback defaults if DB is cold
           const defaults = ['Cardiology', 'Dermatology', 'Pediatrics', 'General Medicine', 'Neurology'];
           setSpecializations(defaults.map((n) => ({ name: n })));
           setFormData((prev) => ({ ...prev, specialization: defaults[0] }));
@@ -135,7 +134,7 @@ const DoctorRegisterPage = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '3rem 1.5rem',
+        padding: '1rem 0 3rem',
       }}
     >
       <div style={{ width: '100%', maxWidth: '640px' }}>
@@ -143,25 +142,53 @@ const DoctorRegisterPage = () => {
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div
             style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '14px',
-              background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
+              width: '54px',
+              height: '54px',
+              borderRadius: '16px',
+              background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#ffffff',
-              margin: '0 auto 1rem auto',
-              boxShadow: '0 4px 14px rgba(13, 148, 136, 0.3)',
+              margin: '0 auto 1.25rem auto',
+              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.35)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
             }}
           >
-            <Activity size={28} strokeWidth={2.5} />
+            <Stethoscope size={28} strokeWidth={2.2} />
           </div>
-          <span className="badge badge-doctor" style={{ marginBottom: '0.5rem' }}>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              padding: '0.35rem 0.85rem',
+              borderRadius: '9999px',
+              background: 'rgba(139, 92, 246, 0.1)',
+              border: '1px solid rgba(139, 92, 246, 0.25)',
+              color: '#c084fc',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              marginBottom: '0.75rem',
+            }}
+          >
             Physician Network
           </span>
-          <h1 style={{ fontSize: '1.75rem', marginBottom: '0.4rem' }}>Join the Medico Clinical Network</h1>
-          <p style={{ color: 'var(--slate-500)', fontSize: '0.9rem' }}>
+          <h1
+            style={{
+              fontFamily: 'var(--font-heading, "Outfit", sans-serif)',
+              fontSize: 'clamp(1.75rem, 2.5vw, 2.25rem)',
+              fontWeight: 700,
+              color: '#ffffff',
+              marginBottom: '0.5rem',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Join Clinical Network
+          </h1>
+          <p style={{ color: 'rgba(200, 205, 225, 0.7)', fontSize: '0.92rem', lineHeight: 1.5 }}>
             Register your medical credentials to receive verified patient consultations.
           </p>
         </div>
@@ -169,45 +196,65 @@ const DoctorRegisterPage = () => {
         {/* Verification notice alert */}
         <div
           style={{
-            backgroundColor: '#f0fdfa',
-            border: '1px solid #ccfbf1',
-            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'rgba(14, 165, 233, 0.08)',
+            border: '1px solid rgba(14, 165, 233, 0.25)',
+            borderRadius: '16px',
             padding: '1rem 1.25rem',
             display: 'flex',
             alignItems: 'flex-start',
-            gap: '0.75rem',
-            marginBottom: '1.5rem',
+            gap: '0.85rem',
+            marginBottom: '1.75rem',
+            backdropFilter: 'blur(12px)',
           }}
         >
-          <ShieldCheck size={20} color="var(--primary-600)" style={{ marginTop: '2px', flexShrink: 0 }} />
-          <div style={{ fontSize: '0.85rem', color: 'var(--primary-900)' }}>
-            <strong>Board Verification Protocol:</strong> All doctor accounts are initially set to <em>PENDING</em> review by our clinical administration team before public listing in the appointment directory.
+          <ShieldCheck size={20} color="#38bdf8" style={{ marginTop: '2px', flexShrink: 0 }} />
+          <div style={{ fontSize: '0.85rem', color: 'rgba(200, 205, 225, 0.85)', lineHeight: 1.5 }}>
+            <strong style={{ color: '#ffffff' }}>Board Verification Protocol:</strong> All doctor accounts are initially reviewed by our clinical administration team before public listing in the appointment directory.
           </div>
         </div>
 
-        {/* Card */}
-        <div className="card glass-card" style={{ padding: '2rem' }}>
+        {/* Glass Card */}
+        <div
+          className="glass-card"
+          style={{
+            padding: '2.25rem',
+            background: 'rgba(18, 20, 29, 0.65)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '24px',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.45)',
+          }}
+        >
           {errors.form && (
             <div
               style={{
-                backgroundColor: '#ffe4e6',
-                border: '1px solid #fecdd3',
-                color: 'var(--accent-rose)',
-                padding: '0.75rem 1rem',
-                borderRadius: 'var(--radius-md)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.65rem',
+                backgroundColor: 'rgba(244, 63, 94, 0.12)',
+                border: '1px solid rgba(244, 63, 94, 0.3)',
+                color: '#fb7185',
+                padding: '0.85rem 1rem',
+                borderRadius: '12px',
                 fontSize: '0.875rem',
-                marginBottom: '1.25rem',
+                marginBottom: '1.5rem',
               }}
             >
-              {errors.form}
+              <AlertCircle size={18} style={{ flexShrink: 0 }} />
+              <span>{errors.form}</span>
             </div>
           )}
 
           <form onSubmit={handleSubmit} noValidate>
             {/* 2-col: Name & Email */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div className="form-group">
-                <label className="form-label" htmlFor="name">
+                <label
+                  className="form-label"
+                  htmlFor="name"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
                   Full Name (with Dr. prefix) *
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -219,20 +266,32 @@ const DoctorRegisterPage = () => {
                     placeholder="e.g. Dr. Sarah Jenkins"
                     value={formData.name}
                     onChange={handleChange}
-                    style={{ paddingLeft: '2.5rem' }}
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem 0.75rem 2.6rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                      border: errors.name ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                    }}
                     disabled={loading}
                   />
                   <Stethoscope
                     size={18}
-                    color="var(--slate-400)"
-                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                   />
                 </div>
-                {errors.name && <div className="form-error">{errors.name}</div>}
+                {errors.name && <div style={{ color: '#fb7185', fontSize: '0.8rem', marginTop: '0.35rem' }}>{errors.name}</div>}
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="email">
+                <label
+                  className="form-label"
+                  htmlFor="email"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
                   Official Email Address *
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -244,23 +303,35 @@ const DoctorRegisterPage = () => {
                     placeholder="doctor@hospital.org"
                     value={formData.email}
                     onChange={handleChange}
-                    style={{ paddingLeft: '2.5rem' }}
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem 0.75rem 2.6rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                      border: errors.email ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                    }}
                     disabled={loading}
                   />
                   <Mail
                     size={18}
-                    color="var(--slate-400)"
-                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                   />
                 </div>
-                {errors.email && <div className="form-error">{errors.email}</div>}
+                {errors.email && <div style={{ color: '#fb7185', fontSize: '0.8rem', marginTop: '0.35rem' }}>{errors.email}</div>}
               </div>
             </div>
 
             {/* 2-col: Password & Phone */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div className="form-group">
-                <label className="form-label" htmlFor="password">
+                <label
+                  className="form-label"
+                  htmlFor="password"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
                   Password * (min. 6 chars)
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -272,20 +343,32 @@ const DoctorRegisterPage = () => {
                     placeholder="••••••••"
                     value={formData.password}
                     onChange={handleChange}
-                    style={{ paddingLeft: '2.5rem' }}
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem 0.75rem 2.6rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                      border: errors.password ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                    }}
                     disabled={loading}
                   />
                   <Lock
                     size={18}
-                    color="var(--slate-400)"
-                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                   />
                 </div>
-                {errors.password && <div className="form-error">{errors.password}</div>}
+                {errors.password && <div style={{ color: '#fb7185', fontSize: '0.8rem', marginTop: '0.35rem' }}>{errors.password}</div>}
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="phone">
+                <label
+                  className="form-label"
+                  htmlFor="phone"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
                   Contact Phone Number
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -297,22 +380,34 @@ const DoctorRegisterPage = () => {
                     placeholder="+1 (555) 019-2831"
                     value={formData.phone}
                     onChange={handleChange}
-                    style={{ paddingLeft: '2.5rem' }}
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem 0.75rem 2.6rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                    }}
                     disabled={loading}
                   />
                   <Phone
                     size={18}
-                    color="var(--slate-400)"
-                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                   />
                 </div>
               </div>
             </div>
 
             {/* 2-col: Specialization & License Number */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div className="form-group">
-                <label className="form-label" htmlFor="specialization">
+                <label
+                  className="form-label"
+                  htmlFor="specialization"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
                   Medical Specialization *
                 </label>
                 <select
@@ -322,6 +417,16 @@ const DoctorRegisterPage = () => {
                   value={formData.specialization}
                   onChange={handleChange}
                   disabled={loading || loadingSpecs}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    backgroundColor: '#12141d',
+                    border: errors.specialization ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                  }}
                 >
                   {loadingSpecs ? (
                     <option>Loading specialties...</option>
@@ -333,11 +438,15 @@ const DoctorRegisterPage = () => {
                     ))
                   )}
                 </select>
-                {errors.specialization && <div className="form-error">{errors.specialization}</div>}
+                {errors.specialization && <div style={{ color: '#fb7185', fontSize: '0.8rem', marginTop: '0.35rem' }}>{errors.specialization}</div>}
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="licenseNumber">
+                <label
+                  className="form-label"
+                  htmlFor="licenseNumber"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
                   Medical License ID Number *
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -349,24 +458,36 @@ const DoctorRegisterPage = () => {
                     placeholder="e.g. MED-NYC-2024-991"
                     value={formData.licenseNumber}
                     onChange={handleChange}
-                    style={{ paddingLeft: '2.5rem' }}
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem 0.75rem 2.6rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                      border: errors.licenseNumber ? '1px solid #f43f5e' : '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                    }}
                     disabled={loading}
                   />
                   <Award
                     size={18}
-                    color="var(--slate-400)"
-                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                   />
                 </div>
-                {errors.licenseNumber && <div className="form-error">{errors.licenseNumber}</div>}
+                {errors.licenseNumber && <div style={{ color: '#fb7185', fontSize: '0.8rem', marginTop: '0.35rem' }}>{errors.licenseNumber}</div>}
               </div>
             </div>
 
             {/* 2-col: Experience & Fee */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div className="form-group">
-                <label className="form-label" htmlFor="experienceYears">
-                  Years of Clinical Experience
+                <label
+                  className="form-label"
+                  htmlFor="experienceYears"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
+                  Years of Experience
                 </label>
                 <input
                   id="experienceYears"
@@ -378,11 +499,25 @@ const DoctorRegisterPage = () => {
                   value={formData.experienceYears}
                   onChange={handleChange}
                   disabled={loading}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                  }}
                 />
               </div>
 
               <div className="form-group">
-                <label className="form-label" htmlFor="consultationFee">
+                <label
+                  className="form-label"
+                  htmlFor="consultationFee"
+                  style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+                >
                   Consultation Fee (INR ₹)
                 </label>
                 <div style={{ position: 'relative' }}>
@@ -395,21 +530,33 @@ const DoctorRegisterPage = () => {
                     className="form-input"
                     value={formData.consultationFee}
                     onChange={handleChange}
-                    style={{ paddingLeft: '2.5rem' }}
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem 0.75rem 2.6rem',
+                      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                    }}
                     disabled={loading}
                   />
                   <IndianRupee
                     size={18}
-                    color="var(--slate-400)"
-                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                    style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                   />
                 </div>
               </div>
             </div>
 
             {/* Hospital Affiliation */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="hospitalAffiliation">
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label
+                className="form-label"
+                htmlFor="hospitalAffiliation"
+                style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+              >
                 Hospital or Clinic Affiliation
               </label>
               <div style={{ position: 'relative' }}>
@@ -421,20 +568,32 @@ const DoctorRegisterPage = () => {
                   placeholder="e.g. Mount Sinai Medical Center"
                   value={formData.hospitalAffiliation}
                   onChange={handleChange}
-                  style={{ paddingLeft: '2.5rem' }}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.6rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '12px',
+                    color: '#ffffff',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                  }}
                   disabled={loading}
                 />
                 <Building2
                   size={18}
-                  color="var(--slate-400)"
-                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }}
+                  style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(148, 163, 184, 0.6)' }}
                 />
               </div>
             </div>
 
             {/* Bio / Summary */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="bio">
+            <div className="form-group" style={{ marginBottom: '1.75rem' }}>
+              <label
+                className="form-label"
+                htmlFor="bio"
+                style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'rgba(200, 205, 225, 0.8)', marginBottom: '0.4rem' }}
+              >
                 Professional Bio & Clinical Philosophy
               </label>
               <textarea
@@ -446,30 +605,37 @@ const DoctorRegisterPage = () => {
                 value={formData.bio}
                 onChange={handleChange}
                 disabled={loading}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  color: '#ffffff',
+                  fontSize: '0.9rem',
+                  outline: 'none',
+                  resize: 'vertical',
+                }}
               ></textarea>
             </div>
 
             {/* Submit */}
-            <div style={{ marginTop: '1.5rem' }}>
-              <GlassButton
-                type="submit"
-                variant="primary"
-                size="large"
-                fullWidth
-                loading={loading}
-                icon={<ArrowRight size={18} />}
-                iconPosition="right"
-              >
-                Submit Application for Credentialing
-              </GlassButton>
-            </div>
+            <PrimaryGlassButton
+              type="submit"
+              size="lg"
+              fullWidth
+              loading={loading}
+              icon={<ArrowRight size={18} />}
+            >
+              Submit Application for Credentialing
+            </PrimaryGlassButton>
           </form>
         </div>
 
         {/* Footer Links */}
-        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--slate-500)' }}>
+        <div style={{ textAlign: 'center', marginTop: '1.75rem', fontSize: '0.9rem', color: 'rgba(200, 205, 225, 0.65)' }}>
           Already registered?{' '}
-          <Link to="/login" style={{ fontWeight: 600, color: 'var(--primary-600)' }}>
+          <Link to="/login" style={{ fontWeight: 600, color: '#38bdf8' }}>
             Sign In to Doctor Portal
           </Link>
         </div>

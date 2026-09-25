@@ -1,0 +1,112 @@
+/* ==========================================================================
+   MEDICO — CINEMATIC DASHBOARD LAYOUT & SIDEBAR
+   ========================================================================== */
+
+.dashboard-layout-container {
+  display: flex;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.dashboard-glass-sidebar {
+  width: 270px;
+  flex-shrink: 0;
+  background: rgba(15, 17, 25, 0.70) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--medico-radius, 24px) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35) !important;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 105px;
+}
+
+.dashboard-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1.15rem;
+  border-radius: 16px;
+  color: var(--medico-text-secondary, rgba(200, 205, 225, 0.75));
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  background: transparent;
+}
+
+.dashboard-nav-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dashboard-nav-item.active {
+  background: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.dashboard-main-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.dashboard-header {
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-greeting {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0 0 0.35rem 0;
+}
+
+.dashboard-subtitle {
+  color: var(--medico-text-secondary, rgba(200, 205, 225, 0.65));
+  font-size: 1rem;
+  margin: 0;
+}
+
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Timeline schedule item */
+.timeline-item {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 1.15rem 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.timeline-item:hover {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(56, 189, 248, 0.2);
+}

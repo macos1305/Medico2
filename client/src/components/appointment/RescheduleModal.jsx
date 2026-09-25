@@ -84,9 +84,9 @@ const RescheduleModal = ({ isOpen, appointment, onClose, onSuccess }) => {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.7)',
-        backdropFilter: 'blur(6px)',
-        WebkitBackdropFilter: 'blur(6px)',
+        backgroundColor: 'rgba(5, 6, 10, 0.8)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -97,17 +97,19 @@ const RescheduleModal = ({ isOpen, appointment, onClose, onSuccess }) => {
       onClick={onClose}
     >
       <div
-        className="card"
+        className="glass-card glass-modal"
         style={{
           width: '100%',
           maxWidth: '580px',
           maxHeight: '90vh',
           overflowY: 'auto',
           padding: '2rem',
-          borderRadius: 'var(--radius-xl)',
-          boxShadow: 'var(--shadow-xl)',
-          backgroundColor: '#ffffff',
+          borderRadius: '20px',
+          background: 'rgba(18, 20, 29, 0.95)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 130, 246, 0.15)',
           position: 'relative',
+          color: '#ffffff',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -117,49 +119,65 @@ const RescheduleModal = ({ isOpen, appointment, onClose, onSuccess }) => {
             position: 'absolute',
             top: '1.25rem',
             right: '1.25rem',
-            background: 'transparent',
-            border: 'none',
-            color: 'var(--slate-400)',
+            background: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: '50%',
+            color: 'rgba(255, 255, 255, 0.7)',
             cursor: 'pointer',
-            padding: '4px',
+            padding: '6px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.2s ease',
           }}
           aria-label="Close modal"
         >
-          <X size={22} />
+          <X size={18} />
         </button>
 
         {/* Modal Header */}
-        <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-subtle)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.25rem' }}>
-            <span className="badge badge-warning" style={{ backgroundColor: '#fef3c7', color: '#b45309' }}>
+        <div style={{ marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '0.2rem 0.65rem',
+              borderRadius: '9999px',
+              fontSize: '0.72rem',
+              fontWeight: 600,
+              background: 'rgba(168, 85, 247, 0.15)',
+              color: '#c084fc',
+              border: '1px solid rgba(168, 85, 247, 0.3)',
+            }}>
               Rescheduling
             </span>
           </div>
-          <h2 style={{ fontSize: '1.45rem', color: 'var(--slate-900)' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.35rem 0' }}>
             Change Appointment Time
           </h2>
-          <p style={{ color: 'var(--slate-600)', fontSize: '0.9rem', marginTop: '0.35rem' }}>
-            Rescheduling consultation with <strong>{doctorName}</strong>.
+          <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '0.9rem', margin: 0 }}>
+            Rescheduling consultation with <strong style={{ color: '#ffffff' }}>{doctorName}</strong>.
           </p>
 
           {/* Current slot badge */}
           <div
             style={{
-              marginTop: '0.75rem',
-              padding: '0.5rem 0.85rem',
-              backgroundColor: 'var(--slate-100)',
-              borderRadius: 'var(--radius-md)',
+              marginTop: '0.85rem',
+              padding: '0.65rem 0.85rem',
+              backgroundColor: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.06)',
+              borderRadius: '10px',
               fontSize: '0.825rem',
-              color: 'var(--slate-700)',
+              color: 'rgba(255, 255, 255, 0.8)',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
             }}
           >
-            <Clock size={14} color="var(--slate-500)" />
+            <Clock size={14} color="#60a5fa" />
             <span>
-              Current booking: <strong>{appointment.date}</strong> at{' '}
-              <strong>{appointment.startTime} - {appointment.endTime}</strong>
+              Current booking: <strong style={{ color: '#ffffff' }}>{appointment.date}</strong> at{' '}
+              <strong style={{ color: '#60a5fa' }}>{appointment.startTime} - {appointment.endTime}</strong>
             </span>
           </div>
         </div>
@@ -167,11 +185,11 @@ const RescheduleModal = ({ isOpen, appointment, onClose, onSuccess }) => {
         {errorMsg && (
           <div
             style={{
-              backgroundColor: '#ffe4e6',
-              border: '1px solid #fecdd3',
-              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.25)',
+              borderRadius: '10px',
               padding: '0.75rem 1rem',
-              color: 'var(--accent-rose)',
+              color: '#fca5a5',
               fontSize: '0.875rem',
               display: 'flex',
               alignItems: 'center',
@@ -200,38 +218,47 @@ const RescheduleModal = ({ isOpen, appointment, onClose, onSuccess }) => {
               style={{
                 marginTop: '1.25rem',
                 padding: '0.75rem 1rem',
-                backgroundColor: 'var(--primary-50)',
-                border: '1px solid var(--primary-200)',
-                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'rgba(59, 130, 246, 0.12)',
+                border: '1px solid rgba(59, 130, 246, 0.25)',
+                borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
                 fontSize: '0.875rem',
-                color: 'var(--primary-900)',
+                color: '#93c5fd',
               }}
             >
-              <CheckCircle2 size={16} color="var(--primary-600)" />
+              <CheckCircle2 size={16} color="#60a5fa" />
               <span>
-                New Time: <strong>{selectedDate}</strong> at{' '}
-                <strong>{selectedSlot.startTime} - {selectedSlot.endTime}</strong>
+                New Time: <strong style={{ color: '#ffffff' }}>{selectedDate}</strong> at{' '}
+                <strong style={{ color: '#ffffff' }}>{selectedSlot.startTime} - {selectedSlot.endTime}</strong>
               </span>
             </div>
           )}
 
           {/* Optional reason update */}
-          <div className="form-group" style={{ marginTop: '1.25rem' }}>
-            <label className="form-label" htmlFor="rescheduleReason" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <FileText size={15} color="var(--primary-600)" />
+          <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <label htmlFor="rescheduleReason" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.85)' }}>
+              <FileText size={15} color="#60a5fa" />
               Reason for Rescheduling (Optional)
             </label>
             <input
               id="rescheduleReason"
               type="text"
-              className="form-input"
+              className="glass-input"
               placeholder="e.g. Schedule conflict, doctor advised new date"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               disabled={loading}
+              style={{
+                width: '100%',
+                padding: '0.65rem 0.85rem',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '10px',
+                color: '#ffffff',
+                fontSize: '0.875rem',
+              }}
             />
           </div>
 
@@ -242,9 +269,9 @@ const RescheduleModal = ({ isOpen, appointment, onClose, onSuccess }) => {
               alignItems: 'center',
               justifyContent: 'flex-end',
               gap: '0.75rem',
-              marginTop: '1.5rem',
-              paddingTop: '1rem',
-              borderTop: '1px solid var(--border-subtle)',
+              marginTop: '1.75rem',
+              paddingTop: '1.25rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
             }}
           >
             <SecondaryGlassButton

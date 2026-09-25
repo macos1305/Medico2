@@ -39,58 +39,58 @@ const getNotificationBadge = (type) => {
     case 'NEW_APPOINTMENT':
       return {
         label: 'Booking',
-        bg: 'var(--primary-50)',
-        color: 'var(--primary-700)',
-        border: 'var(--primary-200)',
-        icon: <Calendar size={18} color="var(--primary-600)" />,
+        bg: 'rgba(59, 130, 246, 0.15)',
+        color: '#60a5fa',
+        border: 'rgba(59, 130, 246, 0.3)',
+        icon: <Calendar size={18} color="#60a5fa" />,
       };
     case 'APPOINTMENT_CONFIRMED':
       return {
         label: 'Confirmed',
-        bg: 'var(--success-50)',
-        color: 'var(--success-700)',
-        border: 'var(--success-200)',
-        icon: <CheckCircle2 size={18} color="var(--success-600)" />,
+        bg: 'rgba(16, 185, 129, 0.15)',
+        color: '#34d399',
+        border: 'rgba(16, 185, 129, 0.3)',
+        icon: <CheckCircle2 size={18} color="#34d399" />,
       };
     case 'APPOINTMENT_CANCELLED':
       return {
         label: 'Cancelled',
-        bg: 'var(--danger-50)',
-        color: 'var(--danger-700)',
-        border: 'var(--danger-200)',
-        icon: <XCircle size={18} color="var(--danger-600)" />,
+        bg: 'rgba(239, 68, 68, 0.15)',
+        color: '#f87171',
+        border: 'rgba(239, 68, 68, 0.3)',
+        icon: <XCircle size={18} color="#f87171" />,
       };
     case 'APPOINTMENT_RESCHEDULED':
       return {
         label: 'Rescheduled',
-        bg: 'var(--warning-50)',
-        color: 'var(--warning-700)',
-        border: 'var(--warning-200)',
-        icon: <Clock size={18} color="var(--warning-600)" />,
+        bg: 'rgba(168, 85, 247, 0.15)',
+        color: '#c084fc',
+        border: 'rgba(168, 85, 247, 0.3)',
+        icon: <Clock size={18} color="#c084fc" />,
       };
     case 'DOCTOR_REGISTRATION':
       return {
         label: 'Registration',
-        bg: 'rgba(124, 58, 237, 0.08)',
-        color: 'rgb(109, 40, 217)',
-        border: 'rgba(124, 58, 237, 0.2)',
-        icon: <Stethoscope size={18} color="rgb(109, 40, 217)" />,
+        bg: 'rgba(168, 85, 247, 0.15)',
+        color: '#c084fc',
+        border: 'rgba(168, 85, 247, 0.3)',
+        icon: <Stethoscope size={18} color="#c084fc" />,
       };
     case 'DOCTOR_APPROVAL':
       return {
         label: 'Verification',
-        bg: 'var(--success-50)',
-        color: 'var(--success-700)',
-        border: 'var(--success-200)',
-        icon: <Shield size={18} color="var(--success-600)" />,
+        bg: 'rgba(16, 185, 129, 0.15)',
+        color: '#34d399',
+        border: 'rgba(16, 185, 129, 0.3)',
+        icon: <Shield size={18} color="#34d399" />,
       };
     default:
       return {
         label: 'Alert',
-        bg: 'var(--slate-100)',
-        color: 'var(--slate-700)',
-        border: 'var(--slate-200)',
-        icon: <AlertCircle size={18} color="var(--slate-600)" />,
+        bg: 'rgba(255, 255, 255, 0.08)',
+        color: '#e2e8f0',
+        border: 'rgba(255, 255, 255, 0.12)',
+        icon: <AlertCircle size={18} color="#94a3b8" />,
       };
   }
 };
@@ -142,8 +142,8 @@ const NotificationsPage = () => {
   });
 
   return (
-    <div style={{ padding: '2.5rem 0', minHeight: '80vh', backgroundColor: 'var(--slate-50)' }}>
-      <div className="container" style={{ maxWidth: '860px' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '3rem 0', minHeight: '85vh' }}>
+      <div className="container" style={{ maxWidth: '880px' }}>
         {/* Page Header */}
         <div
           style={{
@@ -156,40 +156,44 @@ const NotificationsPage = () => {
           }}
         >
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <div
                 style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '10px',
-                  backgroundColor: 'var(--primary-100)',
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                  border: '1px solid rgba(59, 130, 246, 0.3)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'var(--primary-700)',
+                  color: '#60a5fa',
+                  boxShadow: '0 0 20px rgba(59, 130, 246, 0.2)',
                 }}
               >
                 <Bell size={20} />
               </div>
-              <h1 style={{ fontSize: '1.75rem', fontWeight: 800, margin: 0, color: 'var(--slate-900)' }}>
+              <h1 style={{ fontSize: '2rem', fontWeight: 700, margin: 0, color: '#ffffff', letterSpacing: '-0.02em' }}>
                 Notifications
               </h1>
               {unreadCount > 0 && (
                 <span
                   style={{
-                    backgroundColor: 'var(--primary-600)',
-                    color: '#ffffff',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    border: '1px solid rgba(59, 130, 246, 0.4)',
+                    color: '#60a5fa',
                     fontSize: '0.75rem',
-                    fontWeight: 800,
-                    padding: '0.2rem 0.6rem',
+                    fontWeight: 700,
+                    padding: '0.2rem 0.65rem',
                     borderRadius: '999px',
+                    boxShadow: '0 0 10px rgba(59, 130, 246, 0.3)',
                   }}
                 >
                   {unreadCount} unread
                 </span>
               )}
             </div>
-            <p style={{ margin: '0.35rem 0 0 0', color: 'var(--slate-500)', fontSize: '0.9rem' }}>
+            <p style={{ margin: '0.45rem 0 0 0', color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.95rem' }}>
               Track important updates regarding your bookings, appointments, and account activity.
             </p>
           </div>
@@ -206,31 +210,26 @@ const NotificationsPage = () => {
             )}
 
             {notifications.length > 0 && (
-              <GlassButton
+              <DangerGlassButton
                 onClick={() => setConfirmClearOpen(true)}
-                variant="outline"
                 size="sm"
                 icon={<Trash2 size={15} />}
-                style={{
-                  color: 'var(--danger-600)',
-                  borderColor: 'var(--danger-200)',
-                }}
               >
                 Clear All
-              </GlassButton>
+              </DangerGlassButton>
             )}
           </div>
         </div>
 
         {/* Filter bar */}
         <div
+          className="glass-card"
           style={{
-            backgroundColor: '#ffffff',
-            borderRadius: 'var(--radius-lg)',
+            borderRadius: '16px',
             padding: '0.85rem 1.25rem',
-            boxShadow: 'var(--shadow-sm)',
-            border: '1px solid var(--border-subtle)',
-            marginBottom: '1.5rem',
+            background: 'rgba(18, 20, 29, 0.65)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            marginBottom: '1.75rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -239,19 +238,20 @@ const NotificationsPage = () => {
           }}
         >
           {/* Tabs */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
             <button
               onClick={() => setFilter('all')}
               style={{
                 border: 'none',
-                background: filter === 'all' ? 'var(--primary-50)' : 'transparent',
-                color: filter === 'all' ? 'var(--primary-700)' : 'var(--slate-600)',
+                background: filter === 'all' ? 'linear-gradient(135deg, #3b82f6, #6366f1)' : 'transparent',
+                color: filter === 'all' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
                 fontWeight: filter === 'all' ? 700 : 500,
                 padding: '0.4rem 0.85rem',
-                borderRadius: 'var(--radius-md)',
+                borderRadius: '10px',
                 cursor: 'pointer',
-                fontSize: '0.88rem',
+                fontSize: '0.85rem',
                 transition: 'all 0.15s ease',
+                boxShadow: filter === 'all' ? '0 0 15px rgba(59, 130, 246, 0.4)' : 'none',
               }}
             >
               All ({notifications.length})
@@ -260,14 +260,15 @@ const NotificationsPage = () => {
               onClick={() => setFilter('unread')}
               style={{
                 border: 'none',
-                background: filter === 'unread' ? 'var(--primary-50)' : 'transparent',
-                color: filter === 'unread' ? 'var(--primary-700)' : 'var(--slate-600)',
+                background: filter === 'unread' ? 'linear-gradient(135deg, #3b82f6, #6366f1)' : 'transparent',
+                color: filter === 'unread' ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
                 fontWeight: filter === 'unread' ? 700 : 500,
                 padding: '0.4rem 0.85rem',
-                borderRadius: 'var(--radius-md)',
+                borderRadius: '10px',
                 cursor: 'pointer',
-                fontSize: '0.88rem',
+                fontSize: '0.85rem',
                 transition: 'all 0.15s ease',
+                boxShadow: filter === 'unread' ? '0 0 15px rgba(59, 130, 246, 0.4)' : 'none',
               }}
             >
               Unread ({unreadCount})
@@ -275,15 +276,16 @@ const NotificationsPage = () => {
           </div>
 
           {/* Search box */}
-          <div style={{ position: 'relative', width: '260px', maxWidth: '100%' }}>
+          <div style={{ position: 'relative', width: '280px', maxWidth: '100%' }}>
             <Search
-              size={16}
+              size={15}
               style={{
                 position: 'absolute',
-                left: '10px',
+                left: '12px',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: 'var(--slate-400)',
+                color: 'rgba(255, 255, 255, 0.4)',
+                pointerEvents: 'none',
               }}
             />
             <input
@@ -291,12 +293,15 @@ const NotificationsPage = () => {
               placeholder="Search notifications..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              className="glass-input"
               style={{
                 width: '100%',
-                padding: '0.45rem 0.75rem 0.45rem 2rem',
+                padding: '0.5rem 0.85rem 0.5rem 2.25rem',
                 fontSize: '0.85rem',
-                borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--border-subtle)',
+                borderRadius: '10px',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
                 outline: 'none',
               }}
             />
@@ -306,13 +311,13 @@ const NotificationsPage = () => {
         {/* Notifications list */}
         {filteredNotifications.length === 0 ? (
           <div
+            className="glass-card"
             style={{
-              backgroundColor: '#ffffff',
-              borderRadius: 'var(--radius-lg)',
+              borderRadius: '16px',
               padding: '3.5rem 1.5rem',
               textAlign: 'center',
-              boxShadow: 'var(--shadow-sm)',
-              border: '1px solid var(--border-subtle)',
+              background: 'rgba(18, 20, 29, 0.65)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
             }}
           >
             <div
@@ -320,20 +325,20 @@ const NotificationsPage = () => {
                 width: '54px',
                 height: '54px',
                 borderRadius: '50%',
-                backgroundColor: 'var(--slate-100)',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 1rem auto',
-                color: 'var(--slate-400)',
+                color: 'rgba(255, 255, 255, 0.3)',
               }}
             >
               <Bell size={26} />
             </div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--slate-800)', margin: '0 0 0.4rem 0' }}>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.4rem 0' }}>
               {filter === 'unread' ? 'No unread notifications' : 'No notifications found'}
             </h3>
-            <p style={{ color: 'var(--slate-500)', fontSize: '0.88rem', margin: 0 }}>
+            <p style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.9rem', margin: 0 }}>
               {filter === 'unread'
                 ? "You've read all your recent notifications."
                 : searchTerm
@@ -342,22 +347,23 @@ const NotificationsPage = () => {
             </p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
             {filteredNotifications.map((item) => {
               const badge = getNotificationBadge(item.type);
               return (
                 <div
                   key={item._id}
+                  className="glass-card"
                   style={{
-                    backgroundColor: '#ffffff',
-                    borderRadius: 'var(--radius-lg)',
-                    padding: '1.25rem',
-                    boxShadow: item.isRead ? 'var(--shadow-xs)' : 'var(--shadow-sm)',
-                    border: item.isRead ? '1px solid var(--border-subtle)' : '1px solid var(--primary-300)',
-                    borderLeft: item.isRead ? '4px solid var(--slate-300)' : '4px solid var(--primary-600)',
+                    borderRadius: '16px',
+                    padding: '1.35rem',
+                    background: item.isRead ? 'rgba(18, 20, 29, 0.55)' : 'rgba(18, 20, 29, 0.85)',
+                    border: item.isRead ? '1px solid rgba(255, 255, 255, 0.06)' : '1px solid rgba(59, 130, 246, 0.3)',
+                    borderLeft: item.isRead ? '4px solid rgba(255, 255, 255, 0.15)' : '4px solid #3b82f6',
+                    boxShadow: item.isRead ? 'none' : '0 0 25px rgba(59, 130, 246, 0.15)',
                     display: 'flex',
                     alignItems: 'flex-start',
-                    gap: '1rem',
+                    gap: '1.15rem',
                     transition: 'all 0.2s ease',
                   }}
                 >
@@ -366,7 +372,7 @@ const NotificationsPage = () => {
                     style={{
                       width: '42px',
                       height: '42px',
-                      borderRadius: '10px',
+                      borderRadius: '12px',
                       backgroundColor: badge.bg,
                       border: `1px solid ${badge.border}`,
                       display: 'flex',
@@ -394,9 +400,9 @@ const NotificationsPage = () => {
                         <h4
                           style={{
                             margin: 0,
-                            fontSize: '0.98rem',
+                            fontSize: '1rem',
                             fontWeight: item.isRead ? 600 : 700,
-                            color: 'var(--slate-900)',
+                            color: '#ffffff',
                           }}
                         >
                           {item.title}
@@ -408,7 +414,7 @@ const NotificationsPage = () => {
                             border: `1px solid ${badge.border}`,
                             fontSize: '0.68rem',
                             fontWeight: 700,
-                            padding: '0.12rem 0.5rem',
+                            padding: '0.12rem 0.55rem',
                             borderRadius: '999px',
                             textTransform: 'uppercase',
                             letterSpacing: '0.04em',
@@ -418,17 +424,17 @@ const NotificationsPage = () => {
                         </span>
                       </div>
 
-                      <span style={{ fontSize: '0.78rem', color: 'var(--slate-400)' }}>
+                      <span style={{ fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.45)' }}>
                         {formatFullDate(item.createdAt)}
                       </span>
                     </div>
 
                     <p
                       style={{
-                        margin: '0 0 0.75rem 0',
+                        margin: '0 0 0.85rem 0',
                         fontSize: '0.88rem',
-                        color: 'var(--slate-600)',
-                        lineHeight: 1.5,
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        lineHeight: 1.6,
                       }}
                     >
                       {item.message}
@@ -446,7 +452,7 @@ const NotificationsPage = () => {
                           icon={<ArrowRight size={13} />}
                           iconPosition="right"
                           style={{
-                            padding: '0.35rem 0.75rem',
+                            padding: '0.35rem 0.85rem',
                             fontSize: '0.8rem',
                           }}
                         >
@@ -462,7 +468,7 @@ const NotificationsPage = () => {
                           icon={<CheckCheck size={14} />}
                           style={{
                             fontSize: '0.8rem',
-                            color: 'var(--primary-600)',
+                            color: '#60a5fa',
                           }}
                         >
                           Mark as Read
@@ -476,7 +482,7 @@ const NotificationsPage = () => {
                         icon={<Trash2 size={14} />}
                         style={{
                           fontSize: '0.8rem',
-                          color: 'var(--slate-400)',
+                          color: 'rgba(255, 255, 255, 0.4)',
                           marginLeft: 'auto',
                         }}
                         title="Delete notification"
@@ -494,12 +500,12 @@ const NotificationsPage = () => {
         {/* Clear Confirmation Modal */}
         <ConfirmationModal
           isOpen={confirmClearOpen}
-          onClose={() => setConfirmClearOpen(false)}
+          onCancel={() => setConfirmClearOpen(false)}
           onConfirm={handleClearAll}
           title="Clear All Notifications"
           message="Are you sure you want to permanently clear all notifications? This action cannot be undone."
           confirmText="Clear All"
-          confirmVariant="danger"
+          isDangerous={true}
           loading={clearing}
         />
       </div>

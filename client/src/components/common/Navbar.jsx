@@ -52,11 +52,11 @@ const Navbar = () => {
         position: 'sticky',
         top: 0,
         zIndex: 1000,
-        backgroundColor: 'rgba(255, 255, 255, 0.92)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderBottom: '1px solid var(--border-subtle)',
-        transition: 'all var(--transition-normal)',
+        backgroundColor: 'rgba(8, 10, 18, 0.75)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+        transition: 'all 0.25s ease',
       }}
     >
       <div className="container">
@@ -82,13 +82,14 @@ const Navbar = () => {
               style={{
                 width: '42px',
                 height: '42px',
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.9), rgba(139, 92, 246, 0.7))',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#ffffff',
-                boxShadow: '0 4px 12px rgba(13, 148, 136, 0.28)',
+                boxShadow: '0 4px 18px rgba(56, 189, 248, 0.3)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
               }}
             >
               <Activity size={24} strokeWidth={2.5} />
@@ -100,18 +101,18 @@ const Navbar = () => {
                   fontSize: '1.45rem',
                   fontWeight: 800,
                   letterSpacing: '-0.02em',
-                  color: 'var(--slate-900)',
+                  color: '#ffffff',
                 }}
               >
-                Med<span style={{ color: 'var(--primary-600)' }}>ico</span>
+                Med<span style={{ color: '#38bdf8' }}>ico</span>
               </span>
               <span
                 style={{
                   display: 'block',
                   fontSize: '0.65rem',
-                  fontWeight: 700,
+                  fontWeight: 600,
                   letterSpacing: '0.08em',
-                  color: 'var(--slate-400)',
+                  color: 'rgba(200, 205, 225, 0.55)',
                   textTransform: 'uppercase',
                   marginTop: '-3px',
                 }}
@@ -134,8 +135,9 @@ const Navbar = () => {
               to="/"
               style={{
                 fontSize: '0.95rem',
-                fontWeight: 600,
-                color: location.pathname === '/' ? 'var(--primary-600)' : 'var(--slate-700)',
+                fontWeight: 500,
+                color: location.pathname === '/' ? '#38bdf8' : 'rgba(200, 205, 225, 0.72)',
+                transition: 'color 0.2s ease',
               }}
             >
               Home
@@ -144,8 +146,9 @@ const Navbar = () => {
               to="/doctors"
               style={{
                 fontSize: '0.95rem',
-                fontWeight: 600,
-                color: location.pathname === '/doctors' ? 'var(--primary-600)' : 'var(--slate-700)',
+                fontWeight: 500,
+                color: location.pathname === '/doctors' ? '#38bdf8' : 'rgba(200, 205, 225, 0.72)',
+                transition: 'color 0.2s ease',
               }}
             >
               Find Doctors
@@ -246,9 +249,9 @@ const Navbar = () => {
                     alignItems: 'center',
                     gap: '0.6rem',
                     padding: '0.35rem 0.75rem',
-                    backgroundColor: 'var(--slate-100)',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--slate-200)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    borderRadius: '14px',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
                   }}
                 >
                   <div
@@ -256,7 +259,7 @@ const Navbar = () => {
                       width: '28px',
                       height: '28px',
                       borderRadius: '50%',
-                      backgroundColor: 'var(--primary-600)',
+                      background: 'linear-gradient(135deg, #38bdf8, #818cf8)',
                       color: '#fff',
                       display: 'flex',
                       alignItems: 'center',
@@ -268,7 +271,7 @@ const Navbar = () => {
                     {user?.name?.charAt(0).toUpperCase()}
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--slate-800)', lineHeight: 1.2 }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#ffffff', lineHeight: 1.2 }}>
                       {user?.name}
                     </span>
                     <span style={{ fontSize: '0.7rem' }}>{getRoleBadge()}</span>
@@ -304,11 +307,13 @@ const Navbar = () => {
                         position: 'absolute',
                         right: 0,
                         top: '120%',
-                        backgroundColor: '#ffffff',
-                        boxShadow: 'var(--shadow-xl)',
-                        borderRadius: 'var(--radius-md)',
-                        border: '1px solid var(--border-subtle)',
-                        width: '210px',
+                        backgroundColor: 'rgba(18, 20, 30, 0.92)',
+                        backdropFilter: 'blur(28px)',
+                        WebkitBackdropFilter: 'blur(28px)',
+                        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.08)',
+                        borderRadius: '18px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        width: '220px',
                         padding: '0.5rem',
                         zIndex: 100,
                         animation: 'fadeIn 0.2s ease-out',
@@ -322,20 +327,20 @@ const Navbar = () => {
                           display: 'flex',
                           alignItems: 'center',
                           gap: '0.65rem',
-                          padding: '0.6rem 0.75rem',
-                          borderRadius: 'var(--radius-sm)',
-                          color: 'var(--slate-800)',
+                          padding: '0.7rem 0.85rem',
+                          borderRadius: '14px',
+                          color: '#ffffff',
                           fontSize: '0.9rem',
                           fontWeight: 500,
                           transition: 'background 0.15s ease',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--primary-50)')}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)')}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                       >
-                        <User size={16} color="var(--primary-600)" />
+                        <User size={16} color="#38bdf8" />
                         <div>
                           <div style={{ fontWeight: 600 }}>As Patient</div>
-                          <div style={{ fontSize: '0.72rem', color: 'var(--slate-400)' }}>Book consultations</div>
+                          <div style={{ fontSize: '0.72rem', color: 'rgba(200, 205, 225, 0.5)' }}>Book consultations</div>
                         </div>
                       </Link>
 
@@ -346,20 +351,20 @@ const Navbar = () => {
                           display: 'flex',
                           alignItems: 'center',
                           gap: '0.65rem',
-                          padding: '0.6rem 0.75rem',
-                          borderRadius: 'var(--radius-sm)',
-                          color: 'var(--slate-800)',
+                          padding: '0.7rem 0.85rem',
+                          borderRadius: '14px',
+                          color: '#ffffff',
                           fontSize: '0.9rem',
                           fontWeight: 500,
                           transition: 'background 0.15s ease',
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--primary-50)')}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)')}
                         onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                       >
-                        <Stethoscope size={16} color="var(--primary-600)" />
+                        <Stethoscope size={16} color="#38bdf8" />
                         <div>
                           <div style={{ fontWeight: 600 }}>As Doctor</div>
-                          <div style={{ fontSize: '0.72rem', color: 'var(--slate-400)' }}>Join medical network</div>
+                          <div style={{ fontSize: '0.72rem', color: 'rgba(200, 205, 225, 0.5)' }}>Join medical network</div>
                         </div>
                       </Link>
                     </div>
@@ -382,7 +387,7 @@ const Navbar = () => {
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                color: 'var(--slate-700)',
+                color: 'rgba(200, 205, 225, 0.8)',
                 padding: '0.4rem',
               }}
             >
@@ -396,7 +401,7 @@ const Navbar = () => {
           <div
             style={{
               padding: '1.25rem 0',
-              borderTop: '1px solid var(--border-subtle)',
+              borderTop: '1px solid rgba(255, 255, 255, 0.06)',
               display: 'flex',
               flexDirection: 'column',
               gap: '1rem',
@@ -405,14 +410,14 @@ const Navbar = () => {
             <Link
               to="/"
               onClick={() => setMobileMenuOpen(false)}
-              style={{ padding: '0.5rem 0', fontWeight: 600, color: 'var(--slate-800)' }}
+              style={{ padding: '0.5rem 0', fontWeight: 600, color: '#ffffff' }}
             >
               Home
             </Link>
             <Link
               to="/doctors"
               onClick={() => setMobileMenuOpen(false)}
-              style={{ padding: '0.5rem 0', fontWeight: 600, color: 'var(--slate-800)' }}
+              style={{ padding: '0.5rem 0', fontWeight: 600, color: '#ffffff' }}
             >
               Find Doctors
             </Link>
@@ -424,11 +429,11 @@ const Navbar = () => {
                   flexDirection: 'column',
                   gap: '0.75rem',
                   paddingTop: '0.75rem',
-                  borderTop: '1px solid var(--border-subtle)',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>{user?.name}</span>
+                  <span style={{ fontWeight: 600, fontSize: '0.9rem', color: '#ffffff' }}>{user?.name}</span>
                   {getRoleBadge()}
                 </div>
                 <PrimaryGlassButton
@@ -519,7 +524,7 @@ const Navbar = () => {
                   flexDirection: 'column',
                   gap: '0.5rem',
                   paddingTop: '0.75rem',
-                  borderTop: '1px solid var(--border-subtle)',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                 }}
               >
                 <SecondaryGlassButton

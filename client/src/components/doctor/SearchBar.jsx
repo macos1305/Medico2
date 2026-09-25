@@ -6,10 +6,10 @@ const SearchBar = ({ value, onChange, placeholder = 'Search by doctor name, spec
     <div style={{ position: 'relative', width: '100%' }}>
       <Search
         size={20}
-        color="var(--slate-400)"
+        color="#38bdf8"
         style={{
           position: 'absolute',
-          left: '1rem',
+          left: '1.25rem',
           top: '50%',
           transform: 'translateY(-50%)',
           pointerEvents: 'none',
@@ -22,13 +22,18 @@ const SearchBar = ({ value, onChange, placeholder = 'Search by doctor name, spec
         value={value}
         onChange={(e) => onChange(e.target.value)}
         style={{
-          paddingLeft: '3rem',
-          paddingRight: value ? '2.5rem' : '1rem',
-          height: '50px',
-          fontSize: '1rem',
-          borderRadius: 'var(--radius-lg)',
-          backgroundColor: '#ffffff',
-          boxShadow: 'var(--shadow-sm)',
+          paddingLeft: '3.25rem',
+          paddingRight: value ? '2.75rem' : '1.25rem',
+          height: '52px',
+          fontSize: '0.95rem',
+          borderRadius: '9999px',
+          backgroundColor: 'rgba(18, 20, 29, 0.7)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          color: '#ffffff',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+          transition: 'all 0.2s ease',
         }}
       />
       {value && (
@@ -37,12 +42,12 @@ const SearchBar = ({ value, onChange, placeholder = 'Search by doctor name, spec
           onClick={() => onChange('')}
           style={{
             position: 'absolute',
-            right: '0.85rem',
+            right: '1rem',
             top: '50%',
             transform: 'translateY(-50%)',
             background: 'transparent',
             border: 'none',
-            color: 'var(--slate-400)',
+            color: 'rgba(148, 163, 184, 0.7)',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',

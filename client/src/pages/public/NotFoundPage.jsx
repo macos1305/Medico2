@@ -28,11 +28,17 @@ const NotFoundPage = () => {
       }}
     >
       <div
+        className="glass-card"
         style={{
-          maxWidth: '560px',
+          maxWidth: '580px',
           width: '100%',
           textAlign: 'center',
           animation: 'fadeIn 0.5s ease-out',
+          padding: '3rem 2rem',
+          borderRadius: '24px',
+          background: 'rgba(18, 20, 29, 0.75)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 130, 246, 0.15)',
         }}
       >
         {/* Logo */}
@@ -42,7 +48,7 @@ const NotFoundPage = () => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '0.5rem',
-            marginBottom: '2.5rem',
+            marginBottom: '2rem',
           }}
         >
           <div
@@ -50,42 +56,41 @@ const NotFoundPage = () => {
               width: 44,
               height: 44,
               borderRadius: 12,
-              background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
+              background: 'linear-gradient(135deg, #3b82f6, #6366f1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#fff',
-              boxShadow: '0 4px 12px rgba(13,148,136,0.28)',
+              boxShadow: '0 0 20px rgba(59, 130, 246, 0.4)',
             }}
           >
             <Activity size={24} strokeWidth={2.5} />
           </div>
           <span
             style={{
-              fontFamily: 'var(--font-heading)',
               fontSize: '1.5rem',
               fontWeight: 800,
-              color: 'var(--slate-900)',
+              color: '#ffffff',
               letterSpacing: '-0.02em',
             }}
           >
-            Med<span style={{ color: 'var(--primary-600)' }}>ico</span>
+            Med<span style={{ color: '#60a5fa' }}>ico</span>
           </span>
         </div>
 
         {/* 404 Display */}
         <div
           style={{
-            fontSize: 'clamp(5rem, 18vw, 8rem)',
-            fontFamily: 'var(--font-heading)',
+            fontSize: 'clamp(5rem, 15vw, 7.5rem)',
             fontWeight: 900,
             lineHeight: 1,
-            background: 'linear-gradient(135deg, var(--primary-600), var(--primary-400))',
+            background: 'linear-gradient(135deg, #60a5fa 0%, #a855f7 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             marginBottom: '1rem',
             letterSpacing: '-0.04em',
+            textShadow: '0 0 40px rgba(96, 165, 250, 0.3)',
           }}
         >
           404
@@ -93,9 +98,9 @@ const NotFoundPage = () => {
 
         <h1
           style={{
-            fontSize: 'var(--text-2xl)',
+            fontSize: '1.75rem',
             fontWeight: 700,
-            color: 'var(--slate-900)',
+            color: '#ffffff',
             marginBottom: '0.75rem',
           }}
         >
@@ -104,13 +109,15 @@ const NotFoundPage = () => {
 
         <p
           style={{
-            color: 'var(--slate-500)',
-            fontSize: 'var(--text-base)',
+            color: 'rgba(255, 255, 255, 0.65)',
+            fontSize: '1rem',
             lineHeight: 1.7,
             marginBottom: '2.25rem',
+            maxWidth: '460px',
+            margin: '0 auto 2.25rem auto',
           }}
         >
-          The healthcare resource or clinical page you're looking for doesn't exist or may have been moved.
+          The clinical resource or healthcare page you are looking for does not exist or may have been relocated.
         </p>
 
         {/* Action Buttons */}
@@ -132,7 +139,7 @@ const NotFoundPage = () => {
 
           {isAuthenticated && dashboardPath && (
             <GlassButton to={dashboardPath} variant="outline" icon={<Search size={16} />}>
-              Go to Dashboard
+              Dashboard
             </GlassButton>
           )}
         </div>
@@ -141,32 +148,35 @@ const NotFoundPage = () => {
         <div
           style={{
             marginTop: '2.5rem',
-            padding: '1.5rem',
-            background: 'var(--slate-50)',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--border-subtle)',
+            padding: '1.25rem',
+            background: 'rgba(255, 255, 255, 0.03)',
+            borderRadius: '14px',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
           }}
         >
           <p
             style={{
-              fontSize: 'var(--text-sm)',
+              fontSize: '0.8rem',
               fontWeight: 600,
-              color: 'var(--slate-600)',
-              marginBottom: '0.875rem',
+              color: 'rgba(255, 255, 255, 0.5)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              marginBottom: '0.75rem',
             }}
           >
-            Helpful Links
+            Helpful Destinations
           </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link
               to="/"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.4rem',
-                fontSize: 'var(--text-sm)',
-                color: 'var(--primary-600)',
+                fontSize: '0.875rem',
+                color: '#60a5fa',
                 fontWeight: 600,
+                textDecoration: 'none',
               }}
             >
               <Home size={14} /> Home
@@ -177,9 +187,10 @@ const NotFoundPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.4rem',
-                fontSize: 'var(--text-sm)',
-                color: 'var(--primary-600)',
+                fontSize: '0.875rem',
+                color: '#60a5fa',
                 fontWeight: 600,
+                textDecoration: 'none',
               }}
             >
               <Stethoscope size={14} /> Find Doctors
@@ -189,9 +200,10 @@ const NotFoundPage = () => {
                 <Link
                   to="/login"
                   style={{
-                    fontSize: 'var(--text-sm)',
-                    color: 'var(--primary-600)',
+                    fontSize: '0.875rem',
+                    color: '#60a5fa',
                     fontWeight: 600,
+                    textDecoration: 'none',
                   }}
                 >
                   Sign In
@@ -199,9 +211,10 @@ const NotFoundPage = () => {
                 <Link
                   to="/register/patient"
                   style={{
-                    fontSize: 'var(--text-sm)',
-                    color: 'var(--primary-600)',
+                    fontSize: '0.875rem',
+                    color: '#60a5fa',
                     fontWeight: 600,
+                    textDecoration: 'none',
                   }}
                 >
                   Register

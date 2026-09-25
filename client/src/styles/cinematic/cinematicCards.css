@@ -1,0 +1,118 @@
+/* ==========================================================================
+   MEDICO — CINEMATIC GLASS CARDS & PANELS
+   ========================================================================== */
+
+/* Universal Glass Card styling applied to .glass-card and legacy .card */
+.glass-card,
+.card {
+  background: var(--medico-surface, rgba(255, 255, 255, 0.035)) !important;
+  backdrop-filter: var(--medico-glass-blur, blur(20px)) !important;
+  -webkit-backdrop-filter: var(--medico-glass-blur, blur(20px)) !important;
+  border: 1px solid var(--medico-glass-border, rgba(255, 255, 255, 0.08)) !important;
+  border-radius: var(--medico-radius, 24px) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25) !important;
+  color: var(--medico-text, #f8fafc) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease !important;
+  position: relative;
+}
+
+.glass-card-hover:hover,
+.card.card-interactive:hover,
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 189, 248, 0.25) !important;
+  box-shadow: 0 24px 65px rgba(0, 0, 0, 0.4), 0 0 20px rgba(56, 189, 248, 0.08) !important;
+}
+
+/* Stat Card */
+.stat-glass-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-glass-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--medico-text-muted, rgba(148, 163, 184, 0.65));
+}
+
+.stat-glass-value {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 0.25rem 0;
+}
+
+.stat-glass-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--medico-primary, #38bdf8);
+}
+
+/* Glass Badges & Status Pills */
+.glass-badge,
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--medico-radius-full, 9999px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.badge-patient,
+.glass-badge-info {
+  background: rgba(56, 189, 248, 0.12) !important;
+  color: #38bdf8 !important;
+  border-color: rgba(56, 189, 248, 0.25) !important;
+}
+
+.badge-doctor,
+.glass-badge-success,
+.badge-success {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+.badge-admin,
+.glass-badge-ai,
+.badge-purple {
+  background: rgba(168, 85, 247, 0.15) !important;
+  color: #c084fc !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+.badge-danger,
+.glass-badge-danger {
+  background: rgba(244, 63, 94, 0.12) !important;
+  color: #fb7185 !important;
+  border-color: rgba(244, 63, 94, 0.25) !important;
+}
+
+.badge-warning,
+.glass-badge-warning {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #fbbf24 !important;
+  border-color: rgba(245, 158, 11, 0.25) !important;
+}

@@ -56,11 +56,15 @@ const ReviewForm = ({ appointment, doctorName, onSuccess, onClose }) => {
 
   return (
     <div
-      className="card"
+      className="glass-card"
       style={{
         padding: '1.75rem',
-        border: '2px solid var(--primary-100)',
-        borderTop: '4px solid var(--primary-500)',
+        borderRadius: '16px',
+        background: 'rgba(18, 20, 29, 0.75)',
+        border: '1px solid rgba(59, 130, 246, 0.3)',
+        borderTop: '4px solid #3b82f6',
+        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.15)',
+        color: '#ffffff',
       }}
     >
       {/* Header */}
@@ -73,11 +77,11 @@ const ReviewForm = ({ appointment, doctorName, onSuccess, onClose }) => {
         }}
       >
         <div>
-          <h3 style={{ fontSize: 'var(--text-lg)', marginBottom: '0.2rem' }}>
+          <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.25rem 0' }}>
             Rate Your Visit
           </h3>
-          <p style={{ fontSize: 'var(--text-sm)', color: 'var(--slate-500)' }}>
-            How was your consultation with <strong>{doctorName}</strong>?
+          <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.65)', margin: 0 }}>
+            How was your consultation with <strong style={{ color: '#ffffff' }}>{doctorName}</strong>?
           </p>
         </div>
         {onClose && (
@@ -93,33 +97,33 @@ const ReviewForm = ({ appointment, doctorName, onSuccess, onClose }) => {
 
       <form onSubmit={handleSubmit} noValidate>
         {/* Star Rating */}
-        <div className="form-group">
-          <label className="form-label">
-            Your Rating <span className="required">*</span>
+        <div style={{ marginBottom: '1.25rem' }}>
+          <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '0.4rem' }}>
+            Your Rating <span style={{ color: '#f43f5e' }}>*</span>
           </label>
           <div style={{ marginTop: '0.35rem' }}>
-            <StarRating value={rating} onChange={setRating} size={32} readOnly={false} />
+            <StarRating value={rating} onChange={setRating} size={30} readOnly={false} />
           </div>
           {rating > 0 && (
-            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--slate-400)', marginTop: '0.35rem' }}>
+            <p style={{ fontSize: '0.78rem', color: 'rgba(255, 255, 255, 0.5)', marginTop: '0.35rem', margin: '0.35rem 0 0 0' }}>
               {['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent'][rating]} — {rating} star{rating > 1 ? 's' : ''}
             </p>
           )}
           {errors.rating && (
-            <div className="form-error">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#f87171', fontSize: '0.78rem', marginTop: '0.35rem' }}>
               <AlertCircle size={12} /> {errors.rating}
             </div>
           )}
         </div>
 
         {/* Comment */}
-        <div className="form-group">
-          <label className="form-label" htmlFor="review-comment">
-            Your Review <span style={{ color: 'var(--slate-400)', fontWeight: 400 }}>(optional)</span>
+        <div style={{ marginBottom: '1.25rem' }}>
+          <label htmlFor="review-comment" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '0.4rem' }}>
+            Your Review <span style={{ color: 'rgba(255, 255, 255, 0.45)', fontWeight: 400 }}>(optional)</span>
           </label>
           <textarea
             id="review-comment"
-            className={`form-input${errors.comment ? ' error' : ''}`}
+            className="glass-input"
             placeholder="Share your experience — what went well, how was the doctor's communication, would you recommend them?"
             value={comment}
             onChange={(e) => {
@@ -128,18 +132,28 @@ const ReviewForm = ({ appointment, doctorName, onSuccess, onClose }) => {
             }}
             rows={4}
             maxLength={1000}
-            style={{ resize: 'vertical', minHeight: 100 }}
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              borderRadius: '10px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: errors.comment ? '1px solid rgba(239, 68, 68, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#ffffff',
+              fontSize: '0.875rem',
+              resize: 'vertical',
+              minHeight: 100,
+            }}
           />
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.35rem' }}>
             {errors.comment ? (
-              <div className="form-error"><AlertCircle size={12} /> {errors.comment}</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#f87171', fontSize: '0.78rem' }}><AlertCircle size={12} /> {errors.comment}</div>
             ) : (
               <span />
             )}
             <span
               style={{
-                fontSize: 'var(--text-xs)',
-                color: charLeft < 100 ? 'var(--accent-rose)' : 'var(--slate-400)',
+                fontSize: '0.75rem',
+                color: charLeft < 100 ? '#f87171' : 'rgba(255, 255, 255, 0.4)',
               }}
             >
               {charLeft} remaining
@@ -148,7 +162,7 @@ const ReviewForm = ({ appointment, doctorName, onSuccess, onClose }) => {
         </div>
 
         {/* Actions */}
-        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', paddingTop: '0.5rem' }}>
           {onClose && (
             <SecondaryGlassButton size="sm" onClick={onClose}>
               Cancel

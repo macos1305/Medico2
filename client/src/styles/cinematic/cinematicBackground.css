@@ -1,0 +1,79 @@
+/* ==========================================================================
+   MEDICO — CINEMATIC BACKGROUND & AMBIENT LIGHTING
+   ========================================================================== */
+
+.cinematic-bg-container {
+  min-height: 100vh;
+  background-color: var(--medico-bg, #05060a);
+  color: var(--medico-text, #f8fafc);
+  position: relative;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.cinematic-ambient-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.cinematic-ambient-left {
+  position: absolute;
+  top: -10%;
+  left: -5%;
+  width: 55vw;
+  height: 55vw;
+  max-width: 800px;
+  max-height: 800px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.16) 0%, rgba(30, 64, 175, 0.08) 40%, transparent 70%);
+  filter: blur(80px);
+  border-radius: 50%;
+  animation: ambientDriftLeft 20s ease-in-out infinite alternate;
+}
+
+.cinematic-ambient-right {
+  position: absolute;
+  top: -5%;
+  right: -5%;
+  width: 50vw;
+  height: 50vw;
+  max-width: 750px;
+  max-height: 750px;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.15) 0%, rgba(109, 40, 217, 0.06) 45%, transparent 70%);
+  filter: blur(80px);
+  border-radius: 50%;
+  animation: ambientDriftRight 24s ease-in-out infinite alternate;
+}
+
+.cinematic-ambient-center {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.035) 0%, transparent 60%);
+  filter: blur(100px);
+}
+
+@keyframes ambientDriftLeft {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, 60px) scale(1.08); }
+}
+
+@keyframes ambientDriftRight {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-50px, 40px) scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-ambient-left,
+  .cinematic-ambient-right {
+    animation: none;
+  }
+}

@@ -7,6 +7,7 @@ import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import AppRoutes from './routes/AppRoutes';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import CinematicShell from './components/layout/CinematicShell';
 
 function AppLayout() {
   const location = useLocation();
@@ -21,20 +22,22 @@ function AppLayout() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        overflowX: 'hidden',
-      }}
-    >
-      <Navbar />
-      <main style={{ flex: 1 }} id="main-content" role="main">
-        <AppRoutes />
-      </main>
-      <Footer />
-    </div>
+    <CinematicShell>
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflowX: 'hidden',
+        }}
+      >
+        <Navbar />
+        <main style={{ flex: 1 }} id="main-content" role="main">
+          <AppRoutes />
+        </main>
+        <Footer />
+      </div>
+    </CinematicShell>
   );
 }
 

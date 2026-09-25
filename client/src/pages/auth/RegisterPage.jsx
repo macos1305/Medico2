@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import PatientRegisterPage from './PatientRegisterPage';
 import DoctorRegisterPage from './DoctorRegisterPage';
-import { User, Stethoscope, Activity } from 'lucide-react';
+import { User, Stethoscope } from 'lucide-react';
 
 const RegisterPage = () => {
   const [selectedRole, setSelectedRole] = useState('PATIENT');
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '2rem 1.5rem' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '2.5rem 1.5rem 4rem' }}>
       <div style={{ maxWidth: '640px', margin: '0 auto' }}>
         {/* Role Selector Tabs */}
         <div
           style={{
             display: 'flex',
-            backgroundColor: 'var(--slate-100)',
-            padding: '0.4rem',
-            borderRadius: 'var(--radius-lg)',
-            marginBottom: '1.5rem',
-            border: '1px solid var(--border-subtle)',
+            backgroundColor: 'rgba(255, 255, 255, 0.04)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            padding: '0.35rem',
+            borderRadius: '9999px',
+            marginBottom: '2rem',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
           }}
         >
           <button
@@ -29,19 +32,19 @@ const RegisterPage = () => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '0.5rem',
-              padding: '0.75rem',
-              borderRadius: 'var(--radius-md)',
-              border: 'none',
+              padding: '0.75rem 1.25rem',
+              borderRadius: '9999px',
+              border: selectedRole === 'PATIENT' ? '1px solid rgba(56, 189, 248, 0.4)' : '1px solid transparent',
               cursor: 'pointer',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              transition: 'all var(--transition-fast)',
-              backgroundColor: selectedRole === 'PATIENT' ? '#ffffff' : 'transparent',
-              color: selectedRole === 'PATIENT' ? 'var(--primary-700)' : 'var(--slate-600)',
-              boxShadow: selectedRole === 'PATIENT' ? 'var(--shadow-sm)' : 'none',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              transition: 'all 0.25s ease',
+              backgroundColor: selectedRole === 'PATIENT' ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
+              color: selectedRole === 'PATIENT' ? '#38bdf8' : 'rgba(200, 205, 225, 0.7)',
+              boxShadow: selectedRole === 'PATIENT' ? '0 0 20px rgba(56, 189, 248, 0.15)' : 'none',
             }}
           >
-            <User size={18} />
+            <User size={17} />
             <span>Register as Patient</span>
           </button>
 
@@ -54,19 +57,19 @@ const RegisterPage = () => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '0.5rem',
-              padding: '0.75rem',
-              borderRadius: 'var(--radius-md)',
-              border: 'none',
+              padding: '0.75rem 1.25rem',
+              borderRadius: '9999px',
+              border: selectedRole === 'DOCTOR' ? '1px solid rgba(139, 92, 246, 0.4)' : '1px solid transparent',
               cursor: 'pointer',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              transition: 'all var(--transition-fast)',
-              backgroundColor: selectedRole === 'DOCTOR' ? '#ffffff' : 'transparent',
-              color: selectedRole === 'DOCTOR' ? 'var(--primary-700)' : 'var(--slate-600)',
-              boxShadow: selectedRole === 'DOCTOR' ? 'var(--shadow-sm)' : 'none',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              transition: 'all 0.25s ease',
+              backgroundColor: selectedRole === 'DOCTOR' ? 'rgba(139, 92, 246, 0.12)' : 'transparent',
+              color: selectedRole === 'DOCTOR' ? '#c084fc' : 'rgba(200, 205, 225, 0.7)',
+              boxShadow: selectedRole === 'DOCTOR' ? '0 0 20px rgba(139, 92, 246, 0.15)' : 'none',
             }}
           >
-            <Stethoscope size={18} />
+            <Stethoscope size={17} />
             <span>Register as Doctor</span>
           </button>
         </div>

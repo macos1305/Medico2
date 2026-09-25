@@ -36,27 +36,62 @@ const ConfirmationModal = ({
 
   return (
     <div
-      className="modal-overlay"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(5, 6, 10, 0.8)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1200,
+        padding: '1.5rem',
+        animation: 'fadeIn 0.2s ease-out',
+      }}
       onClick={onCancel}
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirm-modal-title"
     >
       <div
-        className="modal-panel modal-panel-sm"
-        style={{ padding: 0 }}
+        className="glass-card glass-modal"
+        style={{
+          width: '100%',
+          maxWidth: '480px',
+          borderRadius: '20px',
+          background: 'rgba(18, 20, 29, 0.95)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: isDangerous
+            ? '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(239, 68, 68, 0.2)'
+            : '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 130, 246, 0.2)',
+          color: '#ffffff',
+          overflow: 'hidden',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="modal-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div
+          style={{
+            padding: '1.5rem 1.75rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <div
               style={{
-                width: 40,
-                height: 40,
+                width: 42,
+                height: 42,
                 borderRadius: '50%',
-                backgroundColor: isDangerous ? '#fff1f2' : '#fffbeb',
-                color: isDangerous ? 'var(--accent-rose)' : 'var(--accent-amber)',
+                backgroundColor: isDangerous ? 'rgba(239, 68, 68, 0.15)' : 'rgba(245, 158, 11, 0.15)',
+                color: isDangerous ? '#f87171' : '#fbbf24',
+                border: isDangerous ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(245, 158, 11, 0.3)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -65,13 +100,23 @@ const ConfirmationModal = ({
             >
               {isDangerous ? <Trash2 size={20} /> : <AlertTriangle size={20} />}
             </div>
-            <h3 id="confirm-modal-title" className="modal-title" style={{ fontSize: 'var(--text-lg)' }}>
+            <h3 id="confirm-modal-title" style={{ fontSize: '1.25rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>
               {title}
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="modal-close"
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '50%',
+              color: 'rgba(255, 255, 255, 0.7)',
+              cursor: 'pointer',
+              padding: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
             aria-label="Close dialog"
             disabled={loading}
           >
@@ -80,9 +125,9 @@ const ConfirmationModal = ({
         </div>
 
         {/* Body */}
-        <div className="modal-body">
+        <div style={{ padding: '1.75rem' }}>
           {typeof message === 'string' ? (
-            <p style={{ color: 'var(--slate-600)', fontSize: 'var(--text-sm)', lineHeight: 1.7 }}>
+            <p style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '0.925rem', lineHeight: 1.7, margin: 0 }}>
               {message}
             </p>
           ) : (
@@ -97,7 +142,15 @@ const ConfirmationModal = ({
         </div>
 
         {/* Footer */}
-        <div className="modal-footer" style={{ gap: '0.75rem' }}>
+        <div
+          style={{
+            padding: '1.25rem 1.75rem',
+            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: '0.75rem',
+          }}
+        >
           <SecondaryGlassButton
             ref={cancelRef}
             onClick={onCancel}

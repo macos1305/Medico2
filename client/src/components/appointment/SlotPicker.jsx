@@ -69,8 +69,8 @@ const SlotPicker = ({
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
       {/* Date Selection Area */}
       <div>
-        <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <Calendar size={16} color="var(--primary-600)" />
+        <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '0.5rem' }}>
+          <Calendar size={16} color="#60a5fa" />
           <span>Select Consultation Date</span>
         </label>
 
@@ -78,14 +78,36 @@ const SlotPicker = ({
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
           <button
             type="button"
-            className={`btn btn-sm ${selectedDate === getTodayStr() ? 'btn-primary' : 'btn-secondary'}`}
+            style={{
+              padding: '0.4rem 0.85rem',
+              borderRadius: '10px',
+              border: 'none',
+              fontSize: '0.825rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              background: selectedDate === getTodayStr() ? 'linear-gradient(135deg, #3b82f6, #6366f1)' : 'rgba(255, 255, 255, 0.05)',
+              color: selectedDate === getTodayStr() ? '#ffffff' : 'rgba(255, 255, 255, 0.7)',
+              boxShadow: selectedDate === getTodayStr() ? '0 0 15px rgba(59, 130, 246, 0.4)' : 'none',
+            }}
             onClick={() => onDateChange(getTodayStr())}
           >
             Today
           </button>
           <button
             type="button"
-            className={`btn btn-sm ${selectedDate === getTomorrowStr() ? 'btn-primary' : 'btn-secondary'}`}
+            style={{
+              padding: '0.4rem 0.85rem',
+              borderRadius: '10px',
+              border: 'none',
+              fontSize: '0.825rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              background: selectedDate === getTomorrowStr() ? 'linear-gradient(135deg, #3b82f6, #6366f1)' : 'rgba(255, 255, 255, 0.05)',
+              color: selectedDate === getTomorrowStr() ? '#ffffff' : 'rgba(255, 255, 255, 0.7)',
+              boxShadow: selectedDate === getTomorrowStr() ? '0 0 15px rgba(59, 130, 246, 0.4)' : 'none',
+            }}
             onClick={() => onDateChange(getTomorrowStr())}
           >
             Tomorrow
@@ -93,11 +115,21 @@ const SlotPicker = ({
           <div style={{ flex: 1, minWidth: '170px' }}>
             <input
               type="date"
-              className="form-input"
+              className="glass-input"
               value={selectedDate}
               min={getTodayStr()}
               onChange={(e) => onDateChange(e.target.value)}
-              style={{ height: '36px', padding: '0.25rem 0.75rem', fontSize: '0.875rem' }}
+              style={{
+                width: '100%',
+                height: '36px',
+                padding: '0.25rem 0.75rem',
+                fontSize: '0.875rem',
+                borderRadius: '10px',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
+                colorScheme: 'dark',
+              }}
             />
           </div>
         </div>
@@ -105,25 +137,26 @@ const SlotPicker = ({
 
       {/* Slots Section */}
       <div>
-        <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <Clock size={16} color="var(--primary-600)" />
+        <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 600, color: 'rgba(255, 255, 255, 0.85)', marginBottom: '0.5rem' }}>
+          <Clock size={16} color="#60a5fa" />
           <span>Available Consultation Time Slots</span>
         </label>
 
         {loading ? (
           <div style={{ padding: '2rem 0', textAlign: 'center' }}>
             <div className="spinner spinner-primary" style={{ width: '28px', height: '28px', margin: '0 auto' }}></div>
-            <p style={{ color: 'var(--slate-400)', fontSize: '0.85rem', marginTop: '0.5rem' }}>
+            <p style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.85rem', marginTop: '0.5rem' }}>
               Checking doctor availability...
             </p>
           </div>
         ) : error ? (
           <div
             style={{
-              padding: '1rem',
-              backgroundColor: '#ffe4e6',
-              borderRadius: 'var(--radius-md)',
-              color: 'var(--accent-rose)',
+              padding: '0.85rem 1rem',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.25)',
+              borderRadius: '10px',
+              color: '#fca5a5',
               fontSize: '0.85rem',
             }}
           >
@@ -133,22 +166,22 @@ const SlotPicker = ({
           /* Day Off Alert */
           <div
             style={{
-              backgroundColor: '#fffbeb',
-              border: '1px solid #fde68a',
-              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'rgba(245, 158, 11, 0.1)',
+              border: '1px solid rgba(245, 158, 11, 0.25)',
+              borderRadius: '10px',
               padding: '1rem',
               display: 'flex',
               alignItems: 'center',
               gap: '0.65rem',
-              color: '#92400e',
+              color: '#fbbf24',
               fontSize: '0.875rem',
             }}
           >
-            <AlertCircle size={20} color="#b45309" />
+            <AlertCircle size={20} color="#fbbf24" />
             <span>{slotsData?.message || 'Doctor does not schedule consultations on this day.'}</span>
           </div>
         ) : slotsData?.slots?.length === 0 ? (
-          <p style={{ color: 'var(--slate-400)', fontSize: '0.85rem' }}>
+          <p style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.85rem' }}>
             No slots generated for this schedule.
           </p>
         ) : (
@@ -156,11 +189,11 @@ const SlotPicker = ({
             {/* Morning */}
             {morningSlots.length > 0 && (
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-500)', marginBottom: '0.4rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255, 255, 255, 0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
                   <Sun size={14} color="#f59e0b" />
                   <span>Morning</span>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 1fr))', gap: '0.4rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 1fr))', gap: '0.5rem' }}>
                   {morningSlots.map((slot, i) => (
                     <SlotChip
                       key={i}
@@ -176,11 +209,11 @@ const SlotPicker = ({
             {/* Afternoon */}
             {afternoonSlots.length > 0 && (
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-500)', marginBottom: '0.4rem' }}>
-                  <CloudSun size={14} color="#0284c7" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255, 255, 255, 0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                  <CloudSun size={14} color="#38bdf8" />
                   <span>Afternoon</span>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 1fr))', gap: '0.4rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 1fr))', gap: '0.5rem' }}>
                   {afternoonSlots.map((slot, i) => (
                     <SlotChip
                       key={i}
@@ -196,11 +229,11 @@ const SlotPicker = ({
             {/* Evening */}
             {eveningSlots.length > 0 && (
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem', fontWeight: 700, color: 'var(--slate-500)', marginBottom: '0.4rem' }}>
-                  <Moon size={14} color="#6366f1" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255, 255, 255, 0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                  <Moon size={14} color="#818cf8" />
                   <span>Evening</span>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 1fr))', gap: '0.4rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(88px, 1fr))', gap: '0.5rem' }}>
                   {eveningSlots.map((slot, i) => (
                     <SlotChip
                       key={i}
@@ -229,23 +262,26 @@ const SlotChip = ({ slot, isSelected, onSelect }) => {
       disabled={!isAvailable}
       onClick={onSelect}
       style={{
-        padding: '0.5rem 0.25rem',
-        borderRadius: 'var(--radius-md)',
+        padding: '0.55rem 0.25rem',
+        borderRadius: '10px',
         border: isSelected
-          ? '2px solid var(--primary-600)'
+          ? '2px solid #3b82f6'
           : isAvailable
-          ? '1px solid var(--border-subtle)'
-          : '1px dashed var(--slate-200)',
+          ? '1px solid rgba(255, 255, 255, 0.1)'
+          : '1px dashed rgba(255, 255, 255, 0.05)',
         backgroundColor: isSelected
-          ? 'var(--primary-600)'
+          ? 'linear-gradient(135deg, #3b82f6, #6366f1)'
           : isAvailable
-          ? '#ffffff'
-          : 'var(--slate-50)',
+          ? 'rgba(255, 255, 255, 0.04)'
+          : 'rgba(255, 255, 255, 0.01)',
         color: isSelected
           ? '#ffffff'
           : isAvailable
-          ? 'var(--slate-800)'
-          : 'var(--slate-400)',
+          ? 'rgba(255, 255, 255, 0.85)'
+          : 'rgba(255, 255, 255, 0.2)',
+        boxShadow: isSelected
+          ? '0 0 15px rgba(59, 130, 246, 0.45)'
+          : 'none',
         fontWeight: isSelected ? 700 : 600,
         fontSize: '0.85rem',
         cursor: isAvailable ? 'pointer' : 'not-allowed',
@@ -261,8 +297,8 @@ const SlotChip = ({ slot, isSelected, onSelect }) => {
       <span
         style={{
           fontSize: '0.65rem',
-          opacity: 0.8,
-          marginTop: '1px',
+          opacity: 0.7,
+          marginTop: '2px',
           textTransform: 'uppercase',
           fontWeight: 700,
         }}

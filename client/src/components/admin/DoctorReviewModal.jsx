@@ -53,9 +53,9 @@ const DoctorReviewModal = ({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.7)',
-        backdropFilter: 'blur(6px)',
-        WebkitBackdropFilter: 'blur(6px)',
+        backgroundColor: 'rgba(5, 6, 10, 0.8)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -66,16 +66,19 @@ const DoctorReviewModal = ({
       onClick={onClose}
     >
       <div
-        className="card"
+        className="glass-card"
         style={{
           width: '100%',
           maxWidth: '640px',
           maxHeight: '90vh',
           overflowY: 'auto',
-          padding: '2rem',
-          borderRadius: 'var(--radius-xl)',
-          boxShadow: 'var(--shadow-xl)',
-          backgroundColor: '#ffffff',
+          padding: '2.25rem',
+          borderRadius: '28px',
+          boxShadow: '0 25px 80px rgba(0, 0, 0, 0.7)',
+          backgroundColor: 'rgba(18, 20, 29, 0.92)',
+          backdropFilter: 'blur(28px)',
+          WebkitBackdropFilter: 'blur(28px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
           position: 'relative',
         }}
         onClick={(e) => e.stopPropagation()}
@@ -89,7 +92,7 @@ const DoctorReviewModal = ({
             right: '1.25rem',
             background: 'transparent',
             border: 'none',
-            color: 'var(--slate-400)',
+            color: 'rgba(148, 163, 184, 0.7)',
             cursor: 'pointer',
             padding: '4px',
           }}
@@ -99,22 +102,57 @@ const DoctorReviewModal = ({
         </button>
 
         {/* Modal Header */}
-        <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-subtle)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-            <span className="badge badge-admin">Physician Credential Review</span>
+        <div style={{ marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <span
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                padding: '0.2rem 0.6rem',
+                borderRadius: '999px',
+                backgroundColor: 'rgba(139, 92, 246, 0.15)',
+                color: '#c084fc',
+                border: '1px solid rgba(139, 92, 246, 0.3)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+              }}
+            >
+              Physician Credential Review
+            </span>
             <div style={{ display: 'flex', gap: '0.4rem' }}>
-              <span className={`badge ${status === 'APPROVED' ? 'badge-approved' : status === 'REJECTED' ? 'badge-rejected' : 'badge-pending'}`}>
+              <span
+                style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  padding: '0.2rem 0.55rem',
+                  borderRadius: '999px',
+                  backgroundColor: status === 'APPROVED' ? 'rgba(16, 185, 129, 0.15)' : status === 'REJECTED' ? 'rgba(244, 63, 94, 0.15)' : 'rgba(245, 158, 11, 0.15)',
+                  color: status === 'APPROVED' ? '#34d399' : status === 'REJECTED' ? '#fb7185' : '#fbbf24',
+                  border: `1px solid ${status === 'APPROVED' ? 'rgba(16, 185, 129, 0.3)' : status === 'REJECTED' ? 'rgba(244, 63, 94, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`,
+                  textTransform: 'uppercase',
+                }}
+              >
                 {status}
               </span>
-              <span className={`badge ${isActive ? 'badge-approved' : 'badge-rejected'}`}>
+              <span
+                style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  padding: '0.2rem 0.55rem',
+                  borderRadius: '999px',
+                  backgroundColor: isActive ? 'rgba(16, 185, 129, 0.12)' : 'rgba(244, 63, 94, 0.12)',
+                  color: isActive ? '#34d399' : '#fb7185',
+                  border: `1px solid ${isActive ? 'rgba(16, 185, 129, 0.25)' : 'rgba(244, 63, 94, 0.25)'}`,
+                }}
+              >
                 {isActive ? 'Account Active' : 'Account Deactivated'}
               </span>
             </div>
           </div>
-          <h2 style={{ fontSize: '1.5rem', color: 'var(--slate-900)' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.25rem 0' }}>
             {user?.name || 'Physician Profile'}
           </h2>
-          <div style={{ fontSize: '0.9rem', color: 'var(--primary-700)', fontWeight: 600 }}>
+          <div style={{ fontSize: '0.9rem', color: '#38bdf8', fontWeight: 600 }}>
             {doctor.specialization}
           </div>
         </div>
@@ -126,54 +164,55 @@ const DoctorReviewModal = ({
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             gap: '1rem',
             padding: '1.25rem',
-            backgroundColor: 'var(--slate-50)',
-            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            borderRadius: '16px',
             marginBottom: '1.5rem',
-            fontSize: '0.875rem',
+            fontSize: '0.88rem',
           }}
         >
           <div>
-            <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Medical License ID</span>
-            <strong style={{ color: 'var(--slate-900)' }}>{doctor.licenseNumber}</strong>
+            <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Medical License ID</span>
+            <strong style={{ color: '#ffffff' }}>{doctor.licenseNumber}</strong>
           </div>
           <div>
-            <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Official Email</span>
-            <span>{user?.email}</span>
+            <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Official Email</span>
+            <span style={{ color: 'rgba(200, 205, 225, 0.85)' }}>{user?.email}</span>
           </div>
           <div>
-            <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Phone</span>
-            <span>{user?.phone || 'Not provided'}</span>
+            <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Phone</span>
+            <span style={{ color: 'rgba(200, 205, 225, 0.85)' }}>{user?.phone || 'Not provided'}</span>
           </div>
           <div>
-            <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Experience & Fee</span>
-            <span>{doctor.experienceYears} Years • ₹{doctor.consultationFee} / visit</span>
+            <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Experience & Fee</span>
+            <span style={{ color: 'rgba(200, 205, 225, 0.85)' }}>{doctor.experienceYears} Years • <strong style={{ color: '#38bdf8' }}>₹{doctor.consultationFee}</strong> / visit</span>
           </div>
           <div>
-            <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Hospital & Location</span>
-            <span>{doctor.hospitalAffiliation || 'Independent'} ({doctor.location || 'Main'})</span>
+            <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Hospital & Location</span>
+            <span style={{ color: 'rgba(200, 205, 225, 0.85)' }}>{doctor.hospitalAffiliation || 'Independent'} ({doctor.location || 'Main'})</span>
           </div>
           <div>
-            <span style={{ color: 'var(--slate-400)', display: 'block', fontSize: '0.78rem' }}>Registered Date</span>
-            <span>{new Date(user?.createdAt || doctor.createdAt).toLocaleDateString()}</span>
+            <span style={{ color: 'rgba(148, 163, 184, 0.7)', display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Registered Date</span>
+            <span style={{ color: 'rgba(200, 205, 225, 0.85)' }}>{new Date(user?.createdAt || doctor.createdAt).toLocaleDateString()}</span>
           </div>
         </div>
 
         {/* Qualifications */}
         {doctor.qualifications?.length > 0 && (
           <div style={{ marginBottom: '1.25rem' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--slate-400)', fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>
+            <span style={{ fontSize: '0.78rem', color: 'rgba(148, 163, 184, 0.7)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '0.45rem' }}>
               Academic & Professional Qualifications
             </span>
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap' }}>
               {doctor.qualifications.map((q, idx) => (
                 <span
                   key={idx}
                   style={{
-                    backgroundColor: 'var(--primary-50)',
-                    color: 'var(--primary-700)',
-                    border: '1px solid var(--primary-200)',
-                    padding: '0.2rem 0.5rem',
-                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: 'rgba(56, 189, 248, 0.08)',
+                    color: '#38bdf8',
+                    border: '1px solid rgba(56, 189, 248, 0.25)',
+                    padding: '0.25rem 0.65rem',
+                    borderRadius: '8px',
                     fontSize: '0.8rem',
                     fontWeight: 600,
                   }}
@@ -188,10 +227,10 @@ const DoctorReviewModal = ({
         {/* Clinical Bio */}
         {doctor.bio && (
           <div style={{ marginBottom: '1.5rem' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--slate-400)', fontWeight: 600, display: 'block', marginBottom: '0.25rem' }}>
+            <span style={{ fontSize: '0.78rem', color: 'rgba(148, 163, 184, 0.7)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '0.35rem' }}>
               Practice Description / Bio
             </span>
-            <p style={{ color: 'var(--slate-700)', fontSize: '0.9rem', lineHeight: 1.6 }}>
+            <p style={{ color: 'rgba(200, 205, 225, 0.85)', fontSize: '0.9rem', lineHeight: 1.6, margin: 0 }}>
               {doctor.bio}
             </p>
           </div>
@@ -201,11 +240,11 @@ const DoctorReviewModal = ({
         {status === 'REJECTED' && doctor.rejectionReason && (
           <div
             style={{
-              padding: '0.75rem 1rem',
-              backgroundColor: '#fff1f2',
-              border: '1px solid #fecdd3',
-              borderRadius: 'var(--radius-md)',
-              color: 'var(--accent-rose)',
+              padding: '0.85rem 1.15rem',
+              backgroundColor: 'rgba(244, 63, 94, 0.12)',
+              border: '1px solid rgba(244, 63, 94, 0.3)',
+              borderRadius: '14px',
+              color: '#fb7185',
               fontSize: '0.85rem',
               marginBottom: '1.5rem',
             }}
@@ -216,8 +255,8 @@ const DoctorReviewModal = ({
 
         {/* Rejection Form Input */}
         {rejecting && (
-          <form onSubmit={handleConfirmReject} style={{ marginBottom: '1.5rem', padding: '1rem', backgroundColor: '#fff1f2', borderRadius: 'var(--radius-md)', border: '1px solid #fecdd3' }}>
-            <label className="form-label" htmlFor="adminRejectReason" style={{ color: 'var(--accent-rose)', fontWeight: 700 }}>
+          <form onSubmit={handleConfirmReject} style={{ marginBottom: '1.5rem', padding: '1.15rem', backgroundColor: 'rgba(244, 63, 94, 0.08)', borderRadius: '16px', border: '1px solid rgba(244, 63, 94, 0.25)' }}>
+            <label className="form-label" htmlFor="adminRejectReason" style={{ color: '#fb7185', fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.4rem' }}>
               Specify Rejection Reason *
             </label>
             <textarea
@@ -228,17 +267,28 @@ const DoctorReviewModal = ({
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}
               required
-              style={{ marginBottom: '0.75rem' }}
+              style={{
+                width: '100%',
+                padding: '0.75rem 1rem',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(244, 63, 94, 0.3)',
+                borderRadius: '12px',
+                color: '#ffffff',
+                fontSize: '0.88rem',
+                outline: 'none',
+                marginBottom: '0.85rem',
+                resize: 'vertical',
+              }}
             />
             <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
               <SecondaryGlassButton
-                size="small"
+                size="sm"
                 onClick={() => setRejecting(false)}
               >
                 Cancel
               </SecondaryGlassButton>
               <DangerGlassButton
-                size="small"
+                size="sm"
                 type="submit"
                 loading={actionLoading}
               >
@@ -255,7 +305,7 @@ const DoctorReviewModal = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             paddingTop: '1.25rem',
-            borderTop: '1px solid var(--border-subtle)',
+            borderTop: '1px solid rgba(255, 255, 255, 0.08)',
             flexWrap: 'wrap',
             gap: '0.75rem',
           }}
@@ -263,10 +313,10 @@ const DoctorReviewModal = ({
           {/* Account Activate / Deactivate Toggle */}
           <GlassButton
             variant={isActive ? 'outline' : 'secondary'}
-            size="small"
+            size="sm"
             disabled={actionLoading}
             onClick={() => onToggleStatus(doctor._id, !isActive)}
-            icon={isActive ? <UserX size={15} color="var(--accent-rose)" /> : <UserCheck size={15} color="var(--primary-600)" />}
+            icon={isActive ? <UserX size={15} color="#fb7185" /> : <UserCheck size={15} color="#38bdf8" />}
           >
             {isActive ? 'Deactivate Account' : 'Activate Account'}
           </GlassButton>
@@ -274,7 +324,7 @@ const DoctorReviewModal = ({
           {/* Approval Controls */}
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <SecondaryGlassButton
-              size="small"
+              size="sm"
               onClick={onClose}
             >
               Close
@@ -283,7 +333,7 @@ const DoctorReviewModal = ({
             {status !== 'APPROVED' && (
               <GlassButton
                 variant="success"
-                size="small"
+                size="sm"
                 disabled={actionLoading}
                 onClick={() => onApprove(doctor._id)}
                 icon={<CheckCircle2 size={15} />}
@@ -294,7 +344,7 @@ const DoctorReviewModal = ({
 
             {status !== 'REJECTED' && !rejecting && (
               <DangerGlassButton
-                size="small"
+                size="sm"
                 disabled={actionLoading}
                 onClick={() => setRejecting(true)}
                 icon={<XCircle size={15} />}

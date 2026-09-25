@@ -98,23 +98,36 @@ const DoctorListPage = () => {
   };
 
   return (
-    <div className="page-wrapper animate-fade-in" style={{ padding: '3rem 0' }}>
+    <div className="page-wrapper animate-fade-in" style={{ padding: '3.5rem 0', minHeight: '85vh' }}>
       <div className="container">
         {/* Page Header */}
-        <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 2.5rem auto' }}>
-          <span className="badge badge-patient" style={{ marginBottom: '0.65rem' }}>
-            Physician Directory
-          </span>
-          <h1 style={{ fontSize: '2.4rem', color: 'var(--slate-900)', marginBottom: '0.5rem' }}>
-            Find Your Doctor
+        <div style={{ textAlign: 'center', maxWidth: '680px', margin: '0 auto 2.5rem auto' }}>
+          <div style={{ display: 'inline-flex', marginBottom: '0.85rem' }}>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '0.25rem 0.85rem',
+              borderRadius: '9999px',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              background: 'rgba(59, 130, 246, 0.15)',
+              color: '#60a5fa',
+              border: '1px solid rgba(59, 130, 246, 0.3)',
+              boxShadow: '0 0 20px rgba(59, 130, 246, 0.15)',
+            }}>
+              Verified Physician Directory
+            </span>
+          </div>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.025em', marginBottom: '0.75rem' }}>
+            Find Your Specialist
           </h1>
-          <p style={{ color: 'var(--slate-600)', fontSize: '1.05rem' }}>
-            Browse our verified specialists, filter by specialization, experience, and more to find the perfect doctor for your needs.
+          <p style={{ color: 'rgba(255, 255, 255, 0.65)', fontSize: '1.05rem', lineHeight: 1.6, margin: 0 }}>
+            Connect with board-certified physicians, compare experience and patient reviews, and schedule consultations seamlessly.
           </p>
         </div>
 
         {/* Search Bar */}
-        <div style={{ maxWidth: '780px', margin: '0 auto 2.5rem auto' }}>
+        <div style={{ maxWidth: '820px', margin: '0 auto 2.5rem auto' }}>
           <SearchBar
             value={searchTerm}
             onChange={setSearchTerm}
@@ -126,8 +139,8 @@ const DoctorListPage = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'minmax(250px, 280px) 1fr',
-            gap: '1.75rem',
+            gridTemplateColumns: 'minmax(260px, 300px) 1fr',
+            gap: '2rem',
             alignItems: 'start',
           }}
           className="directory-layout"
@@ -158,12 +171,12 @@ const DoctorListPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: '1.25rem',
+                marginBottom: '1.5rem',
               }}
             >
-              <div style={{ fontSize: '0.95rem', color: 'var(--slate-600)', fontWeight: 600 }}>
-                Showing <strong style={{ color: 'var(--slate-900)' }}>{doctors.length}</strong>{' '}
-                doctor{doctors.length === 1 ? '' : 's'}
+              <div style={{ fontSize: '0.95rem', color: 'rgba(255, 255, 255, 0.65)', fontWeight: 500 }}>
+                Showing <strong style={{ color: '#ffffff', fontWeight: 700 }}>{doctors.length}</strong>{' '}
+                verified physician{doctors.length === 1 ? '' : 's'}
               </div>
             </div>
 
@@ -192,7 +205,7 @@ const DoctorListPage = () => {
                 ))}
               </div>
             ) : (
-              <div className="card">
+              <div className="glass-card" style={{ borderRadius: '16px', background: 'rgba(18, 20, 29, 0.65)', border: '1px solid rgba(255, 255, 255, 0.08)', padding: '2rem' }}>
                 <EmptyState
                   IconComponent={Stethoscope}
                   title="No Doctors Matched Your Criteria"
@@ -206,7 +219,7 @@ const DoctorListPage = () => {
       </div>
 
       <style>{`
-        @media (max-width: 800px) {
+        @media (max-width: 860px) {
           .directory-layout {
             grid-template-columns: 1fr !important;
           }

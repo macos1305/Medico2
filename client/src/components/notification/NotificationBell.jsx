@@ -37,19 +37,19 @@ const getNotificationIcon = (type) => {
   switch (type) {
     case 'APPOINTMENT_BOOKED':
     case 'NEW_APPOINTMENT':
-      return <Calendar size={18} color="var(--primary-600)" />;
+      return <Calendar size={16} color="#60a5fa" />;
     case 'APPOINTMENT_CONFIRMED':
-      return <CheckCircle2 size={18} color="var(--success-600)" />;
+      return <CheckCircle2 size={16} color="#34d399" />;
     case 'APPOINTMENT_CANCELLED':
-      return <XCircle size={18} color="var(--danger-500)" />;
+      return <XCircle size={16} color="#f87171" />;
     case 'APPOINTMENT_RESCHEDULED':
-      return <Clock size={18} color="var(--warning-500)" />;
+      return <Clock size={16} color="#c084fc" />;
     case 'DOCTOR_REGISTRATION':
-      return <Stethoscope size={18} color="var(--primary-700)" />;
+      return <Stethoscope size={16} color="#c084fc" />;
     case 'DOCTOR_APPROVAL':
-      return <Shield size={18} color="var(--success-600)" />;
+      return <Shield size={16} color="#34d399" />;
     default:
-      return <AlertCircle size={18} color="var(--primary-500)" />;
+      return <AlertCircle size={16} color="#94a3b8" />;
   }
 };
 
@@ -120,41 +120,34 @@ const NotificationBell = () => {
           width: '38px',
           height: '38px',
           borderRadius: '50%',
-          border: '1px solid var(--border-subtle)',
-          backgroundColor: isOpen ? 'var(--slate-100)' : '#ffffff',
-          color: unreadCount > 0 ? 'var(--primary-600)' : 'var(--slate-600)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          backgroundColor: isOpen ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+          color: unreadCount > 0 ? '#60a5fa' : 'rgba(255, 255, 255, 0.75)',
           cursor: 'pointer',
           transition: 'all 0.2s ease',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = 'var(--slate-50)';
-          e.currentTarget.style.borderColor = 'var(--primary-300)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = isOpen ? 'var(--slate-100)' : '#ffffff';
-          e.currentTarget.style.borderColor = 'var(--border-subtle)';
+          backdropFilter: 'blur(8px)',
         }}
       >
-        <Bell size={19} />
+        <Bell size={18} />
         {unreadCount > 0 && (
           <span
             style={{
               position: 'absolute',
-              top: '-3px',
-              right: '-3px',
-              backgroundColor: 'var(--danger-500)',
+              top: '-2px',
+              right: '-2px',
+              backgroundColor: '#ef4444',
               color: '#ffffff',
-              fontSize: '0.7rem',
+              fontSize: '0.68rem',
               fontWeight: 800,
-              minWidth: '18px',
-              height: '18px',
+              minWidth: '17px',
+              height: '17px',
               borderRadius: '9999px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               padding: '0 4px',
-              boxShadow: '0 2px 4px rgba(239, 68, 68, 0.4)',
-              border: '2px solid #ffffff',
+              boxShadow: '0 0 10px rgba(239, 68, 68, 0.6)',
+              border: '2px solid #05060a',
             }}
           >
             {unreadCount > 99 ? '99+' : unreadCount}
@@ -165,47 +158,50 @@ const NotificationBell = () => {
       {/* Popover Dropdown */}
       {isOpen && (
         <div
+          className="glass-card glass-modal"
           style={{
             position: 'absolute',
             right: 0,
-            top: 'calc(100% + 10px)',
+            top: 'calc(100% + 12px)',
             width: '360px',
             maxWidth: '90vw',
-            backgroundColor: '#ffffff',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: '0 12px 32px rgba(15, 23, 42, 0.16), 0 2px 6px rgba(15, 23, 42, 0.08)',
-            border: '1px solid var(--border-subtle)',
+            backgroundColor: 'rgba(18, 20, 29, 0.96)',
+            borderRadius: '16px',
+            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 130, 246, 0.15)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
             zIndex: 1100,
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
             maxHeight: '480px',
             animation: 'fadeIn 0.18s ease-out',
+            color: '#ffffff',
           }}
         >
           {/* Header */}
           <div
             style={{
               padding: '0.85rem 1rem',
-              borderBottom: '1px solid var(--border-subtle)',
-              backgroundColor: '#f8fafc',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+              backgroundColor: 'rgba(255, 255, 255, 0.03)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--slate-800)' }}>
+              <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#ffffff' }}>
                 Notifications
               </span>
               {unreadCount > 0 && (
                 <span
                   style={{
-                    backgroundColor: 'var(--primary-100)',
-                    color: 'var(--primary-700)',
-                    fontSize: '0.72rem',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    color: '#60a5fa',
+                    border: '1px solid rgba(59, 130, 246, 0.35)',
+                    fontSize: '0.7rem',
                     fontWeight: 700,
-                    padding: '0.15rem 0.45rem',
+                    padding: '0.12rem 0.45rem',
                     borderRadius: '999px',
                   }}
                 >
@@ -220,7 +216,7 @@ const NotificationBell = () => {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: 'var(--primary-600)',
+                  color: '#60a5fa',
                   fontSize: '0.78rem',
                   fontWeight: 600,
                   cursor: 'pointer',
@@ -228,7 +224,7 @@ const NotificationBell = () => {
                   alignItems: 'center',
                   gap: '0.3rem',
                   padding: '0.2rem 0.4rem',
-                  borderRadius: 'var(--radius-sm)',
+                  borderRadius: '6px',
                 }}
                 title="Mark all as read"
               >
@@ -242,10 +238,10 @@ const NotificationBell = () => {
           <div
             style={{
               display: 'flex',
-              borderBottom: '1px solid var(--border-subtle)',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
               padding: '0.25rem 0.75rem',
               gap: '0.5rem',
-              backgroundColor: '#ffffff',
+              backgroundColor: 'rgba(255, 255, 255, 0.02)',
             }}
           >
             <button
@@ -256,8 +252,8 @@ const NotificationBell = () => {
                 padding: '0.4rem 0.6rem',
                 fontSize: '0.8rem',
                 fontWeight: filter === 'all' ? 700 : 500,
-                color: filter === 'all' ? 'var(--primary-600)' : 'var(--slate-500)',
-                borderBottom: filter === 'all' ? '2px solid var(--primary-600)' : '2px solid transparent',
+                color: filter === 'all' ? '#60a5fa' : 'rgba(255, 255, 255, 0.55)',
+                borderBottom: filter === 'all' ? '2px solid #60a5fa' : '2px solid transparent',
                 cursor: 'pointer',
               }}
             >
@@ -271,8 +267,8 @@ const NotificationBell = () => {
                 padding: '0.4rem 0.6rem',
                 fontSize: '0.8rem',
                 fontWeight: filter === 'unread' ? 700 : 500,
-                color: filter === 'unread' ? 'var(--primary-600)' : 'var(--slate-500)',
-                borderBottom: filter === 'unread' ? '2px solid var(--primary-600)' : '2px solid transparent',
+                color: filter === 'unread' ? '#60a5fa' : 'rgba(255, 255, 255, 0.55)',
+                borderBottom: filter === 'unread' ? '2px solid #60a5fa' : '2px solid transparent',
                 cursor: 'pointer',
               }}
             >
@@ -293,7 +289,7 @@ const NotificationBell = () => {
                 style={{
                   padding: '2.5rem 1rem',
                   textAlign: 'center',
-                  color: 'var(--slate-400)',
+                  color: 'rgba(255, 255, 255, 0.4)',
                 }}
               >
                 <div
@@ -301,17 +297,17 @@ const NotificationBell = () => {
                     width: '42px',
                     height: '42px',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--slate-100)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.04)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 0.75rem auto',
-                    color: 'var(--slate-400)',
+                    color: 'rgba(255, 255, 255, 0.3)',
                   }}
                 >
                   <Bell size={20} />
                 </div>
-                <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 600, color: 'var(--slate-600)' }}>
+                <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 600, color: '#ffffff' }}>
                   {filter === 'unread' ? 'No unread notifications' : 'No notifications yet'}
                 </p>
                 <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.75rem' }}>
@@ -326,8 +322,8 @@ const NotificationBell = () => {
                   key={item._id}
                   style={{
                     padding: '0.85rem 1rem',
-                    borderBottom: '1px solid var(--border-subtle)',
-                    backgroundColor: item.isRead ? '#ffffff' : 'rgba(13, 148, 136, 0.04)',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                    backgroundColor: item.isRead ? 'transparent' : 'rgba(59, 130, 246, 0.08)',
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '0.75rem',
@@ -336,16 +332,6 @@ const NotificationBell = () => {
                     position: 'relative',
                   }}
                   onClick={() => handleNotificationClick(item)}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = item.isRead
-                      ? 'var(--slate-50)'
-                      : 'rgba(13, 148, 136, 0.08)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = item.isRead
-                      ? '#ffffff'
-                      : 'rgba(13, 148, 136, 0.04)';
-                  }}
                 >
                   {/* Icon */}
                   <div
@@ -353,7 +339,7 @@ const NotificationBell = () => {
                       width: '32px',
                       height: '32px',
                       borderRadius: '8px',
-                      backgroundColor: 'var(--slate-100)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.05)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -379,7 +365,7 @@ const NotificationBell = () => {
                         style={{
                           fontSize: '0.85rem',
                           fontWeight: item.isRead ? 600 : 700,
-                          color: 'var(--slate-900)',
+                          color: '#ffffff',
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -390,7 +376,7 @@ const NotificationBell = () => {
                       <span
                         style={{
                           fontSize: '0.7rem',
-                          color: 'var(--slate-400)',
+                          color: 'rgba(255, 255, 255, 0.4)',
                           flexShrink: 0,
                         }}
                       >
@@ -402,7 +388,7 @@ const NotificationBell = () => {
                       style={{
                         margin: 0,
                         fontSize: '0.78rem',
-                        color: 'var(--slate-600)',
+                        color: 'rgba(255, 255, 255, 0.65)',
                         lineHeight: 1.35,
                         wordBreak: 'break-word',
                       }}
@@ -419,7 +405,7 @@ const NotificationBell = () => {
                           gap: '0.25rem',
                           fontSize: '0.72rem',
                           fontWeight: 600,
-                          color: 'var(--primary-600)',
+                          color: '#60a5fa',
                         }}
                       >
                         <span>View details</span>
@@ -444,7 +430,8 @@ const NotificationBell = () => {
                           width: '7px',
                           height: '7px',
                           borderRadius: '50%',
-                          backgroundColor: 'var(--primary-600)',
+                          backgroundColor: '#60a5fa',
+                          boxShadow: '0 0 6px #60a5fa',
                         }}
                         title="Unread"
                       />
@@ -457,14 +444,12 @@ const NotificationBell = () => {
                       style={{
                         background: 'none',
                         border: 'none',
-                        color: 'var(--slate-400)',
+                        color: 'rgba(255, 255, 255, 0.4)',
                         cursor: 'pointer',
                         padding: '2px',
                         borderRadius: '4px',
                       }}
                       title="Delete notification"
-                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--danger-500)')}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--slate-400)')}
                     >
                       <Trash2 size={13} />
                     </button>
@@ -478,8 +463,8 @@ const NotificationBell = () => {
           <div
             style={{
               padding: '0.65rem 1rem',
-              borderTop: '1px solid var(--border-subtle)',
-              backgroundColor: '#f8fafc',
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+              backgroundColor: 'rgba(255, 255, 255, 0.02)',
               textAlign: 'center',
             }}
           >
@@ -491,7 +476,7 @@ const NotificationBell = () => {
               style={{
                 background: 'none',
                 border: 'none',
-                color: 'var(--primary-600)',
+                color: '#60a5fa',
                 fontSize: '0.82rem',
                 fontWeight: 600,
                 cursor: 'pointer',

@@ -1,0 +1,61 @@
+/* ==========================================================================
+   MEDICO — CINEMATIC GLASSMORPHIC DESIGN SYSTEM TOKENS
+   Single Source of Truth for the entire application
+   ========================================================================== */
+
+:root {
+  /* ── Core Medico Cinematic Palette ──────────────────────────────────────── */
+  --medico-bg: #05060a;
+  --medico-surface: rgba(255, 255, 255, 0.035);
+  --medico-surface-hover: rgba(255, 255, 255, 0.06);
+  --medico-surface-active: rgba(255, 255, 255, 0.08);
+  --medico-glass: rgba(18, 20, 29, 0.75);
+  --medico-glass-border: rgba(255, 255, 255, 0.08);
+  --medico-glass-border-hover: rgba(56, 189, 248, 0.3);
+  --medico-glass-blur: blur(20px);
+  --medico-glass-blur-lg: blur(28px);
+
+  /* ── Accent Tones ───────────────────────────────────────────────────────── */
+  --medico-primary: #38bdf8;
+  --medico-secondary: #0ea5e9;
+  --medico-success: #10b981;
+  --medico-danger: #f43f5e;
+  --medico-warning: #f59e0b;
+  --medico-ai: #8b5cf6;
+
+  /* ── Typography & Contrasts ─────────────────────────────────────────────── */
+  --medico-text: #f8fafc;
+  --medico-text-secondary: rgba(200, 205, 225, 0.72);
+  --medico-text-muted: rgba(148, 163, 184, 0.6);
+  --medico-text-inverse: #05060a;
+
+  /* ── Radii & Shadows ────────────────────────────────────────────────────── */
+  --medico-radius-sm: 12px;
+  --medico-radius-md: 16px;
+  --medico-radius: 24px;
+  --medico-radius-lg: 28px;
+  --medico-radius-full: 9999px;
+  --medico-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --medico-shadow-glow: 0 0 30px rgba(56, 189, 248, 0.15);
+
+  /* ── Global Compatibility Overrides ─────────────────────────────────────── */
+  --bg-app: var(--medico-bg);
+  --bg-surface: var(--medico-surface);
+  --bg-surface-2: rgba(255, 255, 255, 0.02);
+  --bg-surface-translucent: var(--medico-glass);
+  --border-subtle: var(--medico-glass-border);
+  --border-focus: var(--medico-primary);
+
+  /* Slate colors remapped for harmonious dark cinematic readability */
+  --slate-50:  rgba(255, 255, 255, 0.04);
+  --slate-100: rgba(255, 255, 255, 0.07);
+  --slate-200: rgba(255, 255, 255, 0.12);
+  --slate-300: #94a3b8;
+  --slate-400: #94a3b8;
+  --slate-500: rgba(200, 205, 225, 0.65);
+  --slate-600: rgba(200, 205, 225, 0.8);
+  --slate-700: #e2e8f0;
+  --slate-800: #f1f5f9;
+  --slate-900: #ffffff;
+  --slate-950: #05060a;
+}
