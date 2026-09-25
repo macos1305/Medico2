@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import doctorService from '../../services/doctorService';
 import {
   Calendar,
   CheckCircle2,
@@ -13,19 +14,132 @@ import {
   Users,
   Award,
   ArrowRight,
+  Star,
+  Building2,
+  MapPin,
 } from 'lucide-react';
 
+const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#e0f2f1"/><circle cx="100" cy="78" r="38" fill="#80cbc4"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#80cbc4"/><text x="100" y="88" text-anchor="middle" fill="white" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
+
 const specialties = [
-  { name: 'Cardiology', desc: 'Heart & vascular conditions', icon: HeartPulse, count: '12 Specialists' },
-  { name: 'Dermatology', desc: 'Skin health and cosmetics', icon: Sparkles, count: '8 Specialists' },
-  { name: 'Pediatrics', desc: 'Infant and child wellness', icon: Users, count: '15 Specialists' },
-  { name: 'General Medicine', desc: 'Routine and preventive health', icon: Stethoscope, count: '24 Specialists' },
-  { name: 'Orthopedics', desc: 'Bones, joints, and spine care', icon: Award, count: '9 Specialists' },
-  { name: 'Neurology', desc: 'Brain and nervous system', icon: Clock, count: '7 Specialists' },
+  { name: 'Cardiology', desc: 'Heart & vascular conditions', icon: HeartPulse },
+  { name: 'Dermatology', desc: 'Skin health and cosmetics', icon: Sparkles },
+  { name: 'Pediatrics', desc: 'Infant and child wellness', icon: Users },
+  { name: 'General Medicine', desc: 'Routine and preventive health', icon: Stethoscope },
+  { name: 'Orthopedics', desc: 'Bones, joints, and spine care', icon: Award },
+  { name: 'Neurology', desc: 'Brain and nervous system', icon: Clock },
 ];
+
+const FeaturedDoctorCard = ({ doctor }) => {
+  const name = doctor.user?.name || doctor.name || 'Medical Specialist';
+  const profileImg = doctor.user?.profileImage || doctor.user?.avatar;
+  const specialization = doctor.specialization || 'General Practice';
+  const experienceYears = doctor.experienceYears || 0;
+  const avgRating = doctor.rating?.average || 0;
+  const hospital = doctor.hospitalAffiliation || '';
+  const location = doctor.location || '';
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <Link
+      to={`/doctors/${doctor._id}`}
+      className="card card-interactive"
+      style={{
+        padding: 0,
+        textDecoration: 'none',
+        color: 'inherit',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 'var(--radius-lg)',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      }}
+    >
+      {/* Image */}
+      <div
+        style={{
+          width: '100%',
+          height: '160px',
+          backgroundColor: 'var(--primary-50)',
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        <img
+          src={imgError || !profileImg ? FALLBACK_AVATAR : profileImg}
+          alt={name}
+          onError={() => setImgError(true)}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+        />
+        {/* Rating Badge */}
+        {avgRating > 0 && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '0.5rem',
+              right: '0.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.2rem',
+              backgroundColor: 'rgba(255,255,255,0.93)',
+              backdropFilter: 'blur(8px)',
+              padding: '0.2rem 0.5rem',
+              borderRadius: 'var(--radius-full)',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              color: 'var(--slate-800)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+            }}
+          >
+            <Star size={12} fill="#f59e0b" color="#f59e0b" />
+            {avgRating.toFixed(1)}
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div style={{ padding: '1rem 1.15rem 1.15rem' }}>
+        <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--slate-900)', margin: '0 0 0.2rem 0' }}>
+          {name}
+        </h4>
+        <div style={{ fontSize: '0.78rem', color: 'var(--primary-600)', fontWeight: 600, marginBottom: '0.4rem' }}>
+          {specialization}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.72rem', color: 'var(--slate-500)' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+            <Award size={11} />
+            {experienceYears} Yrs
+          </span>
+          {location && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+              <MapPin size={11} />
+              {location.split(',')[0]}
+            </span>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 const HomePage = () => {
   const { isAuthenticated, role } = useAuth();
+  const [featuredDoctors, setFeaturedDoctors] = useState([]);
+  const [featuredLoading, setFeaturedLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await doctorService.getFeatured(6);
+        if (res.data) setFeaturedDoctors(res.data);
+      } catch (err) {
+        console.error('Failed to load featured doctors:', err);
+      } finally {
+        setFeaturedLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
 
   const getStartedLink = () => {
     if (!isAuthenticated) return '/register/patient';
@@ -185,50 +299,95 @@ const HomePage = () => {
                   </div>
                 </div>
 
-                {/* Simulated Doctor Preview Card */}
-                <div
-                  style={{
-                    backgroundColor: '#ffffff',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: 'var(--radius-md)',
-                    padding: '1.25rem',
-                    display: 'flex',
-                    gap: '1rem',
-                    alignItems: 'center',
-                    marginBottom: '1rem',
-                  }}
-                >
-                  <div
+                {/* Preview using actual featured doctor if available */}
+                {featuredDoctors.length > 0 ? (
+                  <Link
+                    to={`/doctors/${featuredDoctors[0]._id}`}
                     style={{
-                      width: '52px',
-                      height: '52px',
-                      borderRadius: '12px',
-                      backgroundColor: 'var(--primary-100)',
+                      backgroundColor: '#ffffff',
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: '1.25rem',
                       display: 'flex',
+                      gap: '1rem',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'var(--primary-700)',
-                      fontWeight: 800,
-                      fontSize: '1.1rem',
+                      marginBottom: '1rem',
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      transition: 'border-color 0.2s',
                     }}
                   >
-                    RS
+                    <div
+                      style={{
+                        width: '52px',
+                        height: '52px',
+                        borderRadius: '12px',
+                        backgroundColor: 'var(--primary-100)',
+                        overflow: 'hidden',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <img
+                        src={featuredDoctors[0].user?.profileImage || FALLBACK_AVATAR}
+                        alt={featuredDoctors[0].user?.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <h4 style={{ fontSize: '1rem', margin: 0 }}>{featuredDoctors[0].user?.name}</h4>
+                        <span className="badge badge-approved" style={{ fontSize: '0.65rem' }}>Verified</span>
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--slate-500)', marginTop: '2px' }}>
+                        {featuredDoctors[0].specialization} • {featuredDoctors[0].experienceYears} Yrs Exp
+                      </div>
+                      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.4rem', fontSize: '0.78rem' }}>
+                        <span style={{ color: 'var(--primary-600)', fontWeight: 600 }}>₹{featuredDoctors[0].consultationFee} / Visit</span>
+                        <span style={{ color: 'var(--slate-400)' }}>•</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', color: '#f59e0b', fontWeight: 600 }}>
+                          <Star size={11} fill="#f59e0b" />
+                          {featuredDoctors[0].rating?.average?.toFixed(1)}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ) : (
+                  <div
+                    style={{
+                      backgroundColor: '#ffffff',
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: '1.25rem',
+                      display: 'flex',
+                      gap: '1rem',
+                      alignItems: 'center',
+                      marginBottom: '1rem',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '52px',
+                        height: '52px',
+                        borderRadius: '12px',
+                        backgroundColor: 'var(--primary-100)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--primary-700)',
+                        fontWeight: 800,
+                        fontSize: '1.1rem',
+                      }}
+                    >
+                      <Stethoscope size={22} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <h4 style={{ fontSize: '1rem', margin: 0 }}>Find Your Doctor</h4>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--slate-500)', marginTop: '2px' }}>
+                        25+ verified specialists across 15 medical fields
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <h4 style={{ fontSize: '1rem', margin: 0 }}>Dr. Robert Smith</h4>
-                      <span className="badge badge-approved" style={{ fontSize: '0.65rem' }}>Verified</span>
-                    </div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--slate-500)', marginTop: '2px' }}>
-                      Senior Cardiologist • 12 Yrs Exp
-                    </div>
-                    <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.4rem', fontSize: '0.78rem' }}>
-                      <span style={{ color: 'var(--primary-600)', fontWeight: 600 }}>$120 / Visit</span>
-                      <span style={{ color: 'var(--slate-400)' }}>•</span>
-                      <span style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>Available Tomorrow</span>
-                    </div>
-                  </div>
-                </div>
+                )}
 
                 {/* Simulated Patient Appointment Pill */}
                 <div
@@ -267,8 +426,48 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* ── Featured Doctors Section ─────────────────────────────────────── */}
+      {featuredDoctors.length > 0 && (
+        <section style={{ padding: '4rem 0', backgroundColor: '#ffffff', borderTop: '1px solid var(--border-subtle)' }}>
+          <div className="container">
+            <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 2.5rem auto' }}>
+              <span
+                className="badge badge-doctor"
+                style={{ marginBottom: '0.65rem', display: 'inline-flex' }}
+              >
+                Top Rated
+              </span>
+              <h2 style={{ fontSize: '2.1rem', marginBottom: '0.75rem' }}>Featured Doctors</h2>
+              <p style={{ color: 'var(--slate-600)', fontSize: '1rem' }}>
+                Our highest-rated, verified medical specialists ready to provide quality healthcare.
+              </p>
+            </div>
+
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+                gap: '1.5rem',
+                marginBottom: '2rem',
+              }}
+            >
+              {featuredDoctors.map((doc) => (
+                <FeaturedDoctorCard key={doc._id} doctor={doc} />
+              ))}
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <Link to="/doctors" className="btn btn-outline btn-lg" style={{ gap: '0.5rem' }}>
+                View All Doctors
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Specialty Highlights */}
-      <section style={{ padding: '4rem 0', backgroundColor: '#ffffff', borderTop: '1px solid var(--border-subtle)' }}>
+      <section style={{ padding: '4rem 0', backgroundColor: featuredDoctors.length > 0 ? 'var(--bg-app)' : '#ffffff', borderTop: '1px solid var(--border-subtle)' }}>
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 3rem auto' }}>
             <h2 style={{ fontSize: '2.1rem', marginBottom: '0.75rem' }}>Explore Clinical Specialties</h2>
@@ -287,14 +486,17 @@ const HomePage = () => {
             {specialties.map((item, idx) => {
               const IconComp = item.icon;
               return (
-                <div
+                <Link
                   key={idx}
+                  to={`/doctors?specialization=${encodeURIComponent(item.name.replace('ology', 'ologist').replace('rics', 'rician').replace('ine', 'Physician'))}`}
                   className="card card-interactive"
                   style={{
                     padding: '1.75rem',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
+                    textDecoration: 'none',
+                    color: 'inherit',
                   }}
                 >
                   <div>
@@ -330,10 +532,10 @@ const HomePage = () => {
                       fontWeight: 600,
                     }}
                   >
-                    <span>{item.count}</span>
+                    <span>View Specialists</span>
                     <span style={{ color: 'var(--primary-600)' }}>Explore →</span>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>

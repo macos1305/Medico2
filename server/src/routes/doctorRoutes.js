@@ -19,6 +19,9 @@ router.put(
   doctorController.updateMyDoctorProfile
 );
 
+// Featured doctors for homepage
+router.get('/featured', doctorController.getFeaturedDoctors);
+
 // Public doctor browsing and profiles
 router.get('/', doctorController.getDoctors);
 router.post('/recommend', doctorController.recommendDoctors);

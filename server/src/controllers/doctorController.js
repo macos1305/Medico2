@@ -14,6 +14,19 @@ const getDoctors = async (req, res, next) => {
 };
 
 /**
+ * Get featured doctors for homepage
+ */
+const getFeaturedDoctors = async (req, res, next) => {
+  try {
+    const limit = Number(req.query.limit) || 6;
+    const doctors = await doctorService.getFeaturedDoctors(limit);
+    return sendSuccess(res, 200, 'Featured doctors retrieved successfully', doctors);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * Get doctor by ID
  */
 const getDoctor = async (req, res, next) => {
@@ -67,6 +80,7 @@ const recommendDoctors = async (req, res, next) => {
 
 module.exports = {
   getDoctors,
+  getFeaturedDoctors,
   getDoctor,
   getMyDoctorProfile,
   updateMyDoctorProfile,

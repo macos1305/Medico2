@@ -55,6 +55,15 @@ const doctorSchema = new mongoose.Schema(
       default: '',
       trim: true,
     },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female', 'Other', ''],
+      default: '',
+    },
+    languages: {
+      type: [String],
+      default: ['English'],
+    },
     approvalStatus: {
       type: String,
       enum: ['PENDING', 'APPROVED', 'REJECTED'],
@@ -74,6 +83,7 @@ const doctorSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 
 doctorSchema.set('toJSON', {
   transform: (doc, ret) => {

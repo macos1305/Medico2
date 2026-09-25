@@ -13,13 +13,16 @@ const getAllDoctors = async (query = {}) => {
     maxFee,
     fee,
     sort,
+    sortBy,
     approvalStatus,
+    gender,
+    minRating,
   } = query;
 
   // Build filter object
   const filter = {};
 
-  // Status filter (in development, allow showing all or specific status)
+  // Status filter (default to APPROVED for public queries)
   if (approvalStatus) {
     filter.approvalStatus = approvalStatus;
   }
@@ -41,24 +44,43 @@ const getAllDoctors = async (query = {}) => {
     filter.consultationFee = { $lte: feeValue };
   }
 
+  // Gender filter
+  if (gender && gender !== 'All') {
+    filter.gender = gender;
+  }
+
+  // Rating filter
+  const ratingValue = Number(minRating);
+  if (!isNaN(ratingValue) && ratingValue > 0) {
+    filter['rating.average'] = { $gte: ratingValue };
+  }
+
   // Build query
   let mongoQuery = Doctor.find(filter).populate({
     path: 'user',
     select: 'name email phone profileImage avatar isActive',
   });
 
-  // Sorting
-  if (sort === 'fee_asc') {
+  // Sorting - support both 'sort' and 'sortBy' params
+  const sortParam = sortBy || sort;
+  if (sortParam === 'fee_asc' || sortParam === 'fee-asc') {
     mongoQuery = mongoQuery.sort({ consultationFee: 1 });
-  } else if (sort === 'fee_desc') {
+  } else if (sortParam === 'fee_desc' || sortParam === 'fee-desc') {
     mongoQuery = mongoQuery.sort({ consultationFee: -1 });
-  } else if (sort === 'experience_desc') {
+  } else if (sortParam === 'experience_desc' || sortParam === 'experience-desc' || sortParam === 'experience') {
     mongoQuery = mongoQuery.sort({ experienceYears: -1 });
+  } else if (sortParam === 'rating' || sortParam === 'rating_desc' || sortParam === 'rating-desc') {
+    mongoQuery = mongoQuery.sort({ 'rating.average': -1 });
+  } else if (sortParam === 'fee') {
+    mongoQuery = mongoQuery.sort({ consultationFee: 1 });
   } else {
-    mongoQuery = mongoQuery.sort({ createdAt: -1 });
+    mongoQuery = mongoQuery.sort({ 'rating.average': -1, createdAt: -1 });
   }
 
   let doctors = await mongoQuery;
+
+  // Filter out inactive users
+  doctors = doctors.filter((doc) => doc.user?.isActive !== false);
 
   // Search keyword filter across populated user name or bio/hospital
   if (search && search.trim()) {
@@ -68,11 +90,30 @@ const getAllDoctors = async (query = {}) => {
       const specMatch = doc.specialization?.toLowerCase().includes(term);
       const hospitalMatch = doc.hospitalAffiliation?.toLowerCase().includes(term);
       const bioMatch = doc.bio?.toLowerCase().includes(term);
-      return nameMatch || specMatch || hospitalMatch || bioMatch;
+      const locationMatch = doc.location?.toLowerCase().includes(term);
+      return nameMatch || specMatch || hospitalMatch || bioMatch || locationMatch;
     });
   }
 
   return doctors;
+};
+
+/**
+ * Get featured doctors (top-rated, approved, active)
+ */
+const getFeaturedDoctors = async (limit = 6) => {
+  const doctors = await Doctor.find({
+    approvalStatus: 'APPROVED',
+    'rating.average': { $gt: 0 },
+  })
+    .populate({
+      path: 'user',
+      select: 'name email phone profileImage avatar isActive',
+    })
+    .sort({ 'rating.average': -1, 'rating.count': -1 })
+    .limit(limit);
+
+  return doctors.filter((doc) => doc.user?.isActive !== false);
 };
 
 /**
@@ -147,6 +188,8 @@ const updateDoctorProfile = async (userId, data) => {
     hospitalAffiliation,
     location,
     bio,
+    gender,
+    languages,
   } = data;
 
   // 1. Update User fields if provided
@@ -181,6 +224,12 @@ const updateDoctorProfile = async (userId, data) => {
   if (hospitalAffiliation !== undefined) doctorUpdates.hospitalAffiliation = hospitalAffiliation.trim();
   if (location !== undefined) doctorUpdates.location = location.trim();
   if (bio !== undefined) doctorUpdates.bio = bio.trim();
+  if (gender !== undefined) doctorUpdates.gender = gender;
+  if (languages !== undefined) {
+    doctorUpdates.languages = Array.isArray(languages)
+      ? languages
+      : String(languages).split(',').map((l) => l.trim()).filter(Boolean);
+  }
 
   const doctor = await Doctor.findOneAndUpdate(
     { user: userId },
@@ -202,6 +251,7 @@ const updateDoctorProfile = async (userId, data) => {
 
 module.exports = {
   getAllDoctors,
+  getFeaturedDoctors,
   getDoctorById,
   getDoctorProfileByUserId,
   updateDoctorProfile,

@@ -20,7 +20,12 @@ import {
   FileText,
   ShieldCheck,
   MessageSquare,
+  Globe,
+  User,
+  Star,
 } from 'lucide-react';
+
+const FALLBACK_AVATAR = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#e0f2f1"/><circle cx="100" cy="78" r="38" fill="#80cbc4"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="#80cbc4"/><text x="100" y="88" text-anchor="middle" fill="white" font-size="36" font-family="Arial" font-weight="bold">👨‍⚕️</text></svg>`);
 
 const DoctorDetailPage = () => {
   const { id } = useParams();
@@ -30,6 +35,7 @@ const DoctorDetailPage = () => {
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     const fetchDoctor = async () => {
@@ -84,6 +90,8 @@ const DoctorDetailPage = () => {
     hours: '09:00 AM - 05:00 PM',
     slotDurationMinutes: 30,
   };
+  const languages = doctor.languages?.length > 0 ? doctor.languages : ['English'];
+  const gender = doctor.gender || '';
 
   const avgRating = doctor.rating?.average || 0;
   const ratingCount = doctor.rating?.count || 0;
@@ -117,27 +125,22 @@ const DoctorDetailPage = () => {
             {/* Avatar */}
             <div
               style={{
-                width: 120,
-                height: 120,
+                width: 140,
+                height: 140,
                 borderRadius: 24,
-                backgroundColor: 'var(--primary-100)',
-                color: 'var(--primary-700)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 800,
-                fontSize: '2.5rem',
+                backgroundColor: 'var(--primary-50)',
                 overflow: 'hidden',
                 flexShrink: 0,
                 border: '3px solid var(--primary-200)',
                 boxShadow: 'var(--shadow-md)',
               }}
             >
-              {profileImg ? (
-                <img src={profileImg} alt={doctorName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              ) : (
-                doctorName.replace('Dr. ', '').charAt(0) || 'D'
-              )}
+              <img
+                src={imgError || !profileImg ? FALLBACK_AVATAR : profileImg}
+                alt={doctorName}
+                onError={() => setImgError(true)}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
             </div>
 
             {/* Info */}
@@ -147,6 +150,24 @@ const DoctorDetailPage = () => {
                 <span className="badge badge-approved">
                   <CheckCircle2 size={12} /> Verified
                 </span>
+                {gender && (
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      padding: '0.15rem 0.5rem',
+                      borderRadius: 'var(--radius-full)',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      backgroundColor: 'var(--slate-100)',
+                      color: 'var(--slate-600)',
+                    }}
+                  >
+                    <User size={11} />
+                    {gender}
+                  </span>
+                )}
               </div>
 
               <h1 style={{ fontSize: 'var(--text-3xl)', color: 'var(--slate-900)', marginBottom: '0.4rem' }}>
@@ -200,7 +221,7 @@ const DoctorDetailPage = () => {
                 }}
               >
                 <DollarSign size={14} />
-                Consultation Fee: ${fee}
+                Consultation Fee: ₹{fee}
               </div>
             </div>
           </div>
@@ -217,7 +238,7 @@ const DoctorDetailPage = () => {
           }}
           className="doctor-detail-layout"
         >
-          {/* Left: Bio + Qualifications */}
+          {/* Left: Bio + Qualifications + Languages */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* About */}
             <div className="card">
@@ -267,6 +288,82 @@ const DoctorDetailPage = () => {
                   </li>
                 )}
               </ul>
+            </div>
+
+            {/* Professional Information */}
+            <div className="card">
+              <h3
+                style={{
+                  fontSize: 'var(--text-lg)',
+                  marginBottom: '0.875rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                <Stethoscope size={18} color="var(--primary-600)" />
+                Professional Information
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
+                    Specialization
+                  </div>
+                  <div style={{ fontWeight: 600, color: 'var(--slate-800)', fontSize: 'var(--text-sm)' }}>{specialization}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
+                    Experience
+                  </div>
+                  <div style={{ fontWeight: 600, color: 'var(--slate-800)', fontSize: 'var(--text-sm)' }}>{experienceYears} Years</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
+                    Hospital / Clinic
+                  </div>
+                  <div style={{ fontWeight: 600, color: 'var(--slate-800)', fontSize: 'var(--text-sm)' }}>{hospital}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.3rem' }}>
+                    Consultation Fee
+                  </div>
+                  <div style={{ fontWeight: 600, color: 'var(--primary-700)', fontSize: 'var(--text-sm)' }}>₹{fee} per visit</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Languages */}
+            <div className="card">
+              <h3
+                style={{
+                  fontSize: 'var(--text-lg)',
+                  marginBottom: '0.875rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                <Globe size={18} color="var(--primary-600)" />
+                Languages Spoken
+              </h3>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                {languages.map((lang, idx) => (
+                  <span
+                    key={idx}
+                    style={{
+                      padding: '0.3rem 0.75rem',
+                      backgroundColor: 'var(--primary-50)',
+                      borderRadius: 'var(--radius-full)',
+                      fontSize: '0.82rem',
+                      fontWeight: 600,
+                      color: 'var(--primary-700)',
+                      border: '1px solid var(--primary-100)',
+                    }}
+                  >
+                    {lang}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -318,6 +415,24 @@ const DoctorDetailPage = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, color: 'var(--slate-800)', fontSize: 'var(--text-sm)' }}>
                 <Clock size={15} color="var(--primary-600)" />
                 <span>{availability.hours || '09:00 AM – 05:00 PM'}</span>
+              </div>
+            </div>
+
+            {/* Fee Highlight */}
+            <div
+              style={{
+                backgroundColor: 'var(--primary-50)',
+                borderRadius: 'var(--radius-md)',
+                padding: '1rem',
+                marginBottom: '1.25rem',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--slate-500)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
+                Consultation Fee
+              </div>
+              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary-700)' }}>
+                ₹{fee}
               </div>
             </div>
 

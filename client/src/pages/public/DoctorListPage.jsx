@@ -17,7 +17,10 @@ const DoctorListPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
   const [minExperience, setMinExperience] = useState('0');
-  const [maxFee, setMaxFee] = useState(500);
+  const [maxFee, setMaxFee] = useState(2000);
+  const [selectedGender, setSelectedGender] = useState('');
+  const [minRating, setMinRating] = useState('0');
+  const [sortBy, setSortBy] = useState('');
 
   // Fetch specializations on mount
   useEffect(() => {
@@ -43,7 +46,10 @@ const DoctorListPage = () => {
       if (searchTerm.trim()) params.search = searchTerm.trim();
       if (selectedSpecialization) params.specialization = selectedSpecialization;
       if (Number(minExperience) > 0) params.experience = minExperience;
-      if (maxFee < 500) params.fee = maxFee;
+      if (maxFee < 2000) params.fee = maxFee;
+      if (selectedGender) params.gender = selectedGender;
+      if (Number(minRating) > 0) params.minRating = minRating;
+      if (sortBy) params.sortBy = sortBy;
 
       const res = await doctorService.getAll(params);
       if (res.data) {
@@ -54,12 +60,12 @@ const DoctorListPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [searchTerm, selectedSpecialization, minExperience, maxFee]);
+  }, [searchTerm, selectedSpecialization, minExperience, maxFee, selectedGender, minRating, sortBy]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchDoctors();
-    }, 200);
+    }, 250);
 
     return () => clearTimeout(timer);
   }, [fetchDoctors]);
@@ -68,7 +74,10 @@ const DoctorListPage = () => {
     setSearchTerm('');
     setSelectedSpecialization('');
     setMinExperience('0');
-    setMaxFee(500);
+    setMaxFee(2000);
+    setSelectedGender('');
+    setMinRating('0');
+    setSortBy('');
   };
 
   return (
@@ -80,10 +89,10 @@ const DoctorListPage = () => {
             Physician Directory
           </span>
           <h1 style={{ fontSize: '2.4rem', color: 'var(--slate-900)', marginBottom: '0.5rem' }}>
-            Find Certified Doctors
+            Find Your Doctor
           </h1>
           <p style={{ color: 'var(--slate-600)', fontSize: '1.05rem' }}>
-            Connect with board-certified medical specialists, explore qualifications, and plan your clinical visits.
+            Browse our verified specialists, filter by specialization, experience, and more to find the perfect doctor for your needs.
           </p>
         </div>
 
@@ -92,7 +101,7 @@ const DoctorListPage = () => {
           <SearchBar
             value={searchTerm}
             onChange={setSearchTerm}
-            placeholder="Search by physician name, specialty, clinic, or keyword..."
+            placeholder="Search by doctor name, specialty, hospital, or location..."
           />
         </div>
 
@@ -115,6 +124,12 @@ const DoctorListPage = () => {
             onExperienceChange={setMinExperience}
             maxFee={maxFee}
             onFeeChange={setMaxFee}
+            selectedGender={selectedGender}
+            onGenderChange={setSelectedGender}
+            minRating={minRating}
+            onRatingChange={setMinRating}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
             onReset={handleResetFilters}
           />
 
@@ -131,7 +146,7 @@ const DoctorListPage = () => {
             >
               <div style={{ fontSize: '0.95rem', color: 'var(--slate-600)', fontWeight: 600 }}>
                 Showing <strong style={{ color: 'var(--slate-900)' }}>{doctors.length}</strong>{' '}
-                specialist{doctors.length === 1 ? '' : 's'}
+                doctor{doctors.length === 1 ? '' : 's'}
               </div>
             </div>
 
@@ -139,7 +154,7 @@ const DoctorListPage = () => {
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))',
                   gap: '1.25rem',
                 }}
               >
@@ -151,7 +166,7 @@ const DoctorListPage = () => {
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))',
                   gap: '1.25rem',
                 }}
               >
@@ -173,7 +188,13 @@ const DoctorListPage = () => {
         </div>
       </div>
 
-
+      <style>{`
+        @media (max-width: 800px) {
+          .directory-layout {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };
