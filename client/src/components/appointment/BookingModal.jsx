@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import SlotPicker from './SlotPicker';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import appointmentService from '../../services/appointmentService';
+import availabilityService from '../../services/availabilityService';
 import {
   X,
   Calendar,
@@ -23,10 +24,23 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
   const { success, error: toastError } = useToast();
   const navigate = useNavigate();
 
-  // Helper to get today formatted YYYY-MM-DD
-  const getTodayStr = () => {
+  // Helper: format a Date to YYYY-MM-DD using LOCAL time (avoids UTC shift)
+  const toLocalDateStr = (d) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  const getTodayStr = () => toLocalDateStr(new Date());
+
+  // Given a list of working day names, find the next date (today inclusive) that falls on one of those days
+  const getNextWorkingDay = (workingDays = []) => {
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    for (let i = 0; i < 14; i++) {
+      if (workingDays.includes(dayNames[d.getDay()])) {
+        return toLocalDateStr(d);
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    return getTodayStr(); // fallback
   };
 
   const [selectedDate, setSelectedDate] = useState(getTodayStr());
@@ -35,6 +49,29 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
   const [symptoms, setSymptoms] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [doctorWorkingDays, setDoctorWorkingDays] = useState([]);
+
+  // Fetch availability when modal opens to know working days for smart date default
+  useEffect(() => {
+    if (!isOpen || !doctor?._id) return;
+    availabilityService.getDoctorAvailability(doctor._id)
+      .then((res) => {
+        const days = res?.data?.workingDays || [];
+        setDoctorWorkingDays(days);
+        // Auto-select next working day
+        if (days.length > 0) {
+          setSelectedDate(getNextWorkingDay(days));
+        }
+      })
+      .catch(() => {
+        // If fetch fails, keep today — SlotPicker will show the appropriate message
+      });
+    // Reset slot when modal reopens
+    setSelectedSlot(null);
+    setReason('');
+    setSymptoms('');
+    setErrorMsg('');
+  }, [isOpen, doctor?._id]); // eslint-disable-line
 
   if (!isOpen || !doctor) return null;
 
@@ -245,6 +282,7 @@ const BookingModal = ({ isOpen, doctor, onClose, onSuccess }) => {
               onDateChange={handleDateChange}
               selectedSlot={selectedSlot}
               onSlotSelect={setSelectedSlot}
+              workingDays={doctorWorkingDays}
             />
 
             {/* Selected Slot Summary Pill */}

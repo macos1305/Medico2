@@ -9,22 +9,47 @@ const SlotPicker = ({
   onDateChange,
   selectedSlot,
   onSlotSelect,
+  workingDays = [], // doctor's working days from availability API
 }) => {
   const [slotsData, setSlotsData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Helper to format today's date YYYY-MM-DD
-  const getTodayStr = () => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-  };
+  // Format a Date to YYYY-MM-DD using LOCAL time (not UTC — avoids day shift)
+  const toLocalDateStr = (d) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  const getTodayStr = () => toLocalDateStr(new Date());
 
   const getTomorrowStr = () => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    return toLocalDateStr(d);
   };
+
+  // Find next date (from tomorrow onwards) that is a working day
+  const getNextWorkingDayStr = () => {
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const d = new Date();
+    d.setDate(d.getDate() + 1); // start from tomorrow
+    for (let i = 0; i < 14; i++) {
+      if (workingDays.includes(dayNames[d.getDay()])) {
+        return toLocalDateStr(d);
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    return getTomorrowStr();
+  };
+
+  const getDayName = (dateStr) => {
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const [y, m, day] = dateStr.split('-').map(Number);
+    return dayNames[new Date(y, m - 1, day).getDay()];
+  };
+
+  const isTodayWorkingDay = workingDays.length > 0 ? workingDays.includes(getDayName(getTodayStr())) : true;
+  const isTomorrowWorkingDay = workingDays.length > 0 ? workingDays.includes(getDayName(getTomorrowStr())) : true;
+
 
   useEffect(() => {
     if (!doctorId || !selectedDate) return;
@@ -81,37 +106,57 @@ const SlotPicker = ({
             style={{
               padding: '0.4rem 0.85rem',
               borderRadius: '10px',
-              border: 'none',
+              border: isTodayWorkingDay ? 'none' : '1px dashed rgba(255,255,255,0.15)',
               fontSize: '0.825rem',
               fontWeight: 600,
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               background: selectedDate === getTodayStr() ? 'linear-gradient(135deg, #3b82f6, #6366f1)' : 'rgba(255, 255, 255, 0.05)',
-              color: selectedDate === getTodayStr() ? '#ffffff' : 'rgba(255, 255, 255, 0.7)',
+              color: selectedDate === getTodayStr() ? '#ffffff' : isTodayWorkingDay ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255,255,255,0.3)',
               boxShadow: selectedDate === getTodayStr() ? '0 0 15px rgba(59, 130, 246, 0.4)' : 'none',
             }}
             onClick={() => onDateChange(getTodayStr())}
           >
-            Today
+            Today{!isTodayWorkingDay ? ' ✗' : ''}
           </button>
           <button
             type="button"
             style={{
               padding: '0.4rem 0.85rem',
               borderRadius: '10px',
-              border: 'none',
+              border: isTomorrowWorkingDay ? 'none' : '1px dashed rgba(255,255,255,0.15)',
               fontSize: '0.825rem',
               fontWeight: 600,
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               background: selectedDate === getTomorrowStr() ? 'linear-gradient(135deg, #3b82f6, #6366f1)' : 'rgba(255, 255, 255, 0.05)',
-              color: selectedDate === getTomorrowStr() ? '#ffffff' : 'rgba(255, 255, 255, 0.7)',
+              color: selectedDate === getTomorrowStr() ? '#ffffff' : isTomorrowWorkingDay ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255,255,255,0.3)',
               boxShadow: selectedDate === getTomorrowStr() ? '0 0 15px rgba(59, 130, 246, 0.4)' : 'none',
             }}
             onClick={() => onDateChange(getTomorrowStr())}
           >
-            Tomorrow
+            Tomorrow{!isTomorrowWorkingDay ? ' ✗' : ''}
           </button>
+          {workingDays.length > 0 && (
+            <button
+              type="button"
+              style={{
+                padding: '0.4rem 0.85rem',
+                borderRadius: '10px',
+                border: 'none',
+                fontSize: '0.825rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                background: 'rgba(56, 189, 248, 0.12)',
+                color: '#38bdf8',
+                border: '1px solid rgba(56,189,248,0.25)',
+              }}
+              onClick={() => onDateChange(getNextWorkingDayStr())}
+            >
+              Next Available ›
+            </button>
+          )}
           <div style={{ flex: 1, minWidth: '170px' }}>
             <input
               type="date"
@@ -163,22 +208,42 @@ const SlotPicker = ({
             {error}
           </div>
         ) : !slotsData?.isWorkingDay ? (
-          /* Day Off Alert */
+          /* Day Off Alert — now includes which days ARE available */
           <div
             style={{
               backgroundColor: 'rgba(245, 158, 11, 0.1)',
               border: '1px solid rgba(245, 158, 11, 0.25)',
               borderRadius: '10px',
               padding: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.65rem',
-              color: '#fbbf24',
-              fontSize: '0.875rem',
             }}
           >
-            <AlertCircle size={20} color="#fbbf24" />
-            <span>{slotsData?.message || 'Doctor does not schedule consultations on this day.'}</span>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem', color: '#fbbf24', fontSize: '0.875rem', marginBottom: workingDays.length > 0 ? '0.75rem' : 0 }}>
+              <AlertCircle size={20} color="#fbbf24" style={{ flexShrink: 0, marginTop: '1px' }} />
+              <span>{slotsData?.message || 'Doctor does not schedule consultations on this day.'}</span>
+            </div>
+            {workingDays.length > 0 && (
+              <div style={{ paddingLeft: '1.75rem' }}>
+                <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem' }}>
+                  Available on: <strong style={{ color: '#93c5fd' }}>{workingDays.join(', ')}</strong>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => onDateChange(getNextWorkingDayStr())}
+                  style={{
+                    background: 'rgba(56,189,248,0.12)',
+                    border: '1px solid rgba(56,189,248,0.3)',
+                    borderRadius: '8px',
+                    color: '#38bdf8',
+                    fontSize: '0.8rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    padding: '0.35rem 0.85rem',
+                  }}
+                >
+                  Jump to Next Available Day ›
+                </button>
+              </div>
+            )}
           </div>
         ) : slotsData?.slots?.length === 0 ? (
           <p style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.85rem' }}>
