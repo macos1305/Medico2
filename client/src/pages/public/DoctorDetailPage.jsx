@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import doctorService from '../../services/doctorService';
+import availabilityService from '../../services/availabilityService';
+
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import BookingModal from '../../components/appointment/BookingModal';
 import StarRating from '../../components/review/StarRating';
@@ -37,6 +39,10 @@ const DoctorDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
 
+  // Real availability fetched from MongoDB via API
+  const [availabilityData, setAvailabilityData] = useState(null);
+  const [availabilityLoading, setAvailabilityLoading] = useState(false);
+  const [availabilityError, setAvailabilityError] = useState(null);
 
   useEffect(() => {
     const fetchDoctor = async () => {
@@ -52,6 +58,26 @@ const DoctorDetailPage = () => {
     };
     fetchDoctor();
   }, [id]);
+
+  // Fetch real availability from the Availability collection
+  useEffect(() => {
+    if (!id) return;
+    const fetchAvailability = async () => {
+      setAvailabilityLoading(true);
+      setAvailabilityError(null);
+      try {
+        const res = await availabilityService.getDoctorAvailability(id);
+        setAvailabilityData(res.data);
+      } catch (err) {
+        console.error('Failed to load availability:', err);
+        setAvailabilityError('Unable to load availability.');
+      } finally {
+        setAvailabilityLoading(false);
+      }
+    };
+    fetchAvailability();
+  }, [id]);
+
 
   if (loading) {
     return <LoadingSpinner text="Retrieving physician profile..." fullScreen />;
@@ -85,11 +111,6 @@ const DoctorDetailPage = () => {
     doctor.qualifications?.length > 0
       ? doctor.qualifications
       : ['MD (Doctor of Medicine)', 'Board Certified Specialist'];
-  const availability = doctor.availability || {
-    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-    hours: '09:00 AM - 05:00 PM',
-    slotDurationMinutes: 30,
-  };
   const languages = doctor.languages?.length > 0 ? doctor.languages : ['English'];
   const gender = doctor.gender || '';
 
@@ -430,39 +451,83 @@ const DoctorDetailPage = () => {
               Clinical Availability
             </h3>
 
-            <div style={{ marginBottom: '1.25rem' }}>
-              <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-                Consultation Days
-              </span>
-              <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-                {availability.days?.map((day, i) => (
-                  <span
-                    key={i}
-                    style={{
-                      padding: '0.25rem 0.55rem',
-                      backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                      borderRadius: '8px',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      color: '#93c5fd',
-                      border: '1px solid rgba(59, 130, 246, 0.2)',
-                    }}
-                  >
-                    {day.slice(0, 3)}
-                  </span>
-                ))}
-              </div>
-            </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
-                Operating Hours
-              </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: '#ffffff', fontSize: '0.875rem' }}>
-                <Clock size={15} color="#60a5fa" />
-                <span>{availability.hours || '09:00 AM – 05:00 PM'}</span>
+            {availabilityLoading ? (
+              <div style={{ padding: '1rem 0', textAlign: 'center' }}>
+                <div className="spinner spinner-primary" style={{ width: '22px', height: '22px', margin: '0 auto' }} />
+                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', marginTop: '0.5rem' }}>Loading schedule...</p>
               </div>
-            </div>
+            ) : availabilityError ? (
+              <div style={{ padding: '0.75rem', backgroundColor: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '10px', color: '#fca5a5', fontSize: '0.83rem' }}>
+                {availabilityError}
+                <button
+                  onClick={() => {
+                    setAvailabilityError(null);
+                    setAvailabilityLoading(true);
+                    availabilityService.getDoctorAvailability(id)
+                      .then(r => { setAvailabilityData(r.data); setAvailabilityLoading(false); })
+                      .catch(() => { setAvailabilityError('Unable to load availability.'); setAvailabilityLoading(false); });
+                  }}
+                  style={{ marginLeft: '0.5rem', background: 'none', border: 'none', color: '#93c5fd', cursor: 'pointer', fontSize: '0.83rem', textDecoration: 'underline' }}
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : availabilityData && availabilityData.isActive !== false ? (
+              <>
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
+                    Consultation Days
+                  </span>
+                  <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                    {(availabilityData.workingDays || []).map((day, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          padding: '0.25rem 0.55rem',
+                          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                          borderRadius: '8px',
+                          fontSize: '0.75rem',
+                          fontWeight: 700,
+                          color: '#93c5fd',
+                          border: '1px solid rgba(59, 130, 246, 0.2)',
+                        }}
+                      >
+                        {day.slice(0, 3)}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: '0.85rem' }}>
+                  <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
+                    Operating Hours
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: '#ffffff', fontSize: '0.875rem' }}>
+                    <Clock size={15} color="#60a5fa" />
+                    <span>{availabilityData.startTime} – {availabilityData.endTime}</span>
+                  </div>
+                  {availabilityData.breakStartTime && availabilityData.breakEndTime && (
+                    <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.4)', marginTop: '0.3rem', marginLeft: '1.45rem' }}>
+                      Break: {availabilityData.breakStartTime} – {availabilityData.breakEndTime}
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <span style={{ color: 'rgba(255, 255, 255, 0.45)', display: 'block', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.4rem' }}>
+                    Slot Duration
+                  </span>
+                  <span style={{ color: '#38bdf8', fontWeight: 700, fontSize: '0.875rem' }}>
+                    {availabilityData.slotDuration} minutes per slot
+                  </span>
+                </div>
+              </>
+            ) : (
+              <div style={{ marginBottom: '1.5rem', padding: '0.85rem', backgroundColor: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: '10px', color: '#fbbf24', fontSize: '0.83rem' }}>
+                No availability has been set for this doctor yet.
+              </div>
+            )}
 
             {/* Fee Highlight */}
             <div
