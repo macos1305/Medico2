@@ -8,6 +8,7 @@ import DoctorReviewModal from '../../components/admin/DoctorReviewModal';
 import { SkeletonStatCard, SkeletonListItem } from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import adminService from '../../services/adminService';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 import {
   ShieldCheck,
   Users,
